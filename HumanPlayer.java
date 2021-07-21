@@ -1,23 +1,32 @@
-public class HumanPlayer {
-	private String playerName;
-	private String stoneColor;
-	private int numOfMoves;
-	private int ranking;
+public class HumanPlayer extends Player {
+	private int ranking = 0;
 	
-	public String getPlayerName() {return this.playerName;}
-	
-	public void setPlayerName(String playerName) {this.playerName = playerName;}
-	
-	public String getStoneColor() {return this.stoneColor;}
-	
-	public void setStoneColor(String stoneColor) {this.stoneColor = stoneColor;}
-	
-	public int getNumOfMoves() {return this.numOfMoves;}
-	
-	public void setNumOfMoves(int numOfMoves) {this.numOfMoves = numOfMoves;}
-	
-	public int getRanking() {return this.ranking;}
-	
-	public void setRanking(int ranking) {this.ranking = ranking;}
-	
+	public HumanPlayer() {
+        super();
+    }
+
+    public HumanPlayer(Stone stone) {
+        super(stone);
+    }
+
+    public HumanPlayer(String playerName, Stone stone) {
+        super(playerName, stone);
+    }
+
+    @Override
+    public Move getMove(GameConfiguration currentConfig, String coord) {
+        Move humanMove = currentConfig.isValidMove(coord, getPlayerColor());
+        if (humanMove != null) {
+            getAllValidMoves().add(humanMove);
+        }
+        return humanMove;
+    }
+
+    public int getRanking() {
+        return ranking;
+    }
+
+    public void addRanking(int score) {
+        this.ranking += score;
+    }
 }
