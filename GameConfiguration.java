@@ -51,8 +51,14 @@ public class GameConfiguration {
 		}
 		// Casting first character in the coord string to integer.
 		int col = (int)(coord.charAt(0)) - 65;
-		// Parse the rest of the coord string to integer.
-		int row = Integer.parseInt(coord.substring(1)) - 1;
+		// Try parsing the rest of the coord string to integer.
+		int row = -1;
+		try {
+			row = Integer.parseInt(coord.substring(1)) - 1;
+		} catch (Exception ex) {
+			System.out.println("Error: invalid input.");
+			return move;
+		}
 		if (row >= chessBoard.getBoardSize() || row < 0) {
 			System.out.println("Error: verical coord should be greater than 0 and within the board size.");
 			return move;
