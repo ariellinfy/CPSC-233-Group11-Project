@@ -8,7 +8,6 @@ import java.util.Map;
  * after each move.
  * 
  * @author Fu-Yin Lin
- *
  */
 public class GameConfiguration {
 	private static final int WIN_COUNT = 5;
