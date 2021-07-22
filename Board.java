@@ -44,7 +44,7 @@ public class Board {
 					if (r < 9) {
 						System.out.print(" " + (r + 1));
 					} else {
-						System.out.print((r + 1));
+						System.out.print(r + 1);
 					}
 				}
 				if (board[r][c] == Stone.EMPTY) {
@@ -90,5 +90,4 @@ public class Board {
         board.initBoard();
         board.printBoard();
     }
-	
 }
