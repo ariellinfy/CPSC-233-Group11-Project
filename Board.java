@@ -14,11 +14,13 @@ public class Board {
 	//	boardSize is set to 15 by default.
 	private int boardSize = 15;
 	
+	public Board() {
+		this.board = new Stone[boardSize][boardSize];
+	}
+	
 	public Board(int boardSize) {
 		if (boardSize == 9 || boardSize == 13 || boardSize == 15 || boardSize == 19) {
 			this.boardSize = boardSize;
-		} else {
-			System.out.println("Invalid board size. The board size was set to 15 by default.");
 		}
 		this.board = new Stone[boardSize][boardSize];
 	}

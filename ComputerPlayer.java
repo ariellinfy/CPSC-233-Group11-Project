@@ -57,7 +57,7 @@ public class ComputerPlayer extends Player {
 	public Level getDifficultyLevel() {
 		return difficultyLevel;
 	}
-
+	
 	/**
 	 * Depending on the difficulty level set by the user, this method 
 	 * determines the next computer move by using both generateMoveList and
@@ -166,7 +166,6 @@ public class ComputerPlayer extends Player {
 				score[i][j] = 0;
 			}
 		}
-
 		int numOfBlack = 0; // number of black in a tuple
 		int numOfWhite = 0; // number of white in a tuple
 		int tempScore = 0; // temp score for a tuple
@@ -191,26 +190,24 @@ public class ComputerPlayer extends Player {
 				tempScore = 0;
 			}
 		}
-		
 		// Top to bottom (covers all vertical tuples)
-		for (int i = 0; i < boardSize - 4; i++) {
-			for (int j = 0; j < boardSize; j++) {
+		for (int i = 0; i < boardSize; i++) {
+			for (int j = 0; j < boardSize - 4; j++) {
 				int k = j;
 				while (k < j + 5) {
-					if (board[i][k] == Stone.BLACK) numOfBlack++;
-					else if (board[i][k] == Stone.WHITE) numOfWhite++;
+					if (board[k][i] == Stone.BLACK) numOfBlack++;
+					else if (board[k][i] == Stone.WHITE) numOfWhite++;
 					k++;
 				}
 				tempScore = tupleScore(numOfBlack, numOfWhite);
 				for (k = j; k < j + 5; k++) {
-					score[i][k] += tempScore;
+					score[k][i] += tempScore;
 				}
 				numOfBlack = 0;
 				numOfWhite = 0;
 				tempScore = 0;
 			}
 		}
-		
 		// Top left to bottom right (covers all diagonal tuples in bottom left triangle)
 		for (int i = 0 ; i < boardSize - 4; i++) {
 			for (int j = 0, k = i; j < boardSize - 4 && k < boardSize - 4; j++, k++) {
@@ -233,7 +230,6 @@ public class ComputerPlayer extends Player {
 				tempScore = 0;
 			}
 		}
-		
 		// Bottom right to top left (covers all diagonal tuples in top right triangle)
 		for (int i = boardSize - 2 ; i >= 4; i--) {
 			for (int j = boardSize - 1, k = i; j >= 4 && k >= 4; j--, k--) {
@@ -256,7 +252,6 @@ public class ComputerPlayer extends Player {
 				tempScore = 0;
 			}
 		}
-		
 		// Bottom left to top right (covers all diagonal tuples in top left triangle)
 		for (int i = boardSize - 1; i >= 4; i--) {
 			for (int j = 0, k = i; j < boardSize - 4 && k >= 4; j++, k--) {
@@ -279,7 +274,6 @@ public class ComputerPlayer extends Player {
 				tempScore = 0;
 			}
 		}
-		
 		// Top right to bottom left (covers all diagonal tuples in bottom right triangle)
 		for (int i = 1 ; i < boardSize - 4; i++) {
 			for (int j = boardSize - 1, k = i; j >= 4 && k < boardSize - 4; j--, k++) {
@@ -302,7 +296,6 @@ public class ComputerPlayer extends Player {
 				tempScore = 0;
 			}
 		}
-		
 		return score;
 	} 
 	
