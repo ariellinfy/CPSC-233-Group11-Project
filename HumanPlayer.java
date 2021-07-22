@@ -53,7 +53,7 @@ public class HumanPlayer extends Player {
     	 *	isValidMove() method is called from currentConfig to validate the move
     	 *	made by the player. If the move is not valid, a null Move object is returned.
     	 */
-        Move humanMove = currentConfig.isValidMove(coord, getStoneColor());
+        Move humanMove = currentConfig.isValidMove(coord, getPlayerColor());
         return humanMove;
     }
     
