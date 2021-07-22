@@ -1,3 +1,10 @@
+/**
+ * A subclass of the Player class that contains additional variables/methods to handle player
+ * scores and moves for human players.
+ * @author Justin Chua
+ *
+ */
+
 public class HumanPlayer extends Player {
 	private int ranking = 0;
 	
@@ -35,8 +42,7 @@ public class HumanPlayer extends Player {
     }
     
     /**
-     * Method that validates a move made by the player and adds it to the instance variable
-     * "validMoveList" of type ArrayList<Move>.
+     * Method that validates a move made by the player and returns it.
      * @param currentConfig a GameConfiguration object that contains the current game board.
      * @param coord the coordinate of the move made by the player. 
      * @return humanMove a Move object containing the coordinates and color of the stone.
@@ -48,10 +54,6 @@ public class HumanPlayer extends Player {
     	 *	made by the player. If the move is not valid, a null Move object is returned.
     	 */
         Move humanMove = currentConfig.isValidMove(coord, getStoneColor());
-        if (humanMove != null) {
-        	//	If the move is valid, it is added to ArrayList<Move> validMoveList.
-            getAllValidMoves().add(humanMove);
-        }
         return humanMove;
     }
     
