@@ -8,14 +8,13 @@ import java.util.Map;
  */
 
 public class Board {
-	
 	private Map<Integer, Character> alphabetList = new HashMap<Integer, Character>();
 	private Stone[][] board;
-	//	boardSize is set to 15 by default.
+	//	BoardSize is set to 15x15 by default.
 	private int boardSize = 15;
 	
 	/**
-	 * Constructor that takes in no parameters, and initializes the instance variable "board".
+	 * Default constructor that takes in no parameters, and initializes the instance variable "board".
 	 */
 	public Board() {
 		//	"board" is initialized to a 2D stone array of default size (15x15).
@@ -84,7 +83,6 @@ public class Board {
 					 * If "r" is less than 9, we must add additional whitespace when printing the index to avoid
 					 * the game board becoming staggered.
 					 */
-					
 					if (r < 9) {
 						System.out.print(" " + (r + 1));
 					} else {
@@ -161,9 +159,9 @@ public class Board {
 	 * Main method that is used to test the functionality of the Board class.
 	 * @param args arguments passed to the main method.
 	 */
-	public static void main(String[] args) {
-        Board board = new Board(15);
-        board.initBoard();
-        board.printBoard();
-    }
+//	public static void main(String[] args) {
+//        Board board = new Board(15);
+//        board.initBoard();
+//        board.printBoard();
+//    }
 }

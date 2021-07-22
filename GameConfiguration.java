@@ -6,8 +6,8 @@ import java.util.Map;
  * The class contains data related to the current state of the game,
  * as well as methods that validate and determine the status of the game
  * after each move.
- * 
  * @author Fu-Yin Lin
+ * 
  */
 public class GameConfiguration {
 	private static final int WIN_COUNT = 5;
@@ -56,7 +56,7 @@ public class GameConfiguration {
 		try {
 			row = Integer.parseInt(coord.substring(1)) - 1;
 		} catch (Exception ex) {
-			System.out.println("Error: invalid input.");
+			System.out.println("Error: vertical coord should be numeric.");
 			return move;
 		}
 		if (row >= chessBoard.getBoardSize() || row < 0) {
@@ -93,8 +93,10 @@ public class GameConfiguration {
     	ArrayList<Integer> directionCounts = new ArrayList<Integer>();
     	
     	// 1. Top to bottom
-    	// Set current stone count to 1, this count number
-    	// will reset at the beginning of each direction looping.
+    	/*
+    	 * Set current stone count to 1, this count number
+    	 * will reset at the beginning of each direction looping.
+    	 */
     	int count = 1;
     	// Current move towards to top.
     	for (int i = 1; i <= row; i++) {

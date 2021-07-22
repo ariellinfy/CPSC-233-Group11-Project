@@ -4,8 +4,8 @@ import java.util.Random;
 
 /**
  * The class that contains data and logic related to the artificial intelligence of the game.
- * 
  * @author Fu-Yin Lin
+ * 
  */
 public class ComputerPlayer extends Player {
 	private static final HashMap<Level, Integer> levelMap = new HashMap<Level, Integer>();

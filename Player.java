@@ -3,8 +3,8 @@ import java.util.Random;
 
 /**
  * A generic parent class for HumanPlayer and ComputerPlayer classes.
- * 
  * @author Fu-Yin Lin
+ * 
  */
 public class Player {
 	private String playerName;
@@ -139,7 +139,8 @@ public class Player {
 	}
 	
 	/**
-	 * This method will be overridden by subclass.
+	 * This method will be overridden by subclass. Overloading the previous 
+	 * getMove method.
 	 * @param currentConfig current game configuration.
 	 * @return null when player type (ComputerPlayer or HumanPlayer) 
 	 * is not defined.
