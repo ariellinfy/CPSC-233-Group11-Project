@@ -39,7 +39,8 @@ public class Board {
 	}
 	
 	/**
-	 * Method that initializes the game board 
+	 * Method that is used to initialize the game board, as well as the instance variable "alphabetList"
+	 * (containing the index for the game board).
 	 */
 	public void initBoard() {
 		for (int i = 0; i < boardSize; i++) {
