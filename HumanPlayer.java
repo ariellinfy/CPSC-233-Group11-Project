@@ -9,7 +9,7 @@ public class HumanPlayer extends Player {
 	private int ranking = 0;
 	
 	/**
-	 * Default constructor that creates a HumanPlayer object with no variables initialized.
+	 * Constructor that creates a HumanPlayer object with no variables initialized.
 	 */
 	public HumanPlayer() {
 		/*
