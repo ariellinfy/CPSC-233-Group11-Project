@@ -42,7 +42,7 @@ public class ComputerPlayer extends Player {
 	 * is initialized. It restricts the number of possible moves that the 
 	 * computer can randomly select from. For example, the hardest level 
 	 * only has one value available in the score table and that is the one  
-	 * with the overall highest score.
+	 * with the highest overall score.
 	 */
 	private void initLevelMap() {
 		levelMap.put(Level.EASY, 7);
@@ -87,8 +87,8 @@ public class ComputerPlayer extends Player {
 		targetRow = pickedMove[0];
 		targetCol = pickedMove[1];
 		/*
-		 * Make sure the target move index does not exceed the board before 
-		 * creating the new move object.
+		 * Make sure the target move index does not exceed the board size  
+		 * before creating the new move object.
 		 */
 		if (targetRow > -1 && targetCol > -1 && targetRow < boardSize && targetCol < boardSize) {
 			computerMove = new Move(targetRow, targetCol, getPlayerColor());
@@ -141,7 +141,7 @@ public class ComputerPlayer extends Player {
 	/**
 	 * The computer move algorithm was adapted from Chess class line 93 to 337 in a post by ccnuacmhdu
 	 * on 2018-10-20 in a CSDN blog here: https://blog.csdn.net/ccnuacmhdu/article/details/83152946
-	 * Because the google translated link will automatically redirect to home page, 
+	 * Because the google translated link will automatically redirect to CSDN home page, 
 	 * a translated page url will not be provided here, but readers are welcome to use translation
 	 * tools to refer to the original algorithm. Below is a brief description of the algorithm:
 	 * The winning condition of the gomuku game is to form a line of five same color stones. Therefore,
@@ -155,7 +155,7 @@ public class ComputerPlayer extends Player {
 	 * @param boardSize the size of the board.
 	 * @return a 2D array that contains a score for each coordinate in the board.
 	 */
-	private int[][] calculateScores(Stone[][] board, int boardSize) {
+	public int[][] calculateScores(Stone[][] board, int boardSize) {
 		/*
 		 * Initiate a 2D array with 0, where the array size is the 
 		 * same size as the board of the game.

@@ -132,7 +132,7 @@ public class Player {
 	 * @param coord a string representation of the targeting location
 	 * of a move.
 	 * @return null when player type (ComputerPlayer or HumanPlayer) 
-	 * is not defined.
+	 * is not specified.
 	 */
 	public Move getMove(GameConfiguration currentConfig, String coord) {
 		return null;
@@ -143,7 +143,7 @@ public class Player {
 	 * getMove method.
 	 * @param currentConfig current game configuration.
 	 * @return null when player type (ComputerPlayer or HumanPlayer) 
-	 * is not defined.
+	 * is not specified.
 	 */
 	public Move getMove(GameConfiguration currentConfig) {
 		return null;

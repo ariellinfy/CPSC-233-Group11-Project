@@ -50,11 +50,11 @@ public class GameConfiguration {
 		Map<Integer, Character> alphabetList = chessBoard.getAlphabetList();
 		Move move = null;
 		if (coord.length() < 2 || coord.length() > 3) {
-			System.out.println("Error: coord length should be within 2 to 3.");
+			System.out.println("Error: coord length should be within 2 to 3.\n");
 			return move;
 		}
 		if (!alphabetList.containsValue(coord.charAt(0))) {
-			System.out.println("Error: horizontal coord is not within the board size.");
+			System.out.println("Error: horizontal coord is not within the board size.\n");
 			return move;
 		}
 		// Casting first character in the coord string to integer.
@@ -64,15 +64,15 @@ public class GameConfiguration {
 		try {
 			row = Integer.parseInt(coord.substring(1)) - 1;
 		} catch (Exception ex) {
-			System.out.println("Error: vertical coord should be numeric.");
+			System.out.println("Error: vertical coord should be numeric.\n");
 			return move;
 		}
 		if (row >= chessBoard.getBoardSize() || row < 0) {
-			System.out.println("Error: verical coord should be greater than 0 and within the board size.");
+			System.out.println("Error: verical coord should be greater than 0 and within the board size.\n");
 			return move;
 		}
 		if (chessBoard.getCoord(row, col) != Stone.EMPTY) {
-			System.out.println("Error: a stone is already in this coord, please choose another one.");
+			System.out.println("Error: a stone is already in this coord, please choose another one.\n");
 			return move;
 		}
 		move = new Move(row, col, stone);

@@ -155,5 +155,11 @@ public class Board {
 //        Board board = new Board(15);
 //        board.initBoard();
 //        board.printBoard();
+//        System.out.println(board.getBoardSize());
+//        System.out.println(board.getCoord(5, 6));
+//        board.setCoord(5, 6, Stone.BLACK);
+//        System.out.println(board.getCoord(5, 6));
+//        System.out.println(board.getAlphabetList());
+//        board.printBoard();
 //    }
 }
