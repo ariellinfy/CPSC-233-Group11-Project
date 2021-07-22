@@ -45,4 +45,31 @@ public class Move {
 	public Stone getStone() {
 		return stone;
 	}
+	
+	/**
+	 * Customize toString method by overriding the default method inherited from Object class.
+	 * @return a string representation of this move.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder moveInfo = new StringBuilder();
+		moveInfo.append("Row: ");
+		moveInfo.append(row);
+		moveInfo.append("; Column: ");
+		moveInfo.append(col);
+		moveInfo.append("; Color: ");
+		moveInfo.append(stone);
+		return moveInfo.toString();
+	}
+	
+	/**
+	 * Testing constructor and getter methods in Move class.
+	 */
+//	public static void main(String[] args) {
+//		Move m1 = new Move(1, 2, Stone.BLACK);
+//		System.out.println(m1);
+//		System.out.println(m1.getRow());
+//		System.out.println(m1.getCol());
+//		System.out.println(m1.getStone());
+//	}
 }
