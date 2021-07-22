@@ -140,14 +140,6 @@ public class Board {
 	}
 	
 	/**
-	 * Method that adds a move to the current game board.
-	 * @param move a move Object containing the coordinates and color of the stone.
-	 */
-	public void addMove(Move move) {
-		setCoord(move.getRow(), move.getCol(), move.getStone());
-	}
-	
-	/**
 	 * Getter method for the instance variable "alphabetList".
 	 * @return alphabetList a HashMap object containing the index of the current game board.
 	 */

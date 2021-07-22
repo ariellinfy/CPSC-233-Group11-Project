@@ -31,6 +31,14 @@ public class GameConfiguration {
 	}
 	
 	/**
+	 * Add a move and update the game board.
+	 * @param move the Move object to be added to the board.
+	 */
+	public void update(Move move) {
+		chessBoard.setCoord(move.getRow(), move.getCol(), move.getStone());
+	}
+	
+	/**
 	 * A method checks whether a move is valid or not.
 	 * @param coord a string representation of the targeting location
 	 * of a move.
