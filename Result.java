@@ -1,7 +1,4 @@
 
 public enum Result {
-	BLACK,
-	WHITE,
-	DRAW,
-	CONTINUE
+	BLACK, WHITE, DRAW, CONTINUE
 }

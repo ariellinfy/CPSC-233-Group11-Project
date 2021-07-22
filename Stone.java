@@ -1,5 +1,4 @@
+
 public enum Stone {
-	EMPTY,
-	BLACK,
-	WHITE
+	EMPTY, BLACK, WHITE
 }
