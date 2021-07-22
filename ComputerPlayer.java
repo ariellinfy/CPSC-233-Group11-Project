@@ -51,8 +51,8 @@ public class ComputerPlayer extends Player {
 	 * score.
 	 */
 	private void initLevelMap() {
-		levelMap.put(Level.EASY, 7);
-		levelMap.put(Level.MEDIUM, 4);
+		levelMap.put(Level.EASY, 5);
+		levelMap.put(Level.MEDIUM, 3);
 		levelMap.put(Level.HARD, 1);
 	}
 
