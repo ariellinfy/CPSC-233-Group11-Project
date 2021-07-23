@@ -13,7 +13,7 @@ The current application will prompt the user several setting options before star
 ### For Eclipse User
 1. The text-based version of this application is found under iteration-1 branch.
 2. When cloning the repository to Eclipse, on the Local Destination page: set initial branch to iteration-1.
-3. Click on the project folder (CPSC_233_Group11_Project) in Package Explore, then run the game by clicking on the green run icon in the tool bar.
+3. Click on the project folder (CPSC_233_Group11_Project) in Package Explorer, then run the game by clicking on the green run icon in the tool bar.
 4. Follow instructions to play the game and have fun!
 
 ### For All Other Editors (make sure a Java SDK is installed on your device)
