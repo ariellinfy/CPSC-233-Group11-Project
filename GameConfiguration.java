@@ -71,7 +71,7 @@ public class GameConfiguration {
 			return move;
 		}
 		if (row >= chessBoard.getBoardSize() || row < 0) {
-			System.out.println("Error: verical coord should be greater than 0 and within the board size.\n");
+			System.out.println("Error: vertical coord should be greater than 0 and within the board size.\n");
 			return move;
 		}
 		if (chessBoard.getCoord(row, col) != Stone.EMPTY) {
