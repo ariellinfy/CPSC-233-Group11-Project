@@ -1,6 +1,13 @@
 # Gomoku Game
 
 ## About
+This game revolves around a turn-based two player format, where each player takes turns in placing a single black/white stone on an empty intersection within a grid board. After these stones are placed, they can no longer be moved. The main objective is to create a horizontal, vertical, or diagonal line of exactly five stones before your opponent. A row with six or more counts as a draw. 
+
+The current application will prompt the user several setting options before starting the game:
+- To play against a human player or computer - medium level computer by default
+- Difficulty level of the computer player (if computer is chosen in #1) - medium by default
+- To play as black or white stone (black always goes first) - user goes first by default
+- Set the board size (9/13/15/19) - 15x15 by default
 
 ## Text-Based Application
 ### For Eclipse User
