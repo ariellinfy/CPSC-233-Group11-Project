@@ -12,16 +12,17 @@ The current application will prompt the user several setting options before star
 ## Text-Based Application
 ### For Eclipse User
 1. The text-based version of this application is found under iteration-1 branch.
-2. After cloning the repo to Eclipse, the game can be compiled and executed directly.
+2. When cloning the repository to Eclipse, on the Local Destination page: set initial branch to iteration-1.
+3. Click on the project folder (CPSC_233_Group11_Project) in Package Explore, then run the game by clicking on the green run icon in the tool bar.
+4. Follow instructions to play the game and have fun!
 
 ### For All Other Editors (make sure a Java SDK is installed on your device)
 1. The text-based version of this application is found under iteration-1 branch.
-2. Clone or download the repo files to a folder in your device.
+2. Clone or download the repository files to a folder in your device.
 3. In a terminal, navigate to the chosen folder.
 4. Compile files using command line: javac *.java
 5. Run game using command line: java Game
-6. Follow instructions to play the game.
-7. Have fun!
+6. Follow instructions to play the game and have fun!
 
 ## Graphical User Interface
 To be continued...
