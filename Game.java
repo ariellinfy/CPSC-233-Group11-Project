@@ -34,7 +34,7 @@ public class Game {
 		Player opponent = null;
 		String playAgainst = promptUser(scanner, "Do you want to play against computer or human? (computer/human)? ");
 		if (playAgainst.equalsIgnoreCase("computer")) {
-			String difficultyLevel = promptUser(scanner, "Set difficulty level(easy/medium/hard): ");
+			String difficultyLevel = promptUser(scanner, "Set difficulty level (easy/medium/hard): ");
 			Level difficulty = Level.MEDIUM;
 			if (difficultyLevel.equalsIgnoreCase("easy")) {
 				difficulty = Level.EASY;
@@ -88,7 +88,7 @@ public class Game {
 	}
 
 	public void setup(Scanner scanner) {
-		messageToUser("Welcome to Gomuku!");
+		messageToUser("Welcome to Gomoku!");
 		Player opponent = setupOpponent(scanner);
 		chooseColor(scanner, opponent);
 		setupBoard(scanner);

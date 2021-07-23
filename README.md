@@ -9,6 +9,8 @@ The current application will prompt the user several setting options before star
 - To play as black or white stone (black always goes first) - user goes first by default
 - Set the board size (9/13/15/19) - 15x15 by default
 
+A class diagram is included with the source code folder (Gomoku Class Diagram.png)
+
 ## Text-Based Application
 ### For Eclipse User
 1. The text-based version of this application is found under iteration-1 branch.
