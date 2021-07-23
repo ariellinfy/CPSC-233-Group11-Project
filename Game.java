@@ -1,11 +1,18 @@
 import java.util.Scanner;
 
+/**
+ * This class is responsible for running the Gomoku application for the user,
+ * through the utilization of all other classes.
+ * 
+ * @author Fu-Yin Lin, Justin Chua
+ *
+ */
 public class Game {
 	private GameConfiguration config = new GameConfiguration();
-    private Player playerBlack;
+	private Player playerBlack;
 	private Player playerWhite;
 	private boolean blackTurn = true;
-	
+
 	public Player getPlayerBlack() {
 		return playerBlack;
 	}
@@ -13,16 +20,16 @@ public class Game {
 	public Player getPlayerWhite() {
 		return playerWhite;
 	}
-	
+
 	private String promptUser(Scanner scanner, String message) {
 		System.out.print(message);
 		return scanner.nextLine();
 	}
-	
+
 	private void messageToUser(String message) {
 		System.out.println(message);
 	}
-	
+
 	private Player setupOpponent(Scanner scanner) {
 		Player opponent = null;
 		String playAgainst = promptUser(scanner, "Do you want to play against computer or human? (computer/human)? ");
@@ -47,7 +54,7 @@ public class Game {
 		}
 		return opponent;
 	}
-	
+
 	private void chooseColor(Scanner scanner, Player opponent) {
 		String userColor = promptUser(scanner, "You want to play as? black always goes first (black/white) ");
 		if (userColor.equalsIgnoreCase("black")) {
@@ -65,7 +72,7 @@ public class Game {
 			this.playerWhite = opponent;
 		}
 	}
-	
+
 	private void setupBoard(Scanner scanner) {
 		try {
 			int boardSize = Integer.parseInt(promptUser(scanner, "Set board size (9/13/15/19): "));
@@ -77,9 +84,9 @@ public class Game {
 		} catch (Exception ex) {
 			messageToUser("Invalid input, the board size was set to 15x15 by default.\n");
 			this.config.setChessBoard(new Board());
-		} 
+		}
 	}
-	
+
 	public void setup(Scanner scanner) {
 		messageToUser("Welcome to Gomuku!");
 		Player opponent = setupOpponent(scanner);
@@ -94,36 +101,37 @@ public class Game {
 		if (playerBlack instanceof ComputerPlayer == false) {
 			chessboard.printBoard();
 		}
-		
-		while(!endGame) {
+
+		while (!endGame) {
 			Move move = null;
 			boolean validInput = false;
-			
-			while(!validInput) {
+
+			while (!validInput) {
 				if (blackTurn) {
 					if (playerBlack instanceof ComputerPlayer) {
 						move = playerBlack.getMove(config);
 					} else {
-						String coord = promptUser(scanner, "Black's turn, please enter a valid coord (eg. A2) ").toUpperCase();
+						String coord = promptUser(scanner, "Black's turn, please enter a valid coord (eg. A2) ")
+								.toUpperCase();
 						move = playerBlack.getMove(config, coord);
 					}
 				} else {
 					if (playerWhite instanceof ComputerPlayer) {
 						move = playerWhite.getMove(config);
 					} else {
-						String coord = promptUser(scanner, "White's turn, please enter a valid coord (eg. A2) ").toUpperCase();
+						String coord = promptUser(scanner, "White's turn, please enter a valid coord (eg. A2) ")
+								.toUpperCase();
 						move = playerWhite.getMove(config, coord);
 					}
 				}
-				
+
 				if (move != null) {
 					validInput = true;
 					config.update(move);
 					if (blackTurn) {
 						playerBlack.getAllValidMoves().add(move);
 						playerBlack.incrementMoveCount();
-					}
-					else {
+					} else {
 						playerWhite.getAllValidMoves().add(move);
 						playerWhite.incrementMoveCount();
 					}
@@ -131,10 +139,10 @@ public class Game {
 					validInput = false;
 				}
 			}
-			
+
 			messageToUser("");
 			chessboard.printBoard();
-			
+
 			Result roundResult = config.checkWinningLine(move);
 			if (roundResult == Result.CONTINUE) {
 				blackTurn = !blackTurn;
@@ -150,14 +158,14 @@ public class Game {
 			}
 		}
 	}
-	
-    public static void main(String[] args) {
-    	Game game = new Game();
-    	Scanner scanner = new Scanner(System.in);
-    	try {
-    		game.setup(scanner);
-    	} finally {
-    		scanner.close();
-    	}
-    }
+
+	public static void main(String[] args) {
+		Game game = new Game();
+		Scanner scanner = new Scanner(System.in);
+		try {
+			game.setup(scanner);
+		} finally {
+			scanner.close();
+		}
+	}
 }
