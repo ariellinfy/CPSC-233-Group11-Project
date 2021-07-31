@@ -1,3 +1,4 @@
+package model;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -7,7 +8,7 @@ import java.util.Random;
  * @author Fu-Yin Lin
  * 
  */
-public class Player {
+public abstract class Player {
 	private String playerName;
 	private Stone playerColor;
 	private int numOfMoves = 0;

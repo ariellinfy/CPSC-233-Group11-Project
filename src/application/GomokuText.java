@@ -1,4 +1,7 @@
+package application;
+
 import java.util.Scanner;
+import model.*;
 
 /**
  * This class is responsible for running the Gomoku application for the user,
@@ -7,7 +10,7 @@ import java.util.Scanner;
  * @author Fu-Yin Lin, Justin Chua
  *
  */
-public class Game {
+public class GomokuText {
 	private GameConfiguration config = new GameConfiguration();
 	private Player playerBlack;
 	private Player playerWhite;
@@ -160,7 +163,7 @@ public class Game {
 	}
 
 	public static void main(String[] args) {
-		Game game = new Game();
+		GomokuText game = new GomokuText();
 		Scanner scanner = new Scanner(System.in);
 		try {
 			game.setup(scanner);

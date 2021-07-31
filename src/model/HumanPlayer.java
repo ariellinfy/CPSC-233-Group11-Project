@@ -1,3 +1,5 @@
+package model;
+
 /**
  * A subclass of the Player class that contains additional variables/methods to
  * handle player scores and moves for human players.

@@ -1,3 +1,5 @@
+package model;
+
 /**
  * The class contains data needed for a single move in a game. Setter methods
  * are not provided in the class, since a Move object is not allowed to be
