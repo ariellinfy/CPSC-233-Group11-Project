@@ -1,3 +1,3 @@
 # Gomoku Game Class Diagram
 
-![Class Diagram](Gomoku Class Diagram.png)
+![Class Diagram](gomoku-class-diagram.png)
