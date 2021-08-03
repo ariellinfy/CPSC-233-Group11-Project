@@ -1,4 +1,5 @@
 package model;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -38,8 +39,23 @@ public class GameConfiguration {
 	 * 
 	 * @param move the Move object to be added to the board.
 	 */
-	public void update(Move move) {
+	public void updateBoard(Move move) {
 		chessBoard.setCoord(move.getRow(), move.getCol(), move.getStone());
+	}
+
+	public int calculateScore(Player winner, Player opponent) {
+		int numOfMoves = winner.getNumOfMoves();
+		int gamescore = (numOfMoves / 5) + 1;
+		int winnerScore = 20 - gamescore;
+		allocateScore(winner, winnerScore);
+		allocateScore(opponent, -winnerScore);
+		return winnerScore;
+	}
+
+	private void allocateScore(Player player, int score) {
+		if (player instanceof HumanPlayer) {
+			((HumanPlayer) player).addRanking(score);
+		}
 	}
 
 	/**
@@ -47,19 +63,16 @@ public class GameConfiguration {
 	 * 
 	 * @param coord a string representation of the targeting location of a move.
 	 * @param stone the stone color of current player that makes a move.
-	 * @return a Move object if the coord input passes all the validity checks, else
-	 *         return null.
+	 * @return a Move object if the coord input passes all the validity checks.
+	 * @throws InvalidPlacementException if any of the validity checks failed.
 	 */
-	public Move isValidMove(String coord, Stone stone) {
+	public Move isValidMove(String coord, Stone stone) throws InvalidPlacementException {
 		Map<Integer, Character> alphabetList = chessBoard.getAlphabetList();
-		Move move = null;
 		if (coord.length() < 2 || coord.length() > 3) {
-			System.out.println("Error: coord length should be within 2 to 3.\n");
-			return move;
+			throw new InvalidPlacementException("Error: coord length should be within 2 to 3.");
 		}
 		if (!alphabetList.containsValue(coord.charAt(0))) {
-			System.out.println("Error: horizontal coord is not within the board size.\n");
-			return move;
+			throw new InvalidPlacementException("Error: horizontal coord is not within the board size.");
 		}
 		// Casting first character in the coord string to integer.
 		int col = (int) (coord.charAt(0)) - 65;
@@ -67,20 +80,39 @@ public class GameConfiguration {
 		int row = -1;
 		try {
 			row = Integer.parseInt(coord.substring(1)) - 1;
-		} catch (Exception ex) {
-			System.out.println("Error: vertical coord should be numeric.\n");
-			return move;
+		} catch (NumberFormatException ex) {
+			throw new InvalidPlacementException("Error: vertical coord should be numeric.");
 		}
 		if (row >= chessBoard.getBoardSize() || row < 0) {
-			System.out.println("Error: vertical coord should be greater than 0 and within the board size.\n");
-			return move;
+			throw new InvalidPlacementException(
+					"Error: vertical coord should be greater than 0 and within the board size.");
 		}
 		if (chessBoard.getCoord(row, col) != Stone.EMPTY) {
-			System.out.println("Error: a stone is already in this coord, please choose another one.\n");
-			return move;
+			throw new InvalidPlacementException("Error: a stone is already in this coord, please choose another one.");
 		}
-		move = new Move(row, col, stone);
-		return move;
+		return new Move(row, col, stone);
+	}
+
+	/**
+	 * A method checks whether a move is valid or not.
+	 * 
+	 * @param row   the row index number of the board.
+	 * @param col   the column index number of the board.
+	 * @param stone the stone color of current player that makes a move.
+	 * @return a Move object if the coord indices pass all the validity checks.
+	 * @throws InvalidPlacementException if any of the validity checks failed.
+	 */
+	public Move isValidMove(int row, int col, Stone stone) throws InvalidPlacementException {
+		if (row < 0 || row >= chessBoard.getBoardSize()) {
+			throw new InvalidPlacementException("Error: row index exceeds the board size.");
+		}
+		if (col < 0 || col >= chessBoard.getBoardSize()) {
+			throw new InvalidPlacementException("Error: column index exceeds the board size.");
+		}
+		if (chessBoard.getCoord(row, col) != Stone.EMPTY) {
+			throw new InvalidPlacementException("Error: location is occupied with a stone already.");
+		}
+		return new Move(row, col, stone);
 	}
 
 	/**

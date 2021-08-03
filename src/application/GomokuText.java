@@ -15,6 +15,7 @@ public class GomokuText {
 	private Player playerBlack;
 	private Player playerWhite;
 	private boolean blackTurn = true;
+	private int winnerScore = 20;
 
 	public Player getPlayerBlack() {
 		return playerBlack;
@@ -82,9 +83,9 @@ public class GomokuText {
 			if (boardSize == 9 || boardSize == 13 || boardSize == 15 || boardSize == 19) {
 				this.config.setChessBoard(new Board(boardSize));
 			} else {
-				throw new Exception();
+				throw new NumberFormatException();
 			}
-		} catch (Exception ex) {
+		} catch (NumberFormatException ex) {
 			messageToUser("Invalid input, the board size was set to 15x15 by default.\n");
 			this.config.setChessBoard(new Board());
 		}
@@ -130,7 +131,7 @@ public class GomokuText {
 
 				if (move != null) {
 					validInput = true;
-					config.update(move);
+					config.updateBoard(move);
 					if (blackTurn) {
 						playerBlack.getAllValidMoves().add(move);
 						playerBlack.incrementMoveCount();
@@ -150,16 +151,26 @@ public class GomokuText {
 			if (roundResult == Result.CONTINUE) {
 				blackTurn = !blackTurn;
 			} else if (roundResult == Result.BLACK) {
+				this.winnerScore = config.calculateScore(playerBlack, playerWhite);
 				messageToUser("\nBlack wins!");
+				messageToUser("Game score is " + winnerScore);
 				endGame = true;
 			} else if (roundResult == Result.WHITE) {
+				this.winnerScore = config.calculateScore(playerWhite, playerBlack);
 				messageToUser("\nWhite wins!");
+				messageToUser("Game score is " + winnerScore);
 				endGame = true;
 			} else if (roundResult == Result.DRAW) {
+				setDrawScore();
 				messageToUser("\nIt's a draw!");
+				messageToUser("Game score is " + winnerScore);
 				endGame = true;
 			}
 		}
+	}
+	
+	private void setDrawScore() {
+		this.winnerScore = 0;
 	}
 
 	public static void main(String[] args) {

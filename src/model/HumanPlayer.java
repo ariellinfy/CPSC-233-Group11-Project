@@ -62,7 +62,33 @@ public class HumanPlayer extends Player {
 		 * isValidMove() method is called from currentConfig to validate the move made
 		 * by the player. If the move is not valid, a null Move object is returned.
 		 */
-		Move humanMove = currentConfig.isValidMove(coord, getPlayerColor());
+		Move humanMove = null;
+		try {
+			humanMove = currentConfig.isValidMove(coord, getPlayerColor());
+		} catch (InvalidPlacementException e) {
+			System.out.println(e.getMessage());
+		}
+		return humanMove;
+	}
+	
+	/**
+	 * Method that validates a move made by the player and returns it.
+	 * 
+	 * @param currentConfig a GameConfiguration object that contains the current
+	 *                      game board.
+	 * @param row         the row index number of the board.
+	 * @param col         the column index number of the board.
+	 * @return humanMove a Move object containing the coordinates and color of the
+	 *         stone.
+	 */
+	@Override
+	public Move getMove(GameConfiguration currentConfig, int row, int col) {
+		Move humanMove = null;
+		try {
+			humanMove = currentConfig.isValidMove(row, col, getPlayerColor());
+		} catch (InvalidPlacementException e) {
+//			System.out.println(e.getMessage());
+		}
 		return humanMove;
 	}
 

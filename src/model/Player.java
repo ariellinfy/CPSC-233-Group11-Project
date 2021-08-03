@@ -1,4 +1,5 @@
 package model;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -145,6 +146,20 @@ public abstract class Player {
 	 *         specified.
 	 */
 	public Move getMove(GameConfiguration currentConfig, String coord) {
+		return null;
+	}
+
+	/**
+	 * This method will be overridden by subclass. Overloading the previous getMove
+	 * method.
+	 * 
+	 * @param currentConfig current game configuration.
+	 * @param x             the row index number of the board.
+	 * @param y             the column index number of the board.
+	 * @return null when player type (ComputerPlayer or HumanPlayer) is not
+	 *         specified.
+	 */
+	public Move getMove(GameConfiguration currentConfig, int x, int y) {
 		return null;
 	}
 
