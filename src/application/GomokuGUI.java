@@ -64,10 +64,10 @@ public class GomokuGUI extends Application {
 			Parent gameView = loader.load();
 			primaryStage.setScene(new Scene(gameView));
 			primaryStage.show();
-//			OnGameController gameViewController = loader.getController();
-//			gameViewController.setBoardSize(config.getChessBoard().getBoardSize());
-//			gameViewController.linkWithApplication(this);
-//			primaryStage.sizeToScene();
+			OnGameController gameViewController = loader.getController();
+			gameViewController.setBoardSize(config.getChessBoard().getBoardSize());
+			gameViewController.linkWithApplication(this);
+			primaryStage.sizeToScene();
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
