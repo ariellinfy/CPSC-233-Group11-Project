@@ -115,23 +115,24 @@ public class OnGameController {
 	}
 	
 	private void firstMove() {
-		nextAIMove(app.getPlayerBlack());
+		nextAIMove(app.getPlayerBlack(), app.getPlayerWhite());
 	}
 	
-	private void nextAIMove(Player nextPlayer) {
+	private void nextAIMove(Player nextPlayer, Player currentPlayer) {
 		if (nextPlayer instanceof ComputerPlayer) {
 			Move move = nextPlayer.getMove(config);
 			nextPlayer.getAllValidMoves().add(move);
 			nextPlayer.incrementMoveCount();
-			placeMove(move, nextPlayer);
+			placeMove(move, nextPlayer, currentPlayer);
 		}
 	}
 
 	private void nextBlackMove(int x, int y, Player playerBlack) throws InvalidPlacementException {
 		Move blackMove = playerBlack.getMove(config, x, y);
+		Player opponent = app.getPlayerWhite();
 		if (blackMove != null) {
-			placeMove(blackMove, playerBlack);
-			nextAIMove(app.getPlayerWhite());
+			placeMove(blackMove, playerBlack, opponent);
+			nextAIMove(opponent, playerBlack);
 		} else {
 			throw new InvalidPlacementException("Invalid move, please try again");
 		}
@@ -139,22 +140,26 @@ public class OnGameController {
 
 	private void nextWhiteMove(int x, int y, Player playerWhite) throws InvalidPlacementException {
 		Move whiteMove = playerWhite.getMove(config, x, y);
+		Player opponent = app.getPlayerBlack();
 		if (whiteMove != null) {
-			placeMove(whiteMove, playerWhite);
-			nextAIMove(app.getPlayerBlack());
+			placeMove(whiteMove, playerWhite, opponent);
+			nextAIMove(opponent, playerWhite);
 		} else {
 			throw new InvalidPlacementException("Invalid move, please try again");
 		}
 	}
 	
-	private void placeMove(Move move, Player currentPlayer) {
+	private void placeMove(Move move, Player currentPlayer, Player opponent) {
 		currentPlayer.getAllValidMoves().add(move);
 		currentPlayer.incrementMoveCount();
 		config.updateBoard(move);
 		drawStone(move);
 		Result roundResult = config.checkWinningLine(move);
-		if (roundResult == Result.CONTINUE) {
+		Result checkNumOfMoves = config.isBoardFull(currentPlayer, opponent);
+		if (roundResult == Result.CONTINUE && checkNumOfMoves == Result.CONTINUE) {
 			blackTurn = !blackTurn;
+		} else if (checkNumOfMoves == Result.DRAW) {
+			app.gameOver(checkNumOfMoves);
 		} else {
 			app.gameOver(roundResult);
 		}
