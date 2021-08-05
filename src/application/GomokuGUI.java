@@ -16,7 +16,7 @@ import model.*;
  * application for the user.
  * 
  * 
- * @author
+ * @author Fu-Yin Lin, Justin Chua
  *
  */
 public class GomokuGUI extends Application {
