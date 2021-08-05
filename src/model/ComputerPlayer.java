@@ -14,8 +14,6 @@ import java.util.Random;
 public class ComputerPlayer extends Player {
 	private static final HashMap<Level, Integer> levelMap = new HashMap<Level, Integer>();
 	private Level difficultyLevel = Level.MEDIUM;
-	private Stone[][] board;
-	private int boardSize = 15;
 
 	/**
 	 * Constructor with only difficulty level defined. Set the computer player
@@ -75,8 +73,7 @@ public class ComputerPlayer extends Player {
 	 * methods to generate a list of possible moves ranked in descending order and
 	 * randomly picks a move from the list.
 	 * 
-	 * @param currentConfig current game configuration used to access current board
-	 *                      data.
+	 * @param currentConfig current game configuration used to access current board data.
 	 * @return the computer player's next move in the current game.
 	 */
 	@Override
@@ -122,7 +119,7 @@ public class ComputerPlayer extends Player {
 		 * difficulty.
 		 */
 		for (int counter = 0; counter < levelMap.get(difficultyLevel); counter++) {
-			int[] moveCoord = getHighestMoveCoord(moveList);
+			int[] moveCoord = getHighestMoveCoord(moveList, board, boardSize);
 			moveList.add(moveCoord);
 		}
 		return moveList;
@@ -131,10 +128,12 @@ public class ComputerPlayer extends Player {
 	/**
 	 * Get the highest score coord in the current score table.
 	 * 
-	 * @param moveList current list of possible moves.
+	 * @param moveList  current list of possible moves.
+	 * @param board     current board of the game.
+	 * @param boardSize the size of the board.
 	 * @return the current highest score coord data in the score table.
 	 */
-	private int[] getHighestMoveCoord(ArrayList<int[]> moveList) {
+	private int[] getHighestMoveCoord(ArrayList<int[]> moveList, Stone[][] board, int boardSize) {
 		int[][] scoreTable = calculateScores(board, boardSize);
 		/*
 		 * Set all the coords in the moveList to be -1, so next loop won't repeat the
@@ -171,10 +170,12 @@ public class ComputerPlayer extends Player {
 	 * center of the board. The array size is the same size as the board of the
 	 * game.
 	 * 
+	 * @param board     current board of the game.
+	 * @param boardSize the size of the board.
 	 * @return a score table with initial score based on each coord's position with
 	 *         respective to the board border.
 	 */
-	private int[][] initScoreTable() {
+	private int[][] initScoreTable(Stone[][] board, int boardSize) {
 		int[][] scoreTable = new int[boardSize][boardSize];
 		for (int i = 0; i < boardSize; i++) {
 			for (int j = 0; j < boardSize; j++) {
@@ -220,7 +221,7 @@ public class ComputerPlayer extends Player {
 	 */
 	public int[][] calculateScores(Stone[][] board, int boardSize) {
 		// Initialize a 2D array with more scores towards center.
-		int[][] score = initScoreTable();
+		int[][] score = initScoreTable(board, boardSize);
 
 		int numOfBlack = 0; // number of black in a tuple
 		int numOfWhite = 0; // number of white in a tuple
@@ -231,10 +232,8 @@ public class ComputerPlayer extends Player {
 			for (int j = 0; j < boardSize - 4; j++) {
 				int k = j;
 				while (k < j + 5) {
-					if (board[i][k] == Stone.BLACK)
-						numOfBlack++;
-					else if (board[i][k] == Stone.WHITE)
-						numOfWhite++;
+					if (board[i][k] == Stone.BLACK) numOfBlack++;
+					else if (board[i][k] == Stone.WHITE) numOfWhite++;
 					k++;
 				}
 				tempScore = tupleScore(numOfBlack, numOfWhite);
@@ -253,10 +252,8 @@ public class ComputerPlayer extends Player {
 			for (int j = 0; j < boardSize - 4; j++) {
 				int k = j;
 				while (k < j + 5) {
-					if (board[k][i] == Stone.BLACK)
-						numOfBlack++;
-					else if (board[k][i] == Stone.WHITE)
-						numOfWhite++;
+					if (board[k][i] == Stone.BLACK) numOfBlack++;
+					else if (board[k][i] == Stone.WHITE) numOfWhite++;
 					k++;
 				}
 				tempScore = tupleScore(numOfBlack, numOfWhite);
@@ -272,10 +269,8 @@ public class ComputerPlayer extends Player {
 				int m = k;
 				int n = j;
 				while (m < k + 5) {
-					if (board[m][n] == Stone.BLACK)
-						numOfBlack++;
-					else if (board[m][n] == Stone.WHITE)
-						numOfWhite++;
+					if (board[m][n] == Stone.BLACK) numOfBlack++;
+					else if (board[m][n] == Stone.WHITE) numOfWhite++;
 					m++;
 					n++;
 				}
@@ -296,10 +291,8 @@ public class ComputerPlayer extends Player {
 				int m = k;
 				int n = j;
 				while (m > k - 5) {
-					if (board[m][n] == Stone.BLACK)
-						numOfBlack++;
-					else if (board[m][n] == Stone.WHITE)
-						numOfWhite++;
+					if (board[m][n] == Stone.BLACK) numOfBlack++;
+					else if (board[m][n] == Stone.WHITE) numOfWhite++;
 					m--;
 					n--;
 				}
@@ -320,10 +313,8 @@ public class ComputerPlayer extends Player {
 				int m = k;
 				int n = j;
 				while (m > k - 5) {
-					if (board[m][n] == Stone.BLACK)
-						numOfBlack++;
-					else if (board[m][n] == Stone.WHITE)
-						numOfWhite++;
+					if (board[m][n] == Stone.BLACK) numOfBlack++;
+					else if (board[m][n] == Stone.WHITE) numOfWhite++;
 					m--;
 					n++;
 				}
@@ -345,10 +336,8 @@ public class ComputerPlayer extends Player {
 				int m = k;
 				int n = j;
 				while (m < k + 5) {
-					if (board[m][n] == Stone.BLACK)
-						numOfBlack++;
-					else if (board[m][n] == Stone.WHITE)
-						numOfWhite++;
+					if (board[m][n] == Stone.BLACK) numOfBlack++;
+					else if (board[m][n] == Stone.WHITE) numOfWhite++;
 					m++;
 					n--;
 				}
