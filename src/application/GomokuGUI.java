@@ -98,20 +98,20 @@ public class GomokuGUI extends Application {
 			primaryStage.setScene(new Scene(startMenu));
 			primaryStage.show();
 			/*
-			 *  StartMenuController is linked with the StartMenu scene using the
-			 *  linkWithApplication() method. 
-			 */ 
+			 * StartMenuController is linked with the StartMenu scene using the
+			 * linkWithApplication() method.
+			 */
 			StartMenuController startMenuController = loader.getController();
 			startMenuController.linkWithApplication(this);
 			/*
-			 *  sizeToScene() is used to match the size of the window with the contents (i.e.
-			 *  widgets) of the window.
+			 * sizeToScene() is used to match the size of the window with the contents (i.e.
+			 * widgets) of the window.
 			 */
 			primaryStage.sizeToScene();
-		/*
-		 *  FileNotFoundException and IOException is handled in these catch blocks by
-		 *  printing an error message in the terminal.
-		 */
+			/*
+			 * FileNotFoundException and IOException is handled in these catch blocks by
+			 * printing an error message in the terminal.
+			 */
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
@@ -129,7 +129,10 @@ public class GomokuGUI extends Application {
 			primaryStage.setScene(new Scene(gameView));
 			primaryStage.show();
 			OnGameController gameViewController = loader.getController();
-			// The board size in gameViewController is set using a series of getter methods.
+			/*
+			 * The board size in OnGameController is set using current data of the config
+			 * object.
+			 */
 			gameViewController.setBoardSize(config.getChessBoard().getBoardSize());
 			gameViewController.linkWithApplication(this);
 			primaryStage.sizeToScene();
@@ -141,49 +144,72 @@ public class GomokuGUI extends Application {
 	}
 
 	/**
-	 * Method that is used to update the winner's score at the end of the match
-	 * dependent on which player won.
+	 * Check the board spots availability.
 	 * 
-	 * @param result an enum constant
+	 * @return enum Continue if sum of two players' moves do not exceed total
+	 *         available spots in the board, else return enum Draw to end the game.
+	 */
+	Result isBoardFull() {
+		int boardSize = config.getChessBoard().getBoardSize();
+		int totalAvailableMoves = boardSize * boardSize;
+		if (playerBlack.getNumOfMoves() + playerWhite.getNumOfMoves() < totalAvailableMoves) {
+			return Result.CONTINUE;
+		} else {
+			return Result.DRAW;
+		}
+	}
+
+	/**
+	 * Method that is used to update the winner's score at the end of the match
+	 * dependent on which player won, and show the resulting window to user.
+	 * 
+	 * @param the result of the game.
 	 */
 	void gameOver(Result result) {
 		/*
-		 *  Series of if conditions checks if black has won, white has won, or a draw has
-		 *  occurred and updates "winnerScore" accordingly using calculateScore() method.
+		 * Series of if conditions checks if black has won, white has won, or a draw has
+		 * occurred and updates "winnerScore" accordingly using calculateScore() method.
 		 */
 		if (result == Result.BLACK) {
 			this.winnerScore = config.calculateScore(playerBlack, playerWhite);
-
 		} else if (result == Result.WHITE) {
 			this.winnerScore = config.calculateScore(playerWhite, playerBlack);
-
 		} else if (result == Result.DRAW) {
 			this.winnerScore = 0;
 		}
 		/*
-		 *  At the end of this method, displayResult() is invoked to load the game
-		 *  overview window at the end of the game.
+		 * At the end of this method, displayResult() is invoked to load the game
+		 * overview window at the end of the game.
 		 */
 		displayResult(result);
 	}
 
+	/**
+	 * Initializes and loads another stage to display game results and ask user to
+	 * end the application or start a new game.
+	 * 
+	 * @param result the enum result of the current game.
+	 */
 	private void displayResult(Result result) {
-		final Stage resultMessage = new Stage();
+		final Stage gameOverview = new Stage();
 		/*
-		 *  initModality() is invoked on resultMessage to prevent events such as user
-		 *  clicks from occurring on the game board while the game overview window is
-		 *  displayed.
+		 * initModality() is invoked on gameOverview stage to prevent events such as
+		 * user clicks from occurring on the primary stage (ie. game board) while the
+		 * game overview window is displayed. Set gameOverview stage to be a child of
+		 * primary stage, so that user won't be able to close the primary stage without
+		 * first interact (eg. closing) with the child.
 		 */
-		resultMessage.initModality(Modality.APPLICATION_MODAL);
-		resultMessage.initOwner(primaryStage);
+		gameOverview.initModality(Modality.APPLICATION_MODAL);
+		gameOverview.initOwner(primaryStage);
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/GameOverView.fxml"));
 			Parent gameView = loader.load();
-			resultMessage.setScene(new Scene(gameView));
-			resultMessage.show();
+			gameOverview.setScene(new Scene(gameView));
+			gameOverview.show();
 			GameOverController gameOverController = loader.getController();
+			// Pass the result of the game to the controller.
 			gameOverController.linkWithApplication(this, result);
-			resultMessage.sizeToScene();
+			gameOverview.sizeToScene();
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
