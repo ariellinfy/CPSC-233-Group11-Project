@@ -144,22 +144,6 @@ public class GomokuGUI extends Application {
 	}
 
 	/**
-	 * Check the board spots availability.
-	 * 
-	 * @return enum Continue if sum of two players' moves do not exceed total
-	 *         available spots in the board, else return enum Draw to end the game.
-	 */
-	Result isBoardFull() {
-		int boardSize = config.getChessBoard().getBoardSize();
-		int totalAvailableMoves = boardSize * boardSize;
-		if (playerBlack.getNumOfMoves() + playerWhite.getNumOfMoves() < totalAvailableMoves) {
-			return Result.CONTINUE;
-		} else {
-			return Result.DRAW;
-		}
-	}
-
-	/**
 	 * Method that is used to update the winner's score at the end of the match
 	 * dependent on which player won, and show the resulting window to user.
 	 * 

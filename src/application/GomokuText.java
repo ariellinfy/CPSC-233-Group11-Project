@@ -280,7 +280,7 @@ public class GomokuText {
 	private boolean checkRoundResult(Move latestMove) {
 		boolean gameOver = false;
 		Result roundResult = config.checkWinningLine(latestMove);
-		Result checkNumOfMoves = isBoardFull();
+		Result checkNumOfMoves = config.isBoardFull(playerBlack, playerWhite);
 		if (roundResult == Result.CONTINUE && checkNumOfMoves == Result.CONTINUE) {
 			blackTurn = !blackTurn;
 		} else if (checkNumOfMoves == Result.DRAW) {
@@ -305,22 +305,6 @@ public class GomokuText {
 			gameOver = true;
 		}
 		return gameOver;
-	}
-
-	/**
-	 * Check the board spots availability.
-	 * 
-	 * @return enum Continue if sum of two players' moves do not exceed total
-	 *         available spots in the board, else return enum Draw to end the game.
-	 */
-	private Result isBoardFull() {
-		int boardSize = config.getChessBoard().getBoardSize();
-		int totalAvailableMoves = boardSize * boardSize;
-		if (playerBlack.getNumOfMoves() + playerWhite.getNumOfMoves() < totalAvailableMoves) {
-			return Result.CONTINUE;
-		} else {
-			return Result.DRAW;
-		}
 	}
 
 	/**

@@ -128,6 +128,23 @@ public class GameConfiguration {
 		}
 		return new Move(row, col, stone);
 	}
+	
+	/**
+	 * Check the board spots availability.
+	 * @param player1 one the two players in the game.
+	 * @param player2 the other player in the game.
+	 * @return enum Continue if sum of two players' moves do not exceed total
+	 *         available spots in the board, else return enum Draw to end the game.
+	 */
+	public Result isBoardFull(Player player1, Player player2) {
+		int boardSize = chessBoard.getBoardSize();
+		int totalAvailableMoves = boardSize * boardSize;
+		if (player1.getNumOfMoves() + player2.getNumOfMoves() < totalAvailableMoves) {
+			return Result.CONTINUE;
+		} else {
+			return Result.DRAW;
+		}
+	}
 
 	/**
 	 * A method determines the status of the game after each move. It creates an
