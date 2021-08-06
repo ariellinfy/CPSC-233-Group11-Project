@@ -112,8 +112,8 @@ public class GomokuText {
 			opponent.setPlayerColor(Stone.BLACK);
 			this.playerBlack = opponent;
 			/*
-			 *  If an invalid input is entered (i.e. not white or black), the color of the
-			 *  first player is set to black by default.
+			 * If an invalid input is entered (i.e. not white or black), the color of the
+			 * first player is set to black by default.
 			 */
 		} else {
 			messageToUser("Invalid input, your color is set to black.\n");
@@ -137,8 +137,8 @@ public class GomokuText {
 				throw new NumberFormatException();
 			}
 			/*
-			 *  If an invalid board size is entered, a NumberFormatException is thrown and
-			 *  board size is set to 15 by default.
+			 * If an invalid board size is entered, a NumberFormatException is thrown and
+			 * board size is set to 15 by default.
 			 */
 		} catch (NumberFormatException ex) {
 			messageToUser("Invalid input, the board size was set to 15x15 by default.\n");
@@ -169,21 +169,20 @@ public class GomokuText {
 	 */
 	public void play(Scanner scanner) {
 		Board chessboard = config.getChessBoard();
-		boolean endGame = false;
+		boolean gameOver = false;
 		if (playerBlack instanceof ComputerPlayer == false) {
 			chessboard.printBoard();
 		}
 		/*
-		 *  This while loop allows the user to be continuously prompted for making moves
-		 *  on the game board until a win is detected.
+		 * This while loop allows the user to be continuously prompted for making moves
+		 * on the game board until a win is detected.
 		 */
-		while (!endGame) {
+		while (!gameOver) {
 			Move move = null;
 			boolean validInput = false;
-
 			/*
-			 *  This while loop allows the user to be continuously prompted for a move until
-			 *  a valid move is entered.
+			 * This while loop allows the user to be continuously prompted for a move until
+			 * a valid move is entered.
 			 */
 			while (!validInput) {
 				if (blackTurn) {
@@ -200,7 +199,6 @@ public class GomokuText {
 						 * ComputerPlayer was selected, no message is printed and instead the computer
 						 * just makes it's own move accordingly.
 						 */
-
 						String coord = promptUser(scanner, "Black's turn, please enter a valid coord (eg. A2) ")
 								.toUpperCase();
 						move = playerBlack.getMove(config, coord);
@@ -214,72 +212,99 @@ public class GomokuText {
 						move = playerWhite.getMove(config, coord);
 					}
 				}
-
-				/*
-				 * If conditional checks to see if a valid move was made by the user (i.e.
-				 * getMove() returns null if the move is not valid).
-				 */
-				if (move != null) {
-					/*
-					 * The board is updated with the new move, and added to the corresponding
-					 * player's "validMoveList" ArrayList (instance variable) using the add() method
-					 * on getAllValidMoves(). Additionally, the "numOfMoves" integer (instance
-					 * variable) is incremented.
-					 */
-					validInput = true;
-					config.updateBoard(move);
-					if (blackTurn) {
-						playerBlack.getAllValidMoves().add(move);
-						playerBlack.incrementMoveCount();
-					} else {
-						playerWhite.getAllValidMoves().add(move);
-						playerWhite.incrementMoveCount();
-					}
-					/*
-					 * If null is returned from getMove(), the move is considered invalid therefore
-					 * validInput is set to false. This means that this method will return to the
-					 * top of the while (!validInput) loop, allowing the user to be re-prompted
-					 * until a valid move is made.
-					 */
-
-				} else {
-					validInput = false;
-				}
+				// Check if the move is valid or not and update the game accordingly.
+				validInput = checkValidMove(move);
 			}
 
 			/*
-			 *  After a new stone has been placed, the game board is re-printed in the
-			 *  terminal with the updated stone placements.
+			 * After a new stone has been placed, the game board is re-printed in the
+			 * terminal with the updated stone placements.
 			 */
 			messageToUser("");
 			chessboard.printBoard();
-			/*
-			 * At the end of each while loop execution, a winning line (of 5 stones) is
-			 * checked using checkWinningLine(). If there is no winning line, the game
-			 * continues and it becomes the other player's turn. If there is a winning
-			 * line/draw, a series of messages are printed displaying which player won, and
-			 * the corresponding game score. Afterwards, the game is ended.
-			 */
-			Result roundResult = config.checkWinningLine(move);
-			if (roundResult == Result.CONTINUE) {
-				blackTurn = !blackTurn;
-			} else if (roundResult == Result.BLACK) {
-				this.winnerScore = config.calculateScore(playerBlack, playerWhite);
-				messageToUser("\nBlack wins!");
-				messageToUser("Game score is " + winnerScore);
-				endGame = true;
-			} else if (roundResult == Result.WHITE) {
-				this.winnerScore = config.calculateScore(playerWhite, playerBlack);
-				messageToUser("\nWhite wins!");
-				messageToUser("Game score is " + winnerScore);
-				endGame = true;
-			} else if (roundResult == Result.DRAW) {
-				setDrawScore();
-				messageToUser("\nIt's a draw!");
-				messageToUser("Game score is " + winnerScore);
-				endGame = true;
-			}
+			// Check if the game is over or not.
+			gameOver = checkRoundResult(move);
 		}
+	}
+
+	/**
+	 * Checks to see if a valid move was made by the user (i.e. getMove() returns
+	 * null if the move is not valid). If the latest move is valid, then update the
+	 * board and corresponding player's move data.
+	 * 
+	 * @param latestMove the most recent move.
+	 * @return whether the latestMove is a valid move or not.
+	 */
+	private boolean checkValidMove(Move latestMove) {
+		boolean validInput = false;
+		if (latestMove != null) {
+			/*
+			 * The board is updated with the new move, and added to the corresponding
+			 * player's "validMoveList" ArrayList (instance variable) using the add() method
+			 * on getAllValidMoves(). Additionally, the "numOfMoves" integer (instance
+			 * variable) is incremented.
+			 */
+			validInput = true;
+			config.updateBoard(latestMove);
+			if (blackTurn) {
+				playerBlack.getAllValidMoves().add(latestMove);
+				playerBlack.incrementMoveCount();
+			} else {
+				playerWhite.getAllValidMoves().add(latestMove);
+				playerWhite.incrementMoveCount();
+			}
+		} else {
+			/*
+			 * If null is returned from getMove(), the move is considered invalid therefore
+			 * validInput is set to false. This means that this method will return to the
+			 * top of the while (!validInput) loop, allowing the user to be re-prompted
+			 * until a valid move is made.
+			 */
+			validInput = false;
+		}
+		return validInput;
+	}
+
+	/**
+	 * At the end of each while loop execution, we check on if the game has a a
+	 * winning line (of 5 stones) and if the board has empty spot available. If
+	 * there is no winning line and spots are available on the board, the game
+	 * continues and it becomes the other player's turn. If there is a winning
+	 * line/draw or if the board is full of color stones, a series of messages are
+	 * printed displaying which player won, and the corresponding game score.
+	 * Afterwards, the game is ended.
+	 * 
+	 * @param latestMove the most recent move.
+	 * @return whether the game has reached the end or not.
+	 */
+	private boolean checkRoundResult(Move latestMove) {
+		boolean gameOver = false;
+		Result roundResult = config.checkWinningLine(latestMove);
+		Result checkNumOfMoves = config.isBoardFull(playerBlack, playerWhite);
+		if (roundResult == Result.CONTINUE && checkNumOfMoves == Result.CONTINUE) {
+			blackTurn = !blackTurn;
+		} else if (checkNumOfMoves == Result.DRAW) {
+			setDrawScore();
+			messageToUser("\nIt's a draw!");
+			messageToUser("Game score is " + winnerScore);
+			gameOver = true;
+		} else if (roundResult == Result.BLACK) {
+			this.winnerScore = config.calculateScore(playerBlack, playerWhite);
+			messageToUser("\nBlack wins!");
+			messageToUser("Game score is " + winnerScore);
+			gameOver = true;
+		} else if (roundResult == Result.WHITE) {
+			this.winnerScore = config.calculateScore(playerWhite, playerBlack);
+			messageToUser("\nWhite wins!");
+			messageToUser("Game score is " + winnerScore);
+			gameOver = true;
+		} else if (roundResult == Result.DRAW) {
+			setDrawScore();
+			messageToUser("\nIt's a draw!");
+			messageToUser("Game score is " + winnerScore);
+			gameOver = true;
+		}
+		return gameOver;
 	}
 
 	/**

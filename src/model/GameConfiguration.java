@@ -43,6 +43,14 @@ public class GameConfiguration {
 		chessBoard.setCoord(move.getRow(), move.getCol(), move.getStone());
 	}
 
+	/**
+	 * Calculate game score based on winner number of moves, also update each human
+	 * player with game ending score accordingly.
+	 * 
+	 * @param winner   the winner player.
+	 * @param opponent the loser player.
+	 * @return the winner score of the game.
+	 */
 	public int calculateScore(Player winner, Player opponent) {
 		int numOfMoves = winner.getNumOfMoves();
 		int gamescore = (numOfMoves / 5) + 1;
@@ -52,6 +60,12 @@ public class GameConfiguration {
 		return winnerScore;
 	}
 
+	/**
+	 * Update ranking if the player is a human player.
+	 * 
+	 * @param player the player to be updated.
+	 * @param score  the score to be added to player's ranking.
+	 */
 	private void allocateScore(Player player, int score) {
 		if (player instanceof HumanPlayer) {
 			((HumanPlayer) player).addRanking(score);
@@ -113,6 +127,24 @@ public class GameConfiguration {
 			throw new InvalidPlacementException("Error: location is occupied with a stone already.");
 		}
 		return new Move(row, col, stone);
+	}
+
+	/**
+	 * Check the board spots availability.
+	 * 
+	 * @param player1 one the two players in the game.
+	 * @param player2 the other player in the game.
+	 * @return enum Continue if sum of two players' moves do not exceed total
+	 *         available spots in the board, else return enum Draw to end the game.
+	 */
+	public Result isBoardFull(Player player1, Player player2) {
+		int boardSize = chessBoard.getBoardSize();
+		int totalAvailableMoves = boardSize * boardSize;
+		if (player1.getNumOfMoves() + player2.getNumOfMoves() < totalAvailableMoves) {
+			return Result.CONTINUE;
+		} else {
+			return Result.DRAW;
+		}
 	}
 
 	/**

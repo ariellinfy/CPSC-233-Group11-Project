@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * A generic parent class for HumanPlayer and ComputerPlayer classes.
+ * An abstract parent class for HumanPlayer and ComputerPlayer classes.
  * 
  * @author Fu-Yin Lin
  * 
@@ -154,12 +154,12 @@ public abstract class Player {
 	 * method.
 	 * 
 	 * @param currentConfig current game configuration.
-	 * @param x             the row index number of the board.
-	 * @param y             the column index number of the board.
+	 * @param row           the row index number of the board.
+	 * @param col           the column index number of the board.
 	 * @return null when player type (ComputerPlayer or HumanPlayer) is not
 	 *         specified.
 	 */
-	public Move getMove(GameConfiguration currentConfig, int x, int y) {
+	public Move getMove(GameConfiguration currentConfig, int row, int col) {
 		return null;
 	}
 

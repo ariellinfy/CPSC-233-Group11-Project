@@ -1,4 +1,5 @@
 package model;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -72,7 +73,8 @@ public class ComputerPlayer extends Player {
 	 * methods to generate a list of possible moves ranked in descending order and
 	 * randomly picks a move from the list.
 	 * 
-	 * @param currentConfig current game configuration used to access current board data.
+	 * @param currentConfig current game configuration used to access current board
+	 *                      data.
 	 * @return the computer player's next move in the current game.
 	 */
 	@Override
@@ -112,41 +114,267 @@ public class ComputerPlayer extends Player {
 	 * @return an arrayList with a number of array items of possible moves.
 	 */
 	private ArrayList<int[]> generateMoveList(Stone[][] board, int boardSize) {
-		int[][] scoreTable = calculateScores(board, boardSize);
 		ArrayList<int[]> moveList = new ArrayList<int[]>();
 		/*
 		 * Number of times the for loop will run is determined by the level of
 		 * difficulty.
 		 */
 		for (int counter = 0; counter < levelMap.get(difficultyLevel); counter++) {
-			int maxScore = 0;
-			int goalRow = -1;
-			int goalCol = -1;
-			/*
-			 * Loop through all the scores in the score table and get the empty coordinate
-			 * with the highest score in the board.
-			 */
-			for (int i = 0; i < boardSize; i++) {
-				for (int j = 0; j < boardSize; j++) {
-					if (board[i][j] == Stone.EMPTY && scoreTable[i][j] > maxScore) {
-						maxScore = scoreTable[i][j];
-						goalRow = i;
-						goalCol = j;
-					}
-				}
-			}
-			// Put row and column indices in an array and add it to the move list.
-			int[] moveCoord = new int[2];
-			moveCoord[0] = goalRow;
-			moveCoord[1] = goalCol;
+			int[] moveCoord = getHighestMoveCoord(moveList, board, boardSize);
 			moveList.add(moveCoord);
-			/*
-			 * Set the current highest score to be -1, so next loop won't repeat the same
-			 * index position.
-			 */
-			scoreTable[goalRow][goalCol] = -1;
 		}
 		return moveList;
+	}
+
+	/**
+	 * Get the highest score coord in the current score table.
+	 * 
+	 * @param moveList  current list of possible moves.
+	 * @param board     current board of the game.
+	 * @param boardSize the size of the board.
+	 * @return the current highest score coord data in the score table.
+	 */
+	private int[] getHighestMoveCoord(ArrayList<int[]> moveList, Stone[][] board, int boardSize) {
+		int[][] scoreTable = calculateScores(board, boardSize);
+		/*
+		 * Set all the coords in the moveList to be -1, so next loop won't repeat the
+		 * same index positions.
+		 */
+		for (int[] move : moveList) {
+			scoreTable[move[0]][move[1]] = -1;
+		}
+		int maxScore = 0;
+		int goalRow = -1;
+		int goalCol = -1;
+		/*
+		 * Loop through all the scores in the score table and get the empty coordinate
+		 * with the highest score in the board.
+		 */
+		for (int i = 0; i < boardSize; i++) {
+			for (int j = 0; j < boardSize; j++) {
+				if (board[i][j] == Stone.EMPTY && scoreTable[i][j] > maxScore) {
+					maxScore = scoreTable[i][j];
+					goalRow = i;
+					goalCol = j;
+				}
+			}
+		}
+		// Put row and column indices in an array and add it to the move list.
+		int[] moveCoord = new int[2];
+		moveCoord[0] = goalRow;
+		moveCoord[1] = goalCol;
+		return moveCoord;
+	}
+
+	/**
+	 * Initiate a 2D array with initial score, higher score is given toward the
+	 * center of the board. The array size is the same size as the board of the
+	 * game.
+	 * 
+	 * @param board     current board of the game.
+	 * @param boardSize the size of the board.
+	 * @return a score table with initial score based on each coord's position with
+	 *         respective to the board border.
+	 */
+	private int[][] initScoreTable(Stone[][] board, int boardSize) {
+		int[][] scoreTable = new int[boardSize][boardSize];
+		for (int i = 0; i < boardSize; i++) {
+			for (int j = 0; j < boardSize; j++) {
+				int mid = boardSize / 2;
+				int min = 0;
+				int maxIdx = boardSize - 1;
+				if (i <= mid && j <= mid) {
+					min = i < j ? i : j;
+				} else if (i > mid && j <= mid) {
+					min = maxIdx - i < j ? maxIdx - i : j;
+				} else if (i <= mid && j > mid) {
+					min = i < maxIdx - j ? i : maxIdx - j;
+				} else {
+					min = maxIdx - i < maxIdx - j ? maxIdx - i : maxIdx - j;
+				}
+				scoreTable[i][j] = min;
+			}
+		}
+		return scoreTable;
+	}
+
+	/**
+	 * Helper method to count stones in left to right direction and update score
+	 * table accordingly.
+	 * 
+	 * @param i     counter for outer loop.
+	 * @param j     counter for inner loop.
+	 * @param score current score table.
+	 * @param board current board of the game.
+	 */
+	private void countLeftRightStones(int i, int j, int[][] score, Stone[][] board) {
+		int numOfBlack = 0; // number of black in a tuple
+		int numOfWhite = 0; // number of white in a tuple
+		int tempScore = 0; // temp score for a tuple
+		int k = j;
+		while (k < j + 5) {
+			if (board[i][k] == Stone.BLACK)
+				numOfBlack++;
+			else if (board[i][k] == Stone.WHITE)
+				numOfWhite++;
+			k++;
+		}
+		tempScore = tupleScore(numOfBlack, numOfWhite);
+		// Add the score to each of the five coordinates in the tuple
+		for (k = j; k < j + 5; k++) {
+			score[i][k] += tempScore;
+		}
+	}
+
+	/**
+	 * Helper method to count stones in top to bottom direction and update score
+	 * table accordingly.
+	 * 
+	 * @param i     counter for outer loop.
+	 * @param j     counter for inner loop.
+	 * @param score current score table.
+	 * @param board current board of the game.
+	 */
+	private void countTopBottomStones(int i, int j, int[][] score, Stone[][] board) {
+		int numOfBlack = 0; // number of black in a tuple
+		int numOfWhite = 0; // number of white in a tuple
+		int tempScore = 0; // temp score for a tuple
+		int k = j;
+		while (k < j + 5) {
+			if (board[k][i] == Stone.BLACK)
+				numOfBlack++;
+			else if (board[k][i] == Stone.WHITE)
+				numOfWhite++;
+			k++;
+		}
+		tempScore = tupleScore(numOfBlack, numOfWhite);
+		for (k = j; k < j + 5; k++) {
+			score[k][i] += tempScore;
+		}
+	}
+
+	/**
+	 * Helper method to count stones in top left to bottom right direction to cover
+	 * bottom left triangle of the board and update score table accordingly.
+	 * 
+	 * @param k     counter for outer loop.
+	 * @param j     counter for inner loop.
+	 * @param score current score table.
+	 * @param board current board of the game.
+	 */
+	private void countTLBRStones(int k, int j, int[][] score, Stone[][] board) {
+		int numOfBlack = 0; // number of black in a tuple
+		int numOfWhite = 0; // number of white in a tuple
+		int tempScore = 0; // temp score for a tuple
+		int m = k;
+		int n = j;
+		while (m < k + 5) {
+			if (board[m][n] == Stone.BLACK)
+				numOfBlack++;
+			else if (board[m][n] == Stone.WHITE)
+				numOfWhite++;
+			m++;
+			n++;
+		}
+		if (m == k + 5) {
+			tempScore = tupleScore(numOfBlack, numOfWhite);
+			for (m = k, n = j; m < k + 5; m++, n++) {
+				score[m][n] += tempScore;
+			}
+		}
+	}
+
+	/**
+	 * Helper method to count stones in bottom right to top left direction to cover
+	 * top right triangle of the board and update score table accordingly.
+	 * 
+	 * @param k     counter for outer loop.
+	 * @param j     counter for inner loop.
+	 * @param score current score table.
+	 * @param board current board of the game.
+	 */
+	private void countTLBRStonesReversed(int k, int j, int[][] score, Stone[][] board) {
+		int numOfBlack = 0; // number of black in a tuple
+		int numOfWhite = 0; // number of white in a tuple
+		int tempScore = 0; // temp score for a tuple
+		int m = k;
+		int n = j;
+		while (m > k - 5) {
+			if (board[m][n] == Stone.BLACK)
+				numOfBlack++;
+			else if (board[m][n] == Stone.WHITE)
+				numOfWhite++;
+			m--;
+			n--;
+		}
+		if (m == k - 5) {
+			tempScore = tupleScore(numOfBlack, numOfWhite);
+			for (m = k, n = j; m > k - 5; m--, n--) {
+				score[m][n] += tempScore;
+			}
+		}
+	}
+
+	/**
+	 * Helper method to count stones in bottom left to top right direction to cover
+	 * top left triangle of the board and update score table accordingly.
+	 * 
+	 * @param k     counter for outer loop.
+	 * @param j     counter for inner loop.
+	 * @param score current score table.
+	 * @param board current board of the game.
+	 */
+	private void countBLTRStones(int k, int j, int[][] score, Stone[][] board) {
+		int numOfBlack = 0; // number of black in a tuple
+		int numOfWhite = 0; // number of white in a tuple
+		int tempScore = 0; // temp score for a tuple
+		int m = k;
+		int n = j;
+		while (m > k - 5) {
+			if (board[m][n] == Stone.BLACK)
+				numOfBlack++;
+			else if (board[m][n] == Stone.WHITE)
+				numOfWhite++;
+			m--;
+			n++;
+		}
+		if (m == k - 5) {
+			tempScore = tupleScore(numOfBlack, numOfWhite);
+			for (m = k, n = j; m > k - 5; m--, n++) {
+				score[m][n] += tempScore;
+			}
+		}
+	}
+
+	/**
+	 * Helper method to count stones in Top right to bottom left direction to cover
+	 * bottom right triangle of the board and update score table accordingly.
+	 * 
+	 * @param k     counter for outer loop.
+	 * @param j     counter for inner loop.
+	 * @param score current score table.
+	 * @param board current board of the game.
+	 */
+	private void countBLTRStonesReversed(int k, int j, int[][] score, Stone[][] board) {
+		int numOfBlack = 0; // number of black in a tuple
+		int numOfWhite = 0; // number of white in a tuple
+		int tempScore = 0; // temp score for a tuple
+		int m = k;
+		int n = j;
+		while (m < k + 5) {
+			if (board[m][n] == Stone.BLACK)
+				numOfBlack++;
+			else if (board[m][n] == Stone.WHITE)
+				numOfWhite++;
+			m++;
+			n--;
+		}
+		if (m == k + 5) {
+			tempScore = tupleScore(numOfBlack, numOfWhite);
+			for (m = k, n = j; m < k + 5; m++, n--) {
+				score[m][n] += tempScore;
+			}
+		}
 	}
 
 	/**
@@ -172,144 +400,44 @@ public class ComputerPlayer extends Player {
 	 * @return a 2D array that contains a score for each coordinate in the board.
 	 */
 	public int[][] calculateScores(Stone[][] board, int boardSize) {
-		/*
-		 * Initiate a 2D array with 0, where the array size is the same size as the
-		 * board of the game.
-		 */
-		int[][] score = new int[boardSize][boardSize];
-		for (int i = 0; i < boardSize; i++) {
-			for (int j = 0; j < boardSize; j++) {
-				score[i][j] = 0;
-			}
-		}
-		int numOfBlack = 0; // number of black in a tuple
-		int numOfWhite = 0; // number of white in a tuple
-		int tempScore = 0; // temp score for a tuple
+		// Initialize a 2D array with more scores towards center.
+		int[][] score = initScoreTable(board, boardSize);
 
 		// Left to right (covers all horizontal tuples)
 		for (int i = 0; i < boardSize; i++) {
 			for (int j = 0; j < boardSize - 4; j++) {
-				int k = j;
-				while (k < j + 5) {
-					if (board[i][k] == Stone.BLACK) numOfBlack++;
-					else if (board[i][k] == Stone.WHITE) numOfWhite++;
-					k++;
-				}
-				tempScore = tupleScore(numOfBlack, numOfWhite);
-				// Add the score to each of the five coordinates in the tuple
-				for (k = j; k < j + 5; k++) {
-					score[i][k] += tempScore;
-				}
-				// Reset temporary variables
-				numOfBlack = 0;
-				numOfWhite = 0;
-				tempScore = 0;
+				countLeftRightStones(i, j, score, board);
 			}
 		}
 		// Top to bottom (covers all vertical tuples)
 		for (int i = 0; i < boardSize; i++) {
 			for (int j = 0; j < boardSize - 4; j++) {
-				int k = j;
-				while (k < j + 5) {
-					if (board[k][i] == Stone.BLACK) numOfBlack++;
-					else if (board[k][i] == Stone.WHITE) numOfWhite++;
-					k++;
-				}
-				tempScore = tupleScore(numOfBlack, numOfWhite);
-				for (k = j; k < j + 5; k++) {
-					score[k][i] += tempScore;
-				}
-				numOfBlack = 0;
-				numOfWhite = 0;
-				tempScore = 0;
+				countTopBottomStones(i, j, score, board);
 			}
 		}
 		// Top left to bottom right (covers all diagonal tuples in bottom left triangle)
 		for (int i = 0; i < boardSize - 4; i++) {
 			for (int j = 0, k = i; j < boardSize - 4 && k < boardSize - 4; j++, k++) {
-				int m = k;
-				int n = j;
-				while (m < k + 5) {
-					if (board[m][n] == Stone.BLACK) numOfBlack++;
-					else if (board[m][n] == Stone.WHITE) numOfWhite++;
-					m++;
-					n++;
-				}
-				if (m == k + 5) {
-					tempScore = tupleScore(numOfBlack, numOfWhite);
-					for (m = k, n = j; m < k + 5; m++, n++) {
-						score[m][n] += tempScore;
-					}
-				}
-				numOfBlack = 0;
-				numOfWhite = 0;
-				tempScore = 0;
+				countTLBRStones(k, j, score, board);
 			}
 		}
 		// Bottom right to top left (covers all diagonal tuples in top right triangle)
 		for (int i = boardSize - 2; i >= 4; i--) {
 			for (int j = boardSize - 1, k = i; j >= 4 && k >= 4; j--, k--) {
-				int m = k;
-				int n = j;
-				while (m > k - 5) {
-					if (board[m][n] == Stone.BLACK) numOfBlack++;
-					else if (board[m][n] == Stone.WHITE) numOfWhite++;
-					m--;
-					n--;
-				}
-				if (m == k - 5) {
-					tempScore = tupleScore(numOfBlack, numOfWhite);
-					for (m = k, n = j; m > k - 5; m--, n--) {
-						score[m][n] += tempScore;
-					}
-				}
-				numOfBlack = 0;
-				numOfWhite = 0;
-				tempScore = 0;
+				countTLBRStonesReversed(k, j, score, board);
 			}
 		}
 		// Bottom left to top right (covers all diagonal tuples in top left triangle)
 		for (int i = boardSize - 1; i >= 4; i--) {
 			for (int j = 0, k = i; j < boardSize - 4 && k >= 4; j++, k--) {
-				int m = k;
-				int n = j;
-				while (m > k - 5) {
-					if (board[m][n] == Stone.BLACK) numOfBlack++;
-					else if (board[m][n] == Stone.WHITE) numOfWhite++;
-					m--;
-					n++;
-				}
-				if (m == k - 5) {
-					tempScore = tupleScore(numOfBlack, numOfWhite);
-					for (m = k, n = j; m > k - 5; m--, n++) {
-						score[m][n] += tempScore;
-					}
-				}
-				numOfBlack = 0;
-				numOfWhite = 0;
-				tempScore = 0;
+				countBLTRStones(k, j, score, board);
 			}
 		}
-		// Top right to bottom left (covers all diagonal tuples in bottom right triangle)
+		// Top right to bottom left (covers all diagonal tuples in bottom right
+		// triangle)
 		for (int i = 1; i < boardSize - 4; i++) {
 			for (int j = boardSize - 1, k = i; j >= 4 && k < boardSize - 4; j--, k++) {
-				int m = k;
-				int n = j;
-				while (m < k + 5) {
-					if (board[m][n] == Stone.BLACK) numOfBlack++;
-					else if (board[m][n] == Stone.WHITE) numOfWhite++;
-					m++;
-					n--;
-				}
-				if (m == k + 5) {
-					tempScore = tupleScore(numOfBlack, numOfWhite);
-					for (m = k, n = j; m < k + 5; m++, n--) {
-						score[m][n] += tempScore;
-					}
-				}
-				numOfBlack = 0;
-				numOfWhite = 0;
-				tempScore = 0;
+				countBLTRStonesReversed(k, j, score, board);
 			}
 		}
 		return score;

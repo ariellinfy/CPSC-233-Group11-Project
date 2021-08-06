@@ -22,7 +22,7 @@
                   <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onRestart" prefWidth="160.0" text="Start New Game">
+            <Button fx:id="buttonRestart" mnemonicParsing="false" onAction="#onRestart" prefWidth="160.0" text="Start New Game">
                <font>
                   <Font size="18.0" />
                </font>
