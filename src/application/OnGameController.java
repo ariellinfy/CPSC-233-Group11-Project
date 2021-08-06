@@ -33,8 +33,7 @@ public class OnGameController {
 	private StackPane paneBoardArea;
 
 	/**
-	 * Setter method used to update the instance variable "boardSize" and call the
-	 * drawBoard() method.
+	 * Set boardSize and draw board based on user selected size in the start menu.
 	 * 
 	 * @param boardSize the specified board size selected by the user.
 	 */
@@ -52,8 +51,8 @@ public class OnGameController {
 		this.app = app;
 		this.config = app.getGameConfiguration();
 		/*
-		 *  If player Black (which goes first by default) is an instance of
-		 *  ComputerPlayer, the firstMove() method is invoked.
+		 * If playerBlack (which goes first by default) is an instance of
+		 * ComputerPlayer, the firstMove() method is invoked.
 		 */
 		if (app.getPlayerBlack() instanceof ComputerPlayer) {
 			firstMove();
@@ -89,13 +88,13 @@ public class OnGameController {
 
 	/**
 	 * Method that is used to draw a series of dots on the game board. These dots
-	 * are meant to mimic the 5 dots commonly found on traditional Gomoku game
+	 * are meant to mimic the 5 or 9 dots commonly found on traditional Gomoku game
 	 * boards.
 	 */
 	private void drawPoint() {
 		/*
-		 *  The location of these dots differs depending on the board size selected by
-		 *  the user.
+		 * The location of these dots differs depending on the board size selected by
+		 * the user.
 		 */
 		int top = 3 * LINE_SPACING;
 		int center = Math.round(boardSize / 2) * LINE_SPACING;
@@ -105,8 +104,8 @@ public class OnGameController {
 			bottom = (boardSize - 3) * LINE_SPACING;
 		}
 		/*
-		 *  Regardless of board size, a center dot surrounded by 4 dots diagonally is
-		 *  drawn on the board.
+		 * Regardless of board size, a center dot surrounded by 4 dots diagonally is
+		 * drawn on the board.
 		 */
 		Circle circle1 = new Circle(top, top, 4);
 		Circle circle2 = new Circle(bottom, top, 4);
@@ -115,8 +114,8 @@ public class OnGameController {
 		Circle circle5 = new Circle(bottom, bottom, 4);
 		paneBoard.getChildren().addAll(circle1, circle2, circle3, circle4, circle5);
 		/*
-		 *  For board sizes larger than 15, 4 additional diagonal dots are drawn on the
-		 *  board.
+		 * For board sizes larger than 15, 4 additional diagonal dots are drawn on the
+		 * board.
 		 */
 		if (boardSize > 15) {
 			Circle circle6 = new Circle(center, top, 4);
@@ -136,16 +135,14 @@ public class OnGameController {
 	 */
 	private void drawStone(Move move) {
 		/*
-		 * To calculate the location of the stone in the window, the row/col index of
-		 * the stone (within the board 2D array) is multiplied by the "LINE_SPACING"
-		 * variable.
+		 * To calculate the x and y distance of the stone with respective to the pane.
 		 */
 		int row = move.getRow() * LINE_SPACING;
 		int col = move.getCol() * LINE_SPACING;
 		Circle circle = new Circle(row, col, 17.5);
 		/*
-		 *  If/else statement sets the color of the stone dependent on whether the move
-		 *  was made by player Black or White.
+		 * If/else statement sets the color of the stone dependent on whether the move
+		 * was made by player Black or White.
 		 */
 		if (move.getStone() == Stone.BLACK) {
 			circle.setStroke(Color.BLACK);
@@ -155,8 +152,8 @@ public class OnGameController {
 			circle.setFill(Color.WHITE);
 		}
 		/*
-		 *  For aesthetic purposes, a drop shadow is added to the circles to portray a
-		 *  more reflective, stone-like effect.
+		 * For aesthetic purposes, a drop shadow is added to the circles to portray a
+		 * more reflective, stone-like effect.
 		 */
 		DropShadow ds = new DropShadow();
 		ds.setOffsetX(2.0);
@@ -184,12 +181,11 @@ public class OnGameController {
 			return;
 		}
 		/*
-		 *  The mouse click is rounded to the nearest intersection at which a stone can
-		 *  be placed.
+		 * The mouse click is rounded to the nearest intersection at which a stone can
+		 * be placed.
 		 */
 		int xIndex = (int) Math.round(x / LINE_SPACING);
 		int yIndex = (int) Math.round(y / LINE_SPACING);
-		System.out.println(xIndex + ", " + yIndex);
 		try {
 			/*
 			 * nextBlackMove()/nextWhiteMove() is invoked dependent on which player's turn
@@ -197,15 +193,15 @@ public class OnGameController {
 			 */
 			if (blackTurn) {
 				/*
-				 *  The coordinates of the mouse click (converted to index format) are passed as
-				 *  parameters.
+				 * The coordinates of the mouse click (converted to index format) are passed as
+				 * parameters.
 				 */
 				nextBlackMove(xIndex, yIndex, app.getPlayerBlack());
 			} else {
 				nextWhiteMove(xIndex, yIndex, app.getPlayerWhite());
 			}
 		} catch (InvalidPlacementException ex) {
-
+//			System.out.println(ex.getMessage());
 		}
 	}
 
@@ -230,14 +226,8 @@ public class OnGameController {
 			// getMove() is invoked to get the next move of the computer.
 			Move move = nextPlayer.getMove(config);
 			/*
-			 *  Move is added to "validMoveList" instance variable, and "numOfMoves" instance
-			 *  variable is incremented (both in Player class).
-			 */
-			nextPlayer.getAllValidMoves().add(move);
-			nextPlayer.incrementMoveCount();
-			/*
-			 *  placeMove() method is invoked to update board/move-related instance variables
-			 *  with new move.
+			 * placeMove() method is invoked to update board/move-related instance variables
+			 * with new move.
 			 */
 			placeMove(move, nextPlayer, currentPlayer);
 		}
@@ -254,30 +244,30 @@ public class OnGameController {
 	 */
 	private void nextBlackMove(int x, int y, Player playerBlack) throws InvalidPlacementException {
 		/*
-		 *  getMove() is invoked to get the move made by player Black, as well check to
-		 *  make sure the move is valid.
+		 * getMove() is invoked to get the move made by player Black, as well check to
+		 * make sure the move is valid.
 		 */
 		Move blackMove = playerBlack.getMove(config, x, y);
 		/*
-		 *  Local variable "opponent" is set equal to opposite player (in this case,
-		 *  player White).
+		 * Local variable "opponent" is set equal to opposite player (in this case,
+		 * player White).
 		 */
 		Player opponent = app.getPlayerWhite();
 		if (blackMove != null) {
 			/*
-			 *  placeMove() method is invoked to update board/move-related instance variables
-			 *  with new move.
+			 * placeMove() method is invoked to update board/move-related instance variables
+			 * with new move.
 			 */
 			placeMove(blackMove, playerBlack, opponent);
 			/*
-			 *  nextAIMove() is invoked to update board/move-related instance variables with
-			 *  move made by computer (if opponent is an instance of ComputerPlayer).
+			 * nextAIMove() is invoked to update board/move-related instance variables with
+			 * move made by computer (if opponent is an instance of ComputerPlayer).
 			 */
 			nextAIMove(opponent, playerBlack);
 		} else {
 			/*
-			 *  If an invalid move is detected (i.e. InvalidPlacementException), this
-			 *  exception is handled by printing error message to user.
+			 * If an invalid move is detected (i.e. InvalidPlacementException), a new
+			 * exception is throw with warning message.
 			 */
 			throw new InvalidPlacementException("Invalid move, please try again");
 		}
@@ -312,11 +302,15 @@ public class OnGameController {
 	 * @param opponent      a Player object of the opposing player.
 	 */
 	private void placeMove(Move move, Player currentPlayer, Player opponent) {
+		/*
+		 * Current player's "validMoveList" and "numOfMoves" instance variables are
+		 * updated with the latest valid move.
+		 */
 		currentPlayer.getAllValidMoves().add(move);
 		currentPlayer.incrementMoveCount();
 		/*
-		 *  updateBoard() is invoked on instance variable "config" to update the board
-		 *  (i.e. 2D array) with new move.
+		 * updateBoard() is invoked on instance variable "config" to update the board
+		 * (i.e. 2D array) with new move.
 		 */
 		config.updateBoard(move);
 		// drawstone() is invoked to draw the stone onto the OnGame scene.
@@ -325,20 +319,19 @@ public class OnGameController {
 		Result roundResult = config.checkWinningLine(move);
 		Result checkNumOfMoves = config.isBoardFull(currentPlayer, opponent);
 		/*
-		 *  If "Result.CONTINUE" is returned from checkWinningLine() and isBoardFull(),
-		 *  blackTurn is set to opposite of current value.
+		 * Only if "Result.CONTINUE" is returned from both checkWinningLine() and
+		 * isBoardFull(), the game continues and it becomes the other player's turn.
 		 */
 		if (roundResult == Result.CONTINUE && checkNumOfMoves == Result.CONTINUE) {
 			blackTurn = !blackTurn;
 			/*
-			 *  If "Result.DRAW" is returned, gameOver() is invoked with "checkNumOfMoves"
-			 *  passed as a parameter.
+			 * If the board has no empty spot, the game will end with a draw result.
 			 */
 		} else if (checkNumOfMoves == Result.DRAW) {
 			app.gameOver(checkNumOfMoves);
 			/*
-			 *  If "Result.BLACK/Result.WHITE" is returned, gameOver() is invoked with
-			 *  "roundResult" passed as a parameter.
+			 * For all the other cases (ie. if round result is not an enum Continue), the
+			 * game will reach the end with the round result.
 			 */
 		} else {
 			app.gameOver(roundResult);
@@ -346,8 +339,7 @@ public class OnGameController {
 	}
 
 	/**
-	 * Method that exits the game by terminating the application. This method is
-	 * invoked when the "Quit" button is pressed on the final game overview scene.
+	 * Method that exits the game by terminating the application.
 	 * 
 	 * @param event an ActionEvent object that is invoked whenever the "Quit" button
 	 *              is pressed by the user.
@@ -359,9 +351,7 @@ public class OnGameController {
 	}
 
 	/**
-	 * Method that restarts the game by returning the user to the start menu. This
-	 * method is invoked when the "Start new game" button is pressed on the final
-	 * game overview scene.
+	 * Method that restarts the game by returning the user to the start menu.
 	 * 
 	 * @param event an ActionEvent object that is invoked whenever the "Start new
 	 *              game" button is pressed by the user.
@@ -369,8 +359,8 @@ public class OnGameController {
 	@FXML
 	private void onRestart(ActionEvent event) {
 		/*
-		 *  restartGame() is invoked on instance variable "app" to return the user to the
-		 *  start menu.
+		 * restartGame() is invoked on instance variable "app" to return the user to the
+		 * start menu.
 		 */
 		app.restartGame();
 	}
