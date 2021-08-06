@@ -91,7 +91,7 @@ public class GomokuGUI extends Application {
 	/**
 	 * Method that initializes and loads the start menu scene.
 	 */
-	private void startMenu() {
+	void startMenu() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/StartMenu.fxml"));
 			Parent startMenu = loader.load();

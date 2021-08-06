@@ -1,7 +1,6 @@
 package model;
 
 public class InvalidPlacementException extends Exception {
-
 	public InvalidPlacementException() {
 	}
 
@@ -21,5 +20,4 @@ public class InvalidPlacementException extends Exception {
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
-
 }
