@@ -128,9 +128,10 @@ public class GameConfiguration {
 		}
 		return new Move(row, col, stone);
 	}
-	
+
 	/**
 	 * Check the board spots availability.
+	 * 
 	 * @param player1 one the two players in the game.
 	 * @param player2 the other player in the game.
 	 * @return enum Continue if sum of two players' moves do not exceed total

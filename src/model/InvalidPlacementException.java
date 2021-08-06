@@ -1,6 +1,14 @@
 package model;
 
+/**
+ * A custom exception class that will throw an InvalidPlacementException when
+ * user enters/chooses invalid moves.
+ * 
+ * @author Fu-Yin Lin
+ *
+ */
 public class InvalidPlacementException extends Exception {
+	// Below constructors come from superclass Exception.
 	public InvalidPlacementException() {
 	}
 

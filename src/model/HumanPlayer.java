@@ -70,14 +70,14 @@ public class HumanPlayer extends Player {
 		}
 		return humanMove;
 	}
-	
+
 	/**
 	 * Method that validates a move made by the player and returns it.
 	 * 
 	 * @param currentConfig a GameConfiguration object that contains the current
 	 *                      game board.
-	 * @param row         the row index number of the board.
-	 * @param col         the column index number of the board.
+	 * @param row           the row index number of the board.
+	 * @param col           the column index number of the board.
 	 * @return humanMove a Move object containing the coordinates and color of the
 	 *         stone.
 	 */
