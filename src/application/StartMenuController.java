@@ -158,11 +158,7 @@ public class StartMenuController {
 				 * or more will set the selected value to previous selected toggle.
 				 */
 				if (newValue == null) {
-					Platform.runLater(new Runnable() {
-						public void run() {
-							toggleGroup.selectToggle(oldValue);
-						}
-					});
+					toggleGroup.selectToggle(oldValue);
 				}
 				/*
 				 * Disable difficulty toggle group if opponent is chosen to be a human player,
