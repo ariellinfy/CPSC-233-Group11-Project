@@ -19,15 +19,19 @@ A class diagram is included with the source code folder (public/Gomoku Class Dia
 4. Follow instructions to play the game and have fun!
 
 ### For All Other Editors (make sure a Java SDK is installed on your device)
-1. The text-based version of this application is found under iteration-1 branch.
-2. Clone or download the repository files to a folder in your device.
-3. In a terminal, navigate to the chosen folder.
-4. Compile files using command line: javac *.java
-5. Run game using command line: java Game
-6. Follow instructions to play the game and have fun!
+1. Clone or download the repository files to a folder in your device.
+2. In a terminal, navigate to the  project src folder.
+3. Compile files using command line: javac application/GomokuText.java
+4. Run game using command line: java application.GomokuText
+5. Follow instructions to play the game and have fun!
 
 ## Graphical User Interface
-To be continued...
+1. The GUI version of this application is found under iteration-2 branch.
+2. When cloning the repository to Eclipse, on the Local Destination page: set initial branch to iteration-2.
+3. Add external libraries to the project module path: JavaFX SDK and User Library (JavaFX).
+4. Navigate to application.GomokuGUI in the project src folder and run as Java application.
+5. Follow instructions to set up and play the game.
+6. Have fun!
 
 
 Group 11, CPSC 233 Summer 2021
