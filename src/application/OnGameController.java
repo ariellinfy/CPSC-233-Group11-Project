@@ -368,6 +368,7 @@ public class OnGameController {
 				removeStone(move);
 			}
 		} catch (InvalidUndoException e) {
+			// Need to add warning message box to show the error
 			System.out.println(e.getMessage());
 //			e.printStackTrace();
 		}

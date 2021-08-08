@@ -210,7 +210,7 @@ public class GomokuText {
 			}
 		}
 	}
-	
+
 	private Move nextMove(Player currentPlayer, Scanner scanner) {
 		Move move = null;
 		/*
@@ -226,22 +226,22 @@ public class GomokuText {
 			 * ComputerPlayer was selected, no message is printed and instead the computer
 			 * just makes it's own move accordingly.
 			 */
-			String prompt = promptUser(scanner, "White's turn, please enter a valid coord (eg. A2) ")
-					.toUpperCase();
+			String prompt = promptUser(scanner, currentPlayer.getPlayerColor()
+					+ "'s turn, enter a valid coord (eg. A2) or 'undo' to undo previous move").toUpperCase();
 			if (prompt.equalsIgnoreCase("undo")) {
 				move = onUndo(blackTurn, playerBlack, playerWhite);
 				if (move != null) {
 					move.setEmptyStone();
 				} else {
 					move = new Move(-1, -1, Stone.EMPTY);
-				}			
+				}
 			} else {
 				move = currentPlayer.getMove(config, prompt);
 			}
 		}
 		return move;
 	}
-	
+
 	private Move onUndo(boolean blackTurn, Player playerBlack, Player playerWhite) {
 		Move lastMove = null;
 		try {
@@ -262,13 +262,13 @@ public class GomokuText {
 	 * @return whether the latestMove is a valid move or not.
 	 */
 	private boolean checkValidMove(Move latestMove, Player currentPlayer) {
-		boolean validInput = false;	
+		boolean validInput = false;
 		if (latestMove != null) {
 			/*
-			 * (Need to review) The board is updated with the new move, and added to the corresponding
-			 * player's "validMoveList" ArrayList (instance variable) using the add() method
-			 * on getAllValidMoves(). Additionally, the "numOfMoves" integer (instance
-			 * variable) is incremented.
+			 * (Need to review) The board is updated with the new move, and added to the
+			 * corresponding player's "validMoveList" ArrayList (instance variable) using
+			 * the add() method on getAllValidMoves(). Additionally, the "numOfMoves"
+			 * integer (instance variable) is incremented.
 			 */
 			if (latestMove.getStone() != Stone.EMPTY) {
 				config.updateBoard(latestMove);
