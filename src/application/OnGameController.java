@@ -2,6 +2,7 @@ package application;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -31,6 +32,28 @@ public class OnGameController {
 
 	@FXML
 	private StackPane paneBoardArea;
+
+	@FXML
+	private Label labelBlackTime;
+
+	@FXML
+	private Label labelWhiteTime;
+
+	@FXML
+	private Label labelPlayerWhiteName;
+
+	@FXML
+	private Label labelPlayerBlackName;
+
+	@FXML
+	void onDraw(ActionEvent event) {
+
+	}
+
+	@FXML
+	void onUndo(ActionEvent event) {
+
+	}
 
 	/**
 	 * Set boardSize and draw board based on user selected size in the start menu.
