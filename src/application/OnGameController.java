@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
@@ -42,10 +43,13 @@ public class OnGameController {
 	private Label labelWhiteTime;
 
 	@FXML
-	private Label labelPlayerWhiteName;
-
+	private Label labelBlackName;
+	
 	@FXML
-	private Label labelPlayerBlackName;
+	private Label labelWhiteName;
+	
+    @FXML
+    private Button buttonUndo;
 
 	/**
 	 * Set boardSize and draw board based on user selected size in the start menu.
@@ -65,6 +69,11 @@ public class OnGameController {
 	void linkWithApplication(GomokuGUI app) {
 		this.app = app;
 		this.config = app.getGameConfiguration();
+		labelBlackName.setText(app.getPlayerBlack().getPlayerName());
+		labelWhiteName.setText(app.getPlayerWhite().getPlayerName());
+		if (config.getUndo()) {
+			buttonUndo.setDisable(false);
+		}
 		/*
 		 * If playerBlack (which goes first by default) is an instance of
 		 * ComputerPlayer, the firstMove() method is invoked.
@@ -412,8 +421,11 @@ public class OnGameController {
 	 */
 	@FXML
 	private void initialize() {
-		assert paneBoard != null : "fx:id=\"paneBoard\" was not injected: check your FXML file 'GameView.fxml'.";
-		assert paneBoardArea != null
-				: "fx:id=\"paneBoardArea\" was not injected: check your FXML file 'GameView.fxml'.";
+        assert labelBlackName != null : "fx:id=\"labelBlackName\" was not injected: check your FXML file 'OnGameView.fxml'.";
+        assert paneBoard != null : "fx:id=\"paneBoard\" was not injected: check your FXML file 'OnGameView.fxml'.";
+        assert labelBlackTime != null : "fx:id=\"labelBlackTime\" was not injected: check your FXML file 'OnGameView.fxml'.";
+        assert labelWhiteTime != null : "fx:id=\"labelWhiteTime\" was not injected: check your FXML file 'OnGameView.fxml'.";
+        assert paneBoardArea != null : "fx:id=\"paneBoardArea\" was not injected: check your FXML file 'OnGameView.fxml'.";
+        assert labelWhiteName != null : "fx:id=\"labelWhiteName\" was not injected: check your FXML file 'OnGameView.fxml'.";
 	}
 }

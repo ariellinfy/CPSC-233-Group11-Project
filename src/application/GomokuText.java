@@ -146,6 +146,18 @@ public class GomokuText {
 			this.config.setChessBoard(new Board());
 		}
 	}
+	
+	private void setUndo(Scanner scanner) {
+		String noUndo = promptUser(scanner, "No Undo (y/n): ");
+		if (noUndo.equalsIgnoreCase("y")) {
+			this.config.setUndo(false);
+		} else if (noUndo.equalsIgnoreCase("n")) {
+			this.config.setUndo(true);
+		} else {
+			messageToUser("Invalid input, default set to no undo in this game.\n");
+			this.config.setUndo(false);
+		}
+	}
 
 	/**
 	 * Method that is responsible for handling user inputs for all available game
@@ -160,6 +172,7 @@ public class GomokuText {
 		Player opponent = setupOpponent(scanner);
 		chooseColor(scanner, opponent);
 		setupBoard(scanner);
+		setUndo(scanner);
 		play(scanner);
 	}
 
@@ -227,8 +240,8 @@ public class GomokuText {
 			 * just makes it's own move accordingly.
 			 */
 			String prompt = promptUser(scanner, currentPlayer.getPlayerColor()
-					+ "'s turn, enter a valid coord (eg. A2) or 'undo' to undo previous move").toUpperCase();
-			if (prompt.equalsIgnoreCase("undo")) {
+					+ "'s turn, enter a valid coord (eg. A2) or 'undo' to undo previous move: ").toUpperCase();
+			if (config.getUndo() && prompt.equalsIgnoreCase("undo")) {
 				move = onUndo(blackTurn, playerBlack, playerWhite);
 				if (move != null) {
 					move.setEmptyStone();
@@ -241,7 +254,7 @@ public class GomokuText {
 		}
 		return move;
 	}
-
+	
 	private Move onUndo(boolean blackTurn, Player playerBlack, Player playerWhite) {
 		Move lastMove = null;
 		try {

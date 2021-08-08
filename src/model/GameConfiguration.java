@@ -14,6 +14,8 @@ import java.util.Map;
 public class GameConfiguration {
 	private static final int WIN_COUNT = 5;
 	private Board chessBoard;
+	private boolean allowUndo = false;
+	private int gameTime = 5;
 
 	/**
 	 * Get the board object of this game.
@@ -34,6 +36,22 @@ public class GameConfiguration {
 		chessBoard.initBoard();
 	}
 
+	public boolean getUndo() {
+		return allowUndo;
+	}
+	
+	public void setUndo(boolean undo) {
+		this.allowUndo = undo;
+	}
+	
+	public int getGameTime() {
+		return gameTime;
+	}
+	
+	public void setGameTime(int gameTime) {
+		this.gameTime = gameTime;
+	}
+	
 	/**
 	 * Add a move and update the game board.
 	 * 

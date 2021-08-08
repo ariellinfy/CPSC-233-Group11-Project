@@ -101,10 +101,11 @@ public class StartMenuController {
 	/**
 	 * Updates boardSize in config object based on user selected size.
 	 */
-	private void setupBoard() {
+	private void setupGameConfig() {
 		GameConfiguration config = app.getGameConfiguration();
 		Board board = new Board((Integer) boardSizeGroup.getSelectedToggle().getUserData());
 		config.setChessBoard(board);
+		config.setUndo(!checkBoxUndo.isSelected());
 	}
 
 	/**
@@ -117,7 +118,7 @@ public class StartMenuController {
 	private void onStartGame(ActionEvent event) {
 		Player opponent = setupOpponent();
 		chooseColor(opponent);
-		setupBoard();
+		setupGameConfig();
 		app.playGame();
 	}
 
