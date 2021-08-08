@@ -42,6 +42,54 @@ public class GameConfiguration {
 	public void updateBoard(Move move) {
 		chessBoard.setCoord(move.getRow(), move.getCol(), move.getStone());
 	}
+	
+	public boolean checkPlayersNumOfMoves(Player playerBlack, Player playerWhite) {
+		return playerBlack.getNumOfMoves() == playerWhite.getNumOfMoves();
+	}
+	
+	public boolean isMoveAvailable(Player currentPlayer) {
+		return currentPlayer.getNumOfMoves() > 0;
+	}
+	
+	public ArrayList<Move> undoMove(boolean blackTurn, Player playerBlack, Player playerWhite) throws InvalidUndoException {
+		ArrayList<Move> undoMoves = new ArrayList<Move>();
+		Move lastMove = null;
+		if (blackTurn) {
+			if (checkPlayersNumOfMoves(playerBlack, playerWhite) && isMoveAvailable(playerWhite) && isMoveAvailable(playerBlack)) {
+				lastMove = removeMove(playerWhite);
+				undoMoves.add(lastMove);
+				lastMove = removeMove(playerBlack);
+				undoMoves.add(lastMove);
+			} else if (isMoveAvailable(playerBlack)) {
+				lastMove = removeMove(playerBlack);
+				undoMoves.add(lastMove);
+			} else {
+				throw new InvalidUndoException("Undo is not allowed in current board status.");
+			}
+		} else {
+			if (checkPlayersNumOfMoves(playerBlack, playerWhite) && isMoveAvailable(playerWhite)) {
+				lastMove = removeMove(playerWhite);
+				undoMoves.add(lastMove);
+			} else if (isMoveAvailable(playerBlack) && isMoveAvailable(playerWhite)) {
+				lastMove = removeMove(playerBlack);
+				undoMoves.add(lastMove);
+				lastMove = removeMove(playerWhite);
+				undoMoves.add(lastMove);
+			} else {
+				throw new InvalidUndoException("Undo is not allowed in current board status.");
+			}
+		}
+		return undoMoves;
+	}
+	
+	public Move removeMove(Player currentPlayer) {
+		Move lastMove = currentPlayer.getAllValidMoves().get(currentPlayer.getNumOfMoves() - 1);
+		currentPlayer.getAllValidMoves().remove(currentPlayer.getNumOfMoves() - 1);
+		currentPlayer.decrementMoveCount();
+		lastMove.setEmptyStone();
+		updateBoard(lastMove);
+		return lastMove;
+	}
 
 	/**
 	 * Calculate game score based on winner number of moves, also update each human

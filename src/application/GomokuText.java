@@ -1,5 +1,6 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import model.*;
 
@@ -180,40 +181,21 @@ public class GomokuText {
 		while (!gameOver) {
 			Move move = null;
 			boolean validInput = false;
+			Player currentPlayer = playerBlack;
 			/*
 			 * This while loop allows the user to be continuously prompted for a move until
 			 * a valid move is entered.
 			 */
 			while (!validInput) {
 				if (blackTurn) {
-					/*
-					 * The local variable "move" is set equal to the getMove() method invoked on the
-					 * corresponding player (playerBlack or playerWhite). "Move" will then be
-					 * checked in a later conditional to see if the move is valid.
-					 */
-					if (playerBlack instanceof ComputerPlayer) {
-						move = playerBlack.getMove(config);
-					} else {
-						/*
-						 * The user is only prompted if the corresponding player is a human. If
-						 * ComputerPlayer was selected, no message is printed and instead the computer
-						 * just makes it's own move accordingly.
-						 */
-						String coord = promptUser(scanner, "Black's turn, please enter a valid coord (eg. A2) ")
-								.toUpperCase();
-						move = playerBlack.getMove(config, coord);
-					}
+					currentPlayer = playerBlack;
+					move = nextMove(playerBlack, scanner);
 				} else {
-					if (playerWhite instanceof ComputerPlayer) {
-						move = playerWhite.getMove(config);
-					} else {
-						String coord = promptUser(scanner, "White's turn, please enter a valid coord (eg. A2) ")
-								.toUpperCase();
-						move = playerWhite.getMove(config, coord);
-					}
+					currentPlayer = playerWhite;
+					move = nextMove(playerWhite, scanner);
 				}
 				// Check if the move is valid or not and update the game accordingly.
-				validInput = checkValidMove(move);
+				validInput = checkValidMove(move, currentPlayer);
 			}
 
 			/*
@@ -223,8 +205,52 @@ public class GomokuText {
 			messageToUser("");
 			chessboard.printBoard();
 			// Check if the game is over or not.
-			gameOver = checkRoundResult(move);
+			if (move.getStone() != Stone.EMPTY) {
+				gameOver = checkRoundResult(move);
+			}
 		}
+	}
+	
+	private Move nextMove(Player currentPlayer, Scanner scanner) {
+		Move move = null;
+		/*
+		 * The local variable "move" is set equal to the getMove() method invoked on the
+		 * corresponding player (playerBlack or playerWhite). "Move" will then be
+		 * checked in a later conditional to see if the move is valid.
+		 */
+		if (currentPlayer instanceof ComputerPlayer) {
+			move = currentPlayer.getMove(config);
+		} else {
+			/*
+			 * The user is only prompted if the corresponding player is a human. If
+			 * ComputerPlayer was selected, no message is printed and instead the computer
+			 * just makes it's own move accordingly.
+			 */
+			String prompt = promptUser(scanner, "White's turn, please enter a valid coord (eg. A2) ")
+					.toUpperCase();
+			if (prompt.equalsIgnoreCase("undo")) {
+				move = onUndo(blackTurn, playerBlack, playerWhite);
+				if (move != null) {
+					move.setEmptyStone();
+				} else {
+					move = new Move(-1, -1, Stone.EMPTY);
+				}			
+			} else {
+				move = currentPlayer.getMove(config, prompt);
+			}
+		}
+		return move;
+	}
+	
+	private Move onUndo(boolean blackTurn, Player playerBlack, Player playerWhite) {
+		Move lastMove = null;
+		try {
+			ArrayList<Move> undoMoves = config.undoMove(blackTurn, playerBlack, playerWhite);
+			lastMove = undoMoves.get(undoMoves.size() - 1);
+		} catch (InvalidUndoException e) {
+			System.out.println(e.getMessage());
+		}
+		return lastMove;
 	}
 
 	/**
@@ -235,24 +261,21 @@ public class GomokuText {
 	 * @param latestMove the most recent move.
 	 * @return whether the latestMove is a valid move or not.
 	 */
-	private boolean checkValidMove(Move latestMove) {
-		boolean validInput = false;
+	private boolean checkValidMove(Move latestMove, Player currentPlayer) {
+		boolean validInput = false;	
 		if (latestMove != null) {
 			/*
-			 * The board is updated with the new move, and added to the corresponding
+			 * (Need to review) The board is updated with the new move, and added to the corresponding
 			 * player's "validMoveList" ArrayList (instance variable) using the add() method
 			 * on getAllValidMoves(). Additionally, the "numOfMoves" integer (instance
 			 * variable) is incremented.
 			 */
-			validInput = true;
-			config.updateBoard(latestMove);
-			if (blackTurn) {
-				playerBlack.getAllValidMoves().add(latestMove);
-				playerBlack.incrementMoveCount();
-			} else {
-				playerWhite.getAllValidMoves().add(latestMove);
-				playerWhite.incrementMoveCount();
+			if (latestMove.getStone() != Stone.EMPTY) {
+				config.updateBoard(latestMove);
+				currentPlayer.getAllValidMoves().add(latestMove);
+				currentPlayer.incrementMoveCount();
 			}
+			validInput = true;
 		} else {
 			/*
 			 * If null is returned from getMove(), the move is considered invalid therefore

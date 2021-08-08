@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -44,16 +46,6 @@ public class OnGameController {
 
 	@FXML
 	private Label labelPlayerBlackName;
-
-	@FXML
-	void onDraw(ActionEvent event) {
-
-	}
-
-	@FXML
-	void onUndo(ActionEvent event) {
-
-	}
 
 	/**
 	 * Set boardSize and draw board based on user selected size in the start menu.
@@ -160,9 +152,9 @@ public class OnGameController {
 		/*
 		 * To calculate the x and y distance of the stone with respective to the pane.
 		 */
-		int row = move.getRow() * LINE_SPACING;
-		int col = move.getCol() * LINE_SPACING;
-		Circle circle = new Circle(row, col, 17.5);
+		int y = move.getRow() * LINE_SPACING;
+		int x = move.getCol() * LINE_SPACING;
+		Circle circle = new Circle(x, y, 17.5);
 		/*
 		 * If/else statement sets the color of the stone dependent on whether the move
 		 * was made by player Black or White.
@@ -183,6 +175,10 @@ public class OnGameController {
 		ds.setOffsetY(2.0);
 		circle.setEffect(ds);
 		paneBoard.getChildren().add(circle);
+	}
+	
+	private void removeStone(Move move) {
+		paneBoard.getChildren().remove(paneBoard.getChildren().size() - 1);
 	}
 
 	/**
@@ -207,8 +203,9 @@ public class OnGameController {
 		 * The mouse click is rounded to the nearest intersection at which a stone can
 		 * be placed.
 		 */
-		int xIndex = (int) Math.round(x / LINE_SPACING);
-		int yIndex = (int) Math.round(y / LINE_SPACING);
+		int col = (int) Math.round(x / LINE_SPACING);
+		int row = (int) Math.round(y / LINE_SPACING);
+		System.out.println(row + ", " + col);
 		try {
 			/*
 			 * nextBlackMove()/nextWhiteMove() is invoked dependent on which player's turn
@@ -219,9 +216,9 @@ public class OnGameController {
 				 * The coordinates of the mouse click (converted to index format) are passed as
 				 * parameters.
 				 */
-				nextBlackMove(xIndex, yIndex, app.getPlayerBlack());
+				nextBlackMove(row, col, app.getPlayerBlack());
 			} else {
-				nextWhiteMove(xIndex, yIndex, app.getPlayerWhite());
+				nextWhiteMove(row, col, app.getPlayerWhite());
 			}
 		} catch (InvalidPlacementException ex) {
 //			System.out.println(ex.getMessage());
@@ -259,18 +256,18 @@ public class OnGameController {
 	/**
 	 * Method used to handle the next move made by player Black.
 	 * 
-	 * @param x           the row index of the stone.
-	 * @param y           the column index of the stone.
+	 * @param row           the row index of the stone.
+	 * @param col           the column index of the stone.
 	 * @param playerBlack a Player object for player Black, containing related info
 	 *                    such as num of moves/stone color.
 	 * @throws InvalidPlacementException if the move is invalid.
 	 */
-	private void nextBlackMove(int x, int y, Player playerBlack) throws InvalidPlacementException {
+	private void nextBlackMove(int row, int col, Player playerBlack) throws InvalidPlacementException {
 		/*
 		 * getMove() is invoked to get the move made by player Black, as well check to
 		 * make sure the move is valid.
 		 */
-		Move blackMove = playerBlack.getMove(config, x, y);
+		Move blackMove = playerBlack.getMove(config, row, col);
 		/*
 		 * Local variable "opponent" is set equal to opposite player (in this case,
 		 * player White).
@@ -299,14 +296,14 @@ public class OnGameController {
 	/**
 	 * Method that is used to handle the next move made by player White.
 	 * 
-	 * @param x           the row index of the stone.
-	 * @param y           the column index of the stone.
+	 * @param row           the row index of the stone.
+	 * @param col           the column index of the stone.
 	 * @param playerWhite a Player object for player White, containing related info
 	 *                    such as num of moves/stone color.
 	 * @throws InvalidPlacementException if the move is invalid.
 	 */
-	private void nextWhiteMove(int x, int y, Player playerWhite) throws InvalidPlacementException {
-		Move whiteMove = playerWhite.getMove(config, x, y);
+	private void nextWhiteMove(int row, int col, Player playerWhite) throws InvalidPlacementException {
+		Move whiteMove = playerWhite.getMove(config, row, col);
 		Player opponent = app.getPlayerBlack();
 		if (whiteMove != null) {
 			placeMove(whiteMove, playerWhite, opponent);
@@ -359,6 +356,26 @@ public class OnGameController {
 		} else {
 			app.gameOver(roundResult);
 		}
+	}
+	
+	@FXML
+	private void onUndo(ActionEvent event) {
+		Player playerBlack = app.getPlayerBlack();
+		Player playerWhite = app.getPlayerWhite();
+		try {
+			ArrayList<Move> undoMoves = config.undoMove(blackTurn, playerBlack, playerWhite);
+			for (Move move : undoMoves) {
+				removeStone(move);
+			}
+		} catch (InvalidUndoException e) {
+			System.out.println(e.getMessage());
+//			e.printStackTrace();
+		}
+	}
+	
+	@FXML
+	private void onDraw(ActionEvent event) {
+		app.gameOver(Result.DRAW);
 	}
 
 	/**
