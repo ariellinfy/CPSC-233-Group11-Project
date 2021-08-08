@@ -1,15 +1,21 @@
 package application;
 
+import java.text.ParsePosition;
+import java.util.function.UnaryOperator;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
+import javafx.util.converter.IntegerStringConverter;
 import model.*;
 
 /**
@@ -35,12 +41,12 @@ public class StartMenuController {
 
 	@FXML
 	private HBox hBoxDifficulty;
-	
-    @FXML
-    private Spinner spinnerTime;
-	
-    @FXML
-    private CheckBox checkBoxUndo;
+
+	@FXML
+	private Spinner<Integer> spinnerGameTime;
+
+	@FXML
+	private CheckBox checkBoxUndo;
 
 	/**
 	 * Grant access to the GomokuGUI main controller.
@@ -106,6 +112,7 @@ public class StartMenuController {
 		Board board = new Board((Integer) boardSizeGroup.getSelectedToggle().getUserData());
 		config.setChessBoard(board);
 		config.setUndo(!checkBoxUndo.isSelected());
+		config.setGameTime(spinnerGameTime.getValue());
 	}
 
 	/**
@@ -181,6 +188,24 @@ public class StartMenuController {
 		});
 	}
 
+	private void initSpinnerListener() {
+		// Allows only integer number as input.
+		UnaryOperator<TextFormatter.Change> filter = change -> {
+			if (change.isAdded() || change.isReplaced()) {
+				change = !change.getText().matches("\\d+") ? null : change;
+			}
+			return change;
+		};
+		TextFormatter<Integer> gameTimeFormatter = new TextFormatter<Integer>(new IntegerStringConverter(), 5, filter);
+		spinnerGameTime.getEditor().setTextFormatter(gameTimeFormatter);
+		// Set spinner default to 5 min if spinner field is empty.
+		spinnerGameTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue == null) {
+				spinnerGameTime.getValueFactory().setValue(5);
+			}
+		});
+	}
+
 	/**
 	 * Initialize method that is invoked once to set up this controller once the
 	 * StartMenu.fxml file has been loaded. This method also setup toggle listener
@@ -200,6 +225,7 @@ public class StartMenuController {
 		initToggleListener(difficultyGroup);
 		initToggleListener(userColorGroup);
 		initToggleListener(boardSizeGroup);
-		spinnerTime.setStyle("-fx-font-size: 17px");
+		initSpinnerListener();
+		spinnerGameTime.setStyle("-fx-font-size: 17px");
 	}
 }

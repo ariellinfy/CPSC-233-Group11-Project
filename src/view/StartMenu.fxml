@@ -189,7 +189,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
-                              <Spinner fx:id="spinnerTime" editable="true" initialValue="5" max="60" min="1" prefHeight="35.0" prefWidth="110.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Spinner fx:id="spinnerGameTime" editable="true" initialValue="5" max="60" min="1" prefHeight="35.0" prefWidth="110.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">

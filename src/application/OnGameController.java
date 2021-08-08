@@ -81,6 +81,7 @@ public class OnGameController {
 		if (app.getPlayerBlack() instanceof ComputerPlayer) {
 			firstMove();
 		}
+		System.out.println(config.getGameTime());
 	}
 
 	/**
