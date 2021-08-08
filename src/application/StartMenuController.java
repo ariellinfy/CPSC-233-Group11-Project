@@ -1,10 +1,11 @@
 package application;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -34,6 +35,12 @@ public class StartMenuController {
 
 	@FXML
 	private HBox hBoxDifficulty;
+	
+    @FXML
+    private Spinner spinnerTime;
+	
+    @FXML
+    private CheckBox checkBoxUndo;
 
 	/**
 	 * Grant access to the GomokuGUI main controller.
@@ -192,5 +199,6 @@ public class StartMenuController {
 		initToggleListener(difficultyGroup);
 		initToggleListener(userColorGroup);
 		initToggleListener(boardSizeGroup);
+		spinnerTime.setStyle("-fx-font-size: 17px");
 	}
 }
