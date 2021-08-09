@@ -84,7 +84,7 @@
 										</HBox>
 										<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
 											<children>
-												<Label fx:id="labelBlackTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: transparent;" text="5:00">
+												<Label fx:id="labelBlackTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 18;" text="5:00">
 													<font>
 														<Font size="18.0" />
 													</font>

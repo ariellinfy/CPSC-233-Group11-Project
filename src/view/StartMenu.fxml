@@ -73,7 +73,7 @@
                         </Label>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" text="Computer">
+                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="opponentGroup" />
                                  </toggleGroup>
@@ -84,7 +84,7 @@
                                     <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
-                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" text="Human" toggleGroup="$opponentGroup">
+                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" toggleGroup="$opponentGroup">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -96,7 +96,7 @@
                         </HBox>
                         <HBox fx:id="hBoxDifficulty" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" text="Easy">
+                              <ToggleButton mnemonicParsing="false" prefWidth="106.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -107,7 +107,7 @@
                                     <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
-                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" text="Medium" toggleGroup="$difficultyGroup">
+                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" toggleGroup="$difficultyGroup">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -115,7 +115,7 @@
                                     <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
-                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" text="Hard" toggleGroup="$difficultyGroup">
+                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" toggleGroup="$difficultyGroup">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -127,7 +127,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" text="Black">
+                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -138,7 +138,7 @@
                                     <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
-                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" text="White" toggleGroup="$userColorGroup">
+                              <ToggleButton mnemonicParsing="false" prefWidth="106.0" toggleGroup="$userColorGroup">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -150,7 +150,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <ToggleButton mnemonicParsing="false" prefWidth="79.5" text="9x9">
+                              <ToggleButton mnemonicParsing="false" prefWidth="79.5">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="boardSizeGroup" />
                                  </toggleGroup>
@@ -161,7 +161,7 @@
                                     <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
-                              <ToggleButton mnemonicParsing="false" prefWidth="79.5" text="13x13" toggleGroup="$boardSizeGroup">
+                              <ToggleButton mnemonicParsing="false" prefWidth="79.5" toggleGroup="$boardSizeGroup">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -169,7 +169,7 @@
                                     <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
-                              <ToggleButton mnemonicParsing="false" prefWidth="79.5" selected="true" text="15x15" toggleGroup="$boardSizeGroup">
+                              <ToggleButton mnemonicParsing="false" prefWidth="79.5" selected="true" toggleGroup="$boardSizeGroup">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -177,7 +177,7 @@
                                     <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
-                              <ToggleButton mnemonicParsing="false" prefWidth="79.5" text="19x19" toggleGroup="$boardSizeGroup">
+                              <ToggleButton mnemonicParsing="false" prefWidth="79.5" toggleGroup="$boardSizeGroup">
                                  <font>
                                     <Font size="18.0" />
                                  </font>

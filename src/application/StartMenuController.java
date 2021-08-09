@@ -4,6 +4,7 @@ import java.util.function.UnaryOperator;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -133,21 +134,25 @@ public class StartMenuController {
 	 * @param toggleGroup a toggle group that contains a number of toggle buttons.
 	 */
 	private void setToggleButton(ToggleGroup toggleGroup) {
-		/*
-		 * The user data in the boardSize toggle group is set differently than the other
-		 * groups.
-		 */
-		if (!toggleGroup.equals(boardSizeGroup)) {
-			// Set user data based on toggle's text value.
-			for (Toggle toggle : toggleGroup.getToggles()) {
-				toggle.setUserData(((ToggleButton) toggle).getText());
-			}
-		} else {
-			// Board size user data is set with an integer number only.
-			for (Toggle toggle : toggleGroup.getToggles()) {
-				int size = Integer.parseInt(((ToggleButton) toggle).getText().split("x")[0]);
-				toggle.setUserData(size);
-			}
+		if (toggleGroup.equals(opponentGroup)) {
+			ObservableList<Toggle> opponent = toggleGroup.getToggles();
+			opponent.get(0).setUserData("Computer");
+			opponent.get(1).setUserData("Human");
+		} else if (toggleGroup.equals(difficultyGroup)) {
+			ObservableList<Toggle> levels = toggleGroup.getToggles();
+			levels.get(0).setUserData("Easy");
+			levels.get(1).setUserData("Medium");
+			levels.get(2).setUserData("Hard");
+		} else if (toggleGroup.equals(userColorGroup)) {
+			ObservableList<Toggle> playerColors = toggleGroup.getToggles();
+			playerColors.get(0).setUserData("Black");
+			playerColors.get(1).setUserData("White");
+		} else if (toggleGroup.equals(boardSizeGroup)) {
+			ObservableList<Toggle> boardSizes = toggleGroup.getToggles();
+			boardSizes.get(0).setUserData(9);
+			boardSizes.get(1).setUserData(13);
+			boardSizes.get(2).setUserData(15);
+			boardSizes.get(3).setUserData(19);
 		}
 	}
 
