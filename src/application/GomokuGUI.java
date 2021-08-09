@@ -133,9 +133,15 @@ public class GomokuGUI extends Application {
 			 * The board size in OnGameController is set using current data of the config
 			 * object.
 			 */
-			gameViewController.setBoardSize(config.getChessBoard().getBoardSize());
+			int boardSize = config.getChessBoard().getBoardSize();
+			gameViewController.setBoardSize(boardSize);
 			gameViewController.linkWithApplication(this);
-			primaryStage.sizeToScene();
+			if (boardSize > 15) {
+				primaryStage.setWidth(1450);
+				primaryStage.setHeight(875);
+			} else {
+				primaryStage.sizeToScene();
+			}
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		} catch (IOException e) {

@@ -8,15 +8,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="650.0" prefWidth="1215.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="675.0" prefWidth="1260.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
    <content>
-      <BorderPane prefHeight="650.0" prefWidth="1210.0">
+      <BorderPane prefWidth="1250.0">
          <center>
             <StackPane fx:id="paneBoardArea">
                <children>
                   <Pane fx:id="paneBoard" onMouseClicked="#onNextMove">
                      <StackPane.margin>
-                        <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
+                        <Insets bottom="30.0" left="60.0" right="20.0" top="60.0" />
                      </StackPane.margin>
                   </Pane>
                </children>

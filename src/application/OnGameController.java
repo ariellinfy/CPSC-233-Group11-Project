@@ -1,7 +1,9 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Map;
 
+import javafx.beans.binding.Bindings;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.ObjectProperty;
@@ -17,9 +19,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+
 import java.time.Duration;
 import model.*;
-import javafx.beans.binding.Bindings;
 
 /**
  * A view that displays the game board, and handles board-related events such as
@@ -66,7 +72,6 @@ public class OnGameController {
 	 */
 	void setBoardSize(int boardSize) {
 		this.boardSize = boardSize;
-		drawBoard();
 	}
 
 	/**
@@ -82,6 +87,7 @@ public class OnGameController {
 		if (config.getUndo()) {
 			buttonUndo.setDisable(false);
 		}
+		drawBoard();
 		setupCountdownTimer(blackTimeline, labelBlackTime);
 		setupCountdownTimer(whiteTimeline, labelWhiteTime);
 		blackTimerContinue();
@@ -170,11 +176,29 @@ public class OnGameController {
 			paneBoard.getChildren().add(hLine);
 			paneBoard.getChildren().add(vLine);
 		}
-		/*
-		 * drawPoint() is invoked at the end of the method to draw a series of dots on
-		 * the completed grid game board.
-		 */
-		drawPoint();
+		drawCoord();
+		drawPoint();		
+	}
+
+	private void drawCoord() {
+		Map<Integer, Character> alphabetList = config.getChessBoard().getAlphabetList();	
+		for (int i = 0; i < boardSize; i++) {
+			Text textX = new Text();
+			textX.setFont(new Font(16));
+			textX.setTextAlignment(TextAlignment.CENTER);
+			textX.setWrappingWidth(20);
+			textX.setText(alphabetList.get(i + 1).toString());
+			textX.setX(-10 + (i * LINE_SPACING));
+			textX.setY(-16);
+			Text textY = new Text();
+			textY.setFont(new Font(16));
+			textY.setTextAlignment(TextAlignment.CENTER);
+			textY.setWrappingWidth(40);
+			textY.setText(String.valueOf(i + 1));
+			textY.setX(-44);
+			textY.setY(6 + (i * LINE_SPACING));
+			paneBoard.getChildren().addAll(textX, textY);
+		}
 	}
 
 	/**
