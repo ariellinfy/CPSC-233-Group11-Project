@@ -12,9 +12,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -22,7 +26,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
 import java.time.Duration;
 import model.*;
@@ -43,12 +46,18 @@ public class OnGameController {
 	private Timeline blackTimeline = new Timeline();
 	private Timeline whiteTimeline = new Timeline();
 
+	@FXML
+	private StackPane paneBoardArea;
+
 	// A layout container containing the grid game board.
 	@FXML
 	private Pane paneBoard;
 
 	@FXML
-	private StackPane paneBoardArea;
+	private ScrollPane scrollPaneMoveLogs;
+
+	@FXML
+	private GridPane gridPaneMoveLogs;
 
 	@FXML
 	private Label labelBlackTime;
@@ -61,6 +70,9 @@ public class OnGameController {
 
 	@FXML
 	private Label labelWhiteName;
+
+	@FXML
+	private Label labelStatusMessage;
 
 	@FXML
 	private Button buttonUndo;
@@ -84,6 +96,7 @@ public class OnGameController {
 		this.config = app.getGameConfiguration();
 		labelBlackName.setText(app.getPlayerBlack().getPlayerName());
 		labelWhiteName.setText(app.getPlayerWhite().getPlayerName());
+		labelStatusMessage.setText("Welcome, black's turn!");
 		if (config.getUndo()) {
 			buttonUndo.setDisable(false);
 		}
@@ -177,11 +190,11 @@ public class OnGameController {
 			paneBoard.getChildren().add(vLine);
 		}
 		drawCoord();
-		drawPoint();		
+		drawPoint();
 	}
 
 	private void drawCoord() {
-		Map<Integer, Character> alphabetList = config.getChessBoard().getAlphabetList();	
+		Map<Integer, Character> alphabetList = config.getChessBoard().getAlphabetList();
 		for (int i = 0; i < boardSize; i++) {
 			Text textX = new Text();
 			textX.setFont(new Font(16));
@@ -275,10 +288,34 @@ public class OnGameController {
 		ds.setOffsetY(2.0);
 		circle.setEffect(ds);
 		paneBoard.getChildren().add(circle);
+
+		addLog(move);
+		scrollPaneMoveLogs.setVvalue(1D);
 	}
 
 	private void removeStone(Move move) {
 		paneBoard.getChildren().remove(paneBoard.getChildren().size() - 1);
+	}
+
+	private void addLog(Move move) {
+		Map<Integer, Character> alphabetList = config.getChessBoard().getAlphabetList();
+		int row = move.getRow();
+		int col = move.getCol();
+		int count = app.getPlayerBlack().getNumOfMoves();
+		Label numOfMoves = new Label(String.valueOf(count));
+		String coord = String.valueOf(alphabetList.get(col + 1)) + (row + 1);
+		Label moveLog = new Label(coord);
+		if (move.getStone() == Stone.BLACK) {
+			gridPaneMoveLogs.add(numOfMoves, 0, count);
+			gridPaneMoveLogs.add(moveLog, 1, count);
+			gridPaneMoveLogs.getRowConstraints().add(new RowConstraints());
+			gridPaneMoveLogs.getRowConstraints().get(count).setMinHeight(30);
+			gridPaneMoveLogs.getRowConstraints().get(count).setPrefHeight(30);
+			gridPaneMoveLogs.getRowConstraints().get(count).setVgrow(Priority.SOMETIMES);
+		} else {
+			gridPaneMoveLogs.add(moveLog, 2, count);
+		}
+//		gridPaneMoveLogs.setStyle("-fx-font-size: 16px; -fx-background-color: white;");
 	}
 
 	/**
