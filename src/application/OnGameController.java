@@ -8,8 +8,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -58,6 +60,12 @@ public class OnGameController {
 
 	@FXML
 	private GridPane gridPaneMoveLogs;
+
+	@FXML
+	private Label labelBlack;
+
+	@FXML
+	private Label labelWhite;
 
 	@FXML
 	private Label labelBlackTime;
@@ -288,7 +296,6 @@ public class OnGameController {
 		ds.setOffsetY(2.0);
 		circle.setEffect(ds);
 		paneBoard.getChildren().add(circle);
-
 		addLog(move);
 		scrollPaneMoveLogs.setVvalue(1D);
 	}
@@ -315,7 +322,31 @@ public class OnGameController {
 		} else {
 			gridPaneMoveLogs.add(moveLog, 2, count);
 		}
-//		gridPaneMoveLogs.setStyle("-fx-font-size: 16px; -fx-background-color: white;");
+	}
+
+	private void removeLogs() {
+		if (blackTurn) {
+			int count = app.getPlayerWhite().getNumOfMoves();
+			removeNode(count + 1, 2);
+			removeNode(count + 1, 1);
+			removeNode(count + 1, 0);
+		} else {
+			int count = app.getPlayerBlack().getNumOfMoves();
+			removeNode(count + 1, 1);
+			removeNode(count, 2);
+			removeNode(count + 1, 0);
+		}
+	}
+
+	private void removeNode(int row, int column) {
+		ObservableList<Node> childrens = gridPaneMoveLogs.getChildren();
+		for (Node node : childrens) {
+			if (node instanceof Label && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+				Label coord = (Label) node;
+				gridPaneMoveLogs.getChildren().remove(coord);
+				return;
+			}
+		}
 	}
 
 	/**
@@ -342,7 +373,6 @@ public class OnGameController {
 		 */
 		int col = (int) Math.round(x / LINE_SPACING);
 		int row = (int) Math.round(y / LINE_SPACING);
-		System.out.println(row + ", " + col);
 		try {
 			if (blackTurn) {
 				nextBlackMove(row, col, app.getPlayerBlack());
@@ -350,7 +380,8 @@ public class OnGameController {
 				nextWhiteMove(row, col, app.getPlayerWhite());
 			}
 		} catch (InvalidPlacementException ex) {
-//			System.out.println(ex.getMessage());
+			labelStatusMessage.setText(ex.getMessage());
+			labelStatusMessage.setTextFill(Color.RED);
 		}
 	}
 
@@ -372,7 +403,6 @@ public class OnGameController {
 	 */
 	private void nextAIMove(Player nextPlayer, Player currentPlayer) {
 		// If conditions checks if "nextPlayer" is an instance of ComputerPlayer.
-
 		if (nextPlayer instanceof ComputerPlayer) {
 			Move move = nextPlayer.getMove(config);
 			placeMove(move, nextPlayer, currentPlayer);
@@ -435,6 +465,7 @@ public class OnGameController {
 	 * @param opponent      a Player object of the opposing player.
 	 */
 	private void placeMove(Move move, Player currentPlayer, Player opponent) {
+		labelStatusMessage.setText("");
 		/*
 		 * Current player's "validMoveList" and "numOfMoves" instance variables are
 		 * updated with the latest valid move.
@@ -457,10 +488,11 @@ public class OnGameController {
 		 */
 		if (roundResult == Result.CONTINUE && checkNumOfMoves == Result.CONTINUE) {
 			blackTurn = !blackTurn;
+			signalTurn();
+		} else if (checkNumOfMoves == Result.DRAW) {
 			/*
 			 * If the board has no empty spot, the game will end with a draw result.
 			 */
-		} else if (checkNumOfMoves == Result.DRAW) {
 			stopAllTimers();
 			app.gameOver(checkNumOfMoves);
 		} else {
@@ -473,6 +505,35 @@ public class OnGameController {
 		}
 	}
 
+	private void signalTurn() {
+		String msg = null;
+		if (blackTurn) {
+			msg = "Black's Turn";
+			onTurnStyle(labelBlack, labelBlackName, labelBlackTime);
+			resetStyle(labelWhite, labelWhiteName, labelWhiteTime);
+		} else {
+			msg = "White's Turn";
+			onTurnStyle(labelWhite, labelWhiteName, labelWhiteTime);
+			resetStyle(labelBlack, labelBlackName, labelBlackTime);
+		}
+		labelStatusMessage.setText(msg);
+		labelStatusMessage.setTextFill(Color.BLACK);
+	}
+
+	private void onTurnStyle(Label label, Label name, Label time) {
+		label.setStyle("-fx-font-weight: bold; -fx-background-color: black; -fx-font-size: 16px");
+		name.setStyle(
+				"-fx-font-weight: bold; -fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2px; -fx-font-size: 18px");
+		time.setStyle("-fx-font-weight: bold; -fx-background-color: transparent; -fx-font-size: 18px");
+	}
+
+	private void resetStyle(Label label, Label name, Label time) {
+		label.setStyle("-fx-background-color: black; -fx-font-size: 14px");
+		name.setStyle(
+				"-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2px; -fx-font-size: 18px");
+		time.setStyle("-fx-background-color: transparent; -fx-font-size: 18px");
+	}
+
 	@FXML
 	private void onUndo(ActionEvent event) {
 		Player playerBlack = app.getPlayerBlack();
@@ -482,10 +543,10 @@ public class OnGameController {
 			for (Move move : undoMoves) {
 				removeStone(move);
 			}
+			removeLogs();
 		} catch (InvalidUndoException e) {
-			// Need to add warning message box to show the error
-			System.out.println(e.getMessage());
-//			e.printStackTrace();
+			labelStatusMessage.setText(e.getMessage());
+			labelStatusMessage.setTextFill(Color.RED);
 		}
 	}
 
@@ -535,8 +596,17 @@ public class OnGameController {
 				: "fx:id=\"labelBlackTime\" was not injected: check your FXML file 'OnGameView.fxml'.";
 		assert labelWhiteTime != null
 				: "fx:id=\"labelWhiteTime\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert scrollPaneMoveLogs != null
+				: "fx:id=\"scrollPaneMoveLogs\" was not injected: check your FXML file 'OnGameView.fxml'.";
 		assert paneBoardArea != null
 				: "fx:id=\"paneBoardArea\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert labelBlack != null : "fx:id=\"labelBlack\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert buttonUndo != null : "fx:id=\"buttonUndo\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert labelStatusMessage != null
+				: "fx:id=\"labelStatusMessage\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert labelWhite != null : "fx:id=\"labelWhite\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert gridPaneMoveLogs != null
+				: "fx:id=\"gridPaneMoveLogs\" was not injected: check your FXML file 'OnGameView.fxml'.";
 		assert labelWhiteName != null
 				: "fx:id=\"labelWhiteName\" was not injected: check your FXML file 'OnGameView.fxml'.";
 	}

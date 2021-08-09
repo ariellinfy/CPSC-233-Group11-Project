@@ -81,7 +81,7 @@
                                     <Font size="18.0" />
                                  </font>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                               <ToggleButton mnemonicParsing="false" prefWidth="106.0" text="Human" toggleGroup="$opponentGroup">
@@ -89,7 +89,7 @@
                                     <Font size="18.0" />
                                  </font>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                            </children>
@@ -104,7 +104,7 @@
                                     <ToggleGroup fx:id="difficultyGroup" />
                                  </toggleGroup>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                               <ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" text="Medium" toggleGroup="$difficultyGroup">
@@ -112,7 +112,7 @@
                                     <Font size="18.0" />
                                  </font>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                               <ToggleButton mnemonicParsing="false" prefWidth="106.0" text="Hard" toggleGroup="$difficultyGroup">
@@ -120,7 +120,7 @@
                                     <Font size="18.0" />
                                  </font>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                            </children>
@@ -135,7 +135,7 @@
                                     <ToggleGroup fx:id="userColorGroup" />
                                  </toggleGroup>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                               <ToggleButton mnemonicParsing="false" prefWidth="106.0" text="White" toggleGroup="$userColorGroup">
@@ -143,7 +143,7 @@
                                     <Font size="18.0" />
                                  </font>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                            </children>
@@ -158,7 +158,7 @@
                                     <Font size="18.0" />
                                  </font>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                               <ToggleButton mnemonicParsing="false" prefWidth="79.5" text="13x13" toggleGroup="$boardSizeGroup">
@@ -166,7 +166,7 @@
                                     <Font size="18.0" />
                                  </font>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                               <ToggleButton mnemonicParsing="false" prefWidth="79.5" selected="true" text="15x15" toggleGroup="$boardSizeGroup">
@@ -174,7 +174,7 @@
                                     <Font size="18.0" />
                                  </font>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                               <ToggleButton mnemonicParsing="false" prefWidth="79.5" text="19x19" toggleGroup="$boardSizeGroup">
@@ -182,7 +182,7 @@
                                     <Font size="18.0" />
                                  </font>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
                                  </padding>
                               </ToggleButton>
                            </children>
@@ -229,7 +229,7 @@
                               <Insets right="25.0" />
                            </HBox.margin>
                            <padding>
-                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                              <Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
                            </padding>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onStartGame" prefWidth="200.0" text="Start">
@@ -240,7 +240,7 @@
                               <Insets left="25.0" />
                            </HBox.margin>
                            <padding>
-                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                              <Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
                            </padding>
                         </Button>
                      </children>
