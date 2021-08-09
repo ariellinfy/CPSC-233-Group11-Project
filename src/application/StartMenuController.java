@@ -1,6 +1,5 @@
 package application;
 
-import java.text.ParsePosition;
 import java.util.function.UnaryOperator;
 
 import javafx.beans.value.ChangeListener;
@@ -10,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;

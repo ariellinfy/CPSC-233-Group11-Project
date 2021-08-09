@@ -119,7 +119,7 @@ public class GameConfiguration {
 	 */
 	public int calculateScore(Player winner, Player opponent) {
 		int numOfMoves = winner.getNumOfMoves();
-		int gamescore = (numOfMoves / 5) + 1;
+		int gamescore = numOfMoves % 5 == 0 ? numOfMoves / 5 : (numOfMoves / 5) + 1;
 		int winnerScore = 20 - gamescore;
 		allocateScore(winner, winnerScore);
 		allocateScore(opponent, -winnerScore);
