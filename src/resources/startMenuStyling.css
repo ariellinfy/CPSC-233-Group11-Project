@@ -1,0 +1,60 @@
+.root {
+	-fx-background-image: url("Light-Wood-Background.png");
+	-fx-background-size: 100% 100%;
+}
+
+.toggle-button {
+    -fx-padding: 8 15 15 15;
+    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #ad6440 0%, #9d5b3b 100%),
+        #a15741,
+        #d58157,
+        radial-gradient(center 50% 50%, radius 100%, #d09979, #c3815b);
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+}
+
+.toggle-button:pressed {
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #7c492f 0%, #70452e 100%),
+        #6f3d2e,
+        #96513d,
+        radial-gradient(center 50% 50%, radius 100%, #7e5e4b, #754f39);
+}
+
+.toggle-button:selected {
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #874f33 0%, #794a32 100%),
+        #7a4332,
+        #a15741,
+        radial-gradient(center 50% 50%, radius 100%, #886550, #80563e);
+}
+
+.button {
+    -fx-padding: 8 15 15 15;
+    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #ad6440 0%, #9d5b3b 100%),
+        #a15741,
+        #d58157,
+        radial-gradient(center 50% 50%, radius 100%, #d09979, #c3815b);
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+}
+
+.button:pressed {
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #7c492f 0%, #70452e 100%),
+        #6f3d2e,
+        #96513d,
+        radial-gradient(center 50% 50%, radius 100%, #7e5e4b, #754f39);
+}
+
+.button:selected {
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #874f33 0%, #794a32 100%),
+        #7a4332,
+        #a15741,
+        radial-gradient(center 50% 50%, radius 100%, #886550, #80563e);
+}
