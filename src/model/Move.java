@@ -52,6 +52,13 @@ public class Move {
 	public Stone getStone() {
 		return stone;
 	}
+	
+	/**
+	 * Reset this move to be an empty stone.
+	 */
+	public void setEmptyStone() {
+		this.stone = Stone.EMPTY;
+	}
 
 	/**
 	 * Customize toString method by overriding the default method inherited from

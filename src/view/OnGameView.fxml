@@ -8,102 +8,191 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="640.0" prefWidth="880.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
-   <center>
-      <StackPane fx:id="paneBoardArea">
-         <children>
-            <Pane fx:id="paneBoard" onMouseClicked="#onNextMove" prefHeight="200.0" prefWidth="200.0">
-               <StackPane.margin>
-                  <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
-               </StackPane.margin></Pane>
-         </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-      </StackPane>
-   </center>
-   <right>
-      <VBox prefWidth="285.0" BorderPane.alignment="CENTER" />
-   </right>
-   <left>
-      <VBox prefWidth="285.0" BorderPane.alignment="CENTER">
-         <children>
-            <GridPane alignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label fx:id="labelPlayerBlackName" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelPlayerWhiteName" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelBlackTime" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelWhiteTime" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="Black">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="White" GridPane.columnIndex="1">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </GridPane>
-            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" text="Undo">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-            <ScrollPane prefHeight="396.0" prefWidth="284.0" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#onExitGame" text="Quit">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#onRestart" text="Start New Game">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-         </children>
-         <padding>
-            <Insets top="20.0" />
-         </padding></VBox>
-   </left>
-</BorderPane>
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="675.0" prefWidth="1260.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
+	<content>
+		<BorderPane prefWidth="1250.0">
+			<center>
+				<StackPane fx:id="paneBoardArea">
+					<children>
+						<Pane fx:id="paneBoard" onMouseClicked="#onNextMove" style="-fx-border-radius: 5; -fx-cursor: hand;">
+							<StackPane.margin>
+								<Insets bottom="30.0" left="60.0" right="20.0" top="60.0" />
+							</StackPane.margin>
+						</Pane>
+					</children>
+					<BorderPane.margin>
+						<Insets />
+					</BorderPane.margin>
+				</StackPane>
+			</center>
+			<right>
+				<VBox alignment="CENTER" prefWidth="285.0" BorderPane.alignment="CENTER">
+					<BorderPane.margin>
+						<Insets right="20.0" />
+					</BorderPane.margin>
+					<children>
+						<Label fx:id="labelStatusMessage" alignment="CENTER" lineSpacing="5.0" prefHeight="193.0" prefWidth="241.0" text="message" textAlignment="CENTER" wrapText="true">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+					</children>
+				</VBox>
+			</right>
+			<left>
+				<VBox alignment="CENTER">
+					<children>
+						<VBox prefWidth="285.0" BorderPane.alignment="CENTER">
+							<children>
+								<GridPane alignment="CENTER" minHeight="120.0" prefHeight="140.0" prefWidth="285.0">
+									<columnConstraints>
+										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+									</columnConstraints>
+									<rowConstraints>
+										<RowConstraints minHeight="10.0" prefHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="15.0" valignment="CENTER" vgrow="SOMETIMES" />
+									</rowConstraints>
+									<children>
+										<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+											<children>
+												<Label fx:id="labelBlack" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: black; -fx-font-weight: bold; -fx-font-size: 16;" text="Black" textFill="WHITE">
+													<font>
+														<Font name="System Bold" size="14.0" />
+													</font>
+												</Label>
+												<Label fx:id="labelWhite" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: black;" text="White" textFill="WHITE">
+													<font>
+														<Font name="System Bold" size="14.0" />
+													</font>
+												</Label>
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+											<children>
+												<Label fx:id="labelBlackName" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2; -fx-font-weight: bold; -fx-font-size: 18;" text="player1">
+													<font>
+														<Font size="18.0" />
+													</font>
+												</Label>
+												<Label fx:id="labelWhiteName" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2;" text="player2">
+													<font>
+														<Font size="18.0" />
+													</font>
+												</Label>
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+											<children>
+												<Label fx:id="labelBlackTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 18;" text="5:00">
+													<font>
+														<Font size="18.0" />
+													</font>
+												</Label>
+												<Label fx:id="labelWhiteTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: transparent;" text="5:00">
+													<font>
+														<Font size="18.0" />
+													</font>
+												</Label>
+											</children>
+										</HBox>
+									</children>
+									<VBox.margin>
+										<Insets bottom="10.0" />
+									</VBox.margin>
+								</GridPane>
+								<Separator prefWidth="200.0" />
+								<HBox alignment="CENTER" prefHeight="75.0" prefWidth="200.0">
+									<children>
+										<Button mnemonicParsing="false" onAction="#onDraw" prefWidth="100.0" text="Draw">
+											<font>
+												<Font size="18.0" />
+											</font>
+											<HBox.margin>
+												<Insets left="10.0" right="10.0" />
+											</HBox.margin>
+											<padding>
+												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+											</padding>
+										</Button>
+										<Button fx:id="buttonUndo" disable="true" mnemonicParsing="false" onAction="#onUndo" prefWidth="100.0" text="Undo">
+											<font>
+												<Font size="18.0" />
+											</font>
+											<HBox.margin>
+												<Insets left="10.0" right="10.0" />
+											</HBox.margin>
+											<padding>
+												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+											</padding>
+										</Button>
+									</children>
+									<VBox.margin>
+										<Insets bottom="10.0" top="10.0" />
+									</VBox.margin>
+								</HBox>
+								<ScrollPane fx:id="scrollPaneMoveLogs" fitToHeight="true" fitToWidth="true" minHeight="100.0" prefHeight="274.0" prefWidth="285.0" style="-fx-background-radius: 5; -fx-background-insets: 5;" vvalue="1.0">
+									<VBox.margin>
+										<Insets />
+									</VBox.margin>
+									<content>
+										<GridPane fx:id="gridPaneMoveLogs" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" prefHeight="272.0" prefWidth="283.0" style="-fx-background-color: white; -fx-font-size: 16;">
+											<columnConstraints>
+												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="117.5" />
+												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="117.5" />
+											</columnConstraints>
+											<rowConstraints>
+												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+											</rowConstraints>
+										</GridPane>
+									</content>
+								</ScrollPane>
+								<VBox alignment="CENTER" prefHeight="175.0" prefWidth="100.0">
+									<children>
+										<Button mnemonicParsing="false" onAction="#onExitGame" prefWidth="210.0" text="Quit">
+											<font>
+												<Font size="18.0" />
+											</font>
+											<VBox.margin>
+												<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+											</VBox.margin>
+											<padding>
+												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+											</padding>
+										</Button>
+										<Button mnemonicParsing="false" onAction="#onRestart" prefWidth="210.0" text="Start New Game">
+											<font>
+												<Font size="18.0" />
+											</font>
+											<VBox.margin>
+												<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+											</VBox.margin>
+											<padding>
+												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+											</padding>
+										</Button>
+									</children>
+								</VBox>
+							</children>
+							<padding>
+								<Insets top="20.0" />
+							</padding>
+						</VBox>
+					</children>
+					<BorderPane.margin>
+						<Insets left="20.0" />
+					</BorderPane.margin>
+				</VBox>
+			</left>
+		</BorderPane>
+	</content>
+</ScrollPane>

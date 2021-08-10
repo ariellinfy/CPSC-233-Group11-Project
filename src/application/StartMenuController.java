@@ -1,16 +1,21 @@
 package application;
 
-import java.io.File;
 
+import java.util.function.UnaryOperator;
+import java.io.File;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
+import javafx.util.converter.IntegerStringConverter;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.*;
@@ -39,6 +44,12 @@ public class StartMenuController {
 
 	@FXML
 	private HBox hBoxDifficulty;
+
+	@FXML
+	private Spinner<Integer> spinnerGameTime;
+
+	@FXML
+	private CheckBox checkBoxUndo;
 
 	/**
 	 * Grant access to the GomokuGUI main controller.
@@ -101,10 +112,12 @@ public class StartMenuController {
 	/**
 	 * Updates boardSize in config object based on user selected size.
 	 */
-	private void setupBoard() {
+	private void setupGameConfig() {
 		GameConfiguration config = app.getGameConfiguration();
 		Board board = new Board((Integer) boardSizeGroup.getSelectedToggle().getUserData());
 		config.setChessBoard(board);
+		config.setUndo(!checkBoxUndo.isSelected());
+		config.setGameTime(spinnerGameTime.getValue());
 	}
 
 	/**
@@ -118,7 +131,7 @@ public class StartMenuController {
 		playSound();
 		Player opponent = setupOpponent();
 		chooseColor(opponent);
-		setupBoard();
+		setupGameConfig();
 		app.playGame();
 	}
 
@@ -128,21 +141,25 @@ public class StartMenuController {
 	 * @param toggleGroup a toggle group that contains a number of toggle buttons.
 	 */
 	private void setToggleButton(ToggleGroup toggleGroup) {
-		/*
-		 * The user data in the boardSize toggle group is set differently than the other
-		 * groups.
-		 */
-		if (!toggleGroup.equals(boardSizeGroup)) {
-			// Set user data based on toggle's text value.
-			for (Toggle toggle : toggleGroup.getToggles()) {
-				toggle.setUserData(((ToggleButton) toggle).getText());
-			}
-		} else {
-			// Board size user data is set with an integer number only.
-			for (Toggle toggle : toggleGroup.getToggles()) {
-				int size = Integer.parseInt(((ToggleButton) toggle).getText().split("x")[0]);
-				toggle.setUserData(size);
-			}
+		if (toggleGroup.equals(opponentGroup)) {
+			ObservableList<Toggle> opponent = toggleGroup.getToggles();
+			opponent.get(0).setUserData("Computer");
+			opponent.get(1).setUserData("Human");
+		} else if (toggleGroup.equals(difficultyGroup)) {
+			ObservableList<Toggle> levels = toggleGroup.getToggles();
+			levels.get(0).setUserData("Easy");
+			levels.get(1).setUserData("Medium");
+			levels.get(2).setUserData("Hard");
+		} else if (toggleGroup.equals(userColorGroup)) {
+			ObservableList<Toggle> playerColors = toggleGroup.getToggles();
+			playerColors.get(0).setUserData("Black");
+			playerColors.get(1).setUserData("White");
+		} else if (toggleGroup.equals(boardSizeGroup)) {
+			ObservableList<Toggle> boardSizes = toggleGroup.getToggles();
+			boardSizes.get(0).setUserData(9);
+			boardSizes.get(1).setUserData(13);
+			boardSizes.get(2).setUserData(15);
+			boardSizes.get(3).setUserData(19);
 		}
 	}
 	
@@ -188,6 +205,24 @@ public class StartMenuController {
 		});
 	}
 
+	private void initSpinnerListener() {
+		// Allows only integer number as input.
+		UnaryOperator<TextFormatter.Change> filter = change -> {
+			if (change.isAdded() || change.isReplaced()) {
+				change = !change.getText().matches("\\d+") ? null : change;
+			}
+			return change;
+		};
+		TextFormatter<Integer> gameTimeFormatter = new TextFormatter<Integer>(new IntegerStringConverter(), 5, filter);
+		spinnerGameTime.getEditor().setTextFormatter(gameTimeFormatter);
+		// Set spinner default to 5 min if spinner field is empty.
+		spinnerGameTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue == null) {
+				spinnerGameTime.getValueFactory().setValue(5);
+			}
+		});
+	}
+
 	/**
 	 * Initialize method that is invoked once to set up this controller once the
 	 * StartMenu.fxml file has been loaded. This method also setup toggle listener
@@ -207,5 +242,6 @@ public class StartMenuController {
 		initToggleListener(difficultyGroup);
 		initToggleListener(userColorGroup);
 		initToggleListener(boardSizeGroup);
+		initSpinnerListener();
 	}
 }

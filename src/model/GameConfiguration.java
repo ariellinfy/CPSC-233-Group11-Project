@@ -14,6 +14,8 @@ import java.util.Map;
 public class GameConfiguration {
 	private static final int WIN_COUNT = 5;
 	private Board chessBoard;
+	private boolean allowUndo = false;
+	private int gameTime = 5;
 
 	/**
 	 * Get the board object of this game.
@@ -34,6 +36,22 @@ public class GameConfiguration {
 		chessBoard.initBoard();
 	}
 
+	public boolean getUndo() {
+		return allowUndo;
+	}
+	
+	public void setUndo(boolean undo) {
+		this.allowUndo = undo;
+	}
+	
+	public int getGameTime() {
+		return gameTime;
+	}
+	
+	public void setGameTime(int gameTime) {
+		this.gameTime = gameTime;
+	}
+	
 	/**
 	 * Add a move and update the game board.
 	 * 
@@ -41,6 +59,54 @@ public class GameConfiguration {
 	 */
 	public void updateBoard(Move move) {
 		chessBoard.setCoord(move.getRow(), move.getCol(), move.getStone());
+	}
+	
+	public boolean checkPlayersNumOfMoves(Player playerBlack, Player playerWhite) {
+		return playerBlack.getNumOfMoves() == playerWhite.getNumOfMoves();
+	}
+	
+	public boolean isMoveAvailable(Player currentPlayer) {
+		return currentPlayer.getNumOfMoves() > 0;
+	}
+	
+	public ArrayList<Move> undoMove(boolean blackTurn, Player playerBlack, Player playerWhite) throws InvalidUndoException {
+		ArrayList<Move> undoMoves = new ArrayList<Move>();
+		Move lastMove = null;
+		if (blackTurn) {
+			if (checkPlayersNumOfMoves(playerBlack, playerWhite) && isMoveAvailable(playerWhite) && isMoveAvailable(playerBlack)) {
+				lastMove = removeMove(playerWhite);
+				undoMoves.add(lastMove);
+				lastMove = removeMove(playerBlack);
+				undoMoves.add(lastMove);
+			} else if (isMoveAvailable(playerBlack)) {
+				lastMove = removeMove(playerBlack);
+				undoMoves.add(lastMove);
+			} else {
+				throw new InvalidUndoException("Undo is not allowed in current board status.");
+			}
+		} else {
+			if (checkPlayersNumOfMoves(playerBlack, playerWhite) && isMoveAvailable(playerWhite)) {
+				lastMove = removeMove(playerWhite);
+				undoMoves.add(lastMove);
+			} else if (isMoveAvailable(playerBlack) && isMoveAvailable(playerWhite)) {
+				lastMove = removeMove(playerBlack);
+				undoMoves.add(lastMove);
+				lastMove = removeMove(playerWhite);
+				undoMoves.add(lastMove);
+			} else {
+				throw new InvalidUndoException("Undo is not allowed in current board status.");
+			}
+		}
+		return undoMoves;
+	}
+	
+	public Move removeMove(Player currentPlayer) {
+		Move lastMove = currentPlayer.getAllValidMoves().get(currentPlayer.getNumOfMoves() - 1);
+		currentPlayer.getAllValidMoves().remove(currentPlayer.getNumOfMoves() - 1);
+		currentPlayer.decrementMoveCount();
+		lastMove.setEmptyStone();
+		updateBoard(lastMove);
+		return lastMove;
 	}
 
 	/**
@@ -53,7 +119,7 @@ public class GameConfiguration {
 	 */
 	public int calculateScore(Player winner, Player opponent) {
 		int numOfMoves = winner.getNumOfMoves();
-		int gamescore = (numOfMoves / 5) + 1;
+		int gamescore = numOfMoves % 5 == 0 ? numOfMoves / 5 : (numOfMoves / 5) + 1;
 		int winnerScore = 20 - gamescore;
 		allocateScore(winner, winnerScore);
 		allocateScore(opponent, -winnerScore);

@@ -1,14 +1,35 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import javafx.beans.binding.Bindings;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+
+import java.time.Duration;
 import model.*;
 
 /**
@@ -24,13 +45,45 @@ public class OnGameController {
 	private boolean blackTurn = true;
 	private GomokuGUI app;
 	private GameConfiguration config;
+	private Timeline blackTimeline = new Timeline();
+	private Timeline whiteTimeline = new Timeline();
+
+	@FXML
+	private StackPane paneBoardArea;
 
 	// A layout container containing the grid game board.
 	@FXML
 	private Pane paneBoard;
 
 	@FXML
-	private StackPane paneBoardArea;
+	private ScrollPane scrollPaneMoveLogs;
+
+	@FXML
+	private GridPane gridPaneMoveLogs;
+
+	@FXML
+	private Label labelBlack;
+
+	@FXML
+	private Label labelWhite;
+
+	@FXML
+	private Label labelBlackTime;
+
+	@FXML
+	private Label labelWhiteTime;
+
+	@FXML
+	private Label labelBlackName;
+
+	@FXML
+	private Label labelWhiteName;
+
+	@FXML
+	private Label labelStatusMessage;
+
+	@FXML
+	private Button buttonUndo;
 
 	/**
 	 * Set boardSize and draw board based on user selected size in the start menu.
@@ -39,7 +92,6 @@ public class OnGameController {
 	 */
 	void setBoardSize(int boardSize) {
 		this.boardSize = boardSize;
-		drawBoard();
 	}
 
 	/**
@@ -50,6 +102,16 @@ public class OnGameController {
 	void linkWithApplication(GomokuGUI app) {
 		this.app = app;
 		this.config = app.getGameConfiguration();
+		labelBlackName.setText(app.getPlayerBlack().getPlayerName());
+		labelWhiteName.setText(app.getPlayerWhite().getPlayerName());
+		labelStatusMessage.setText("Welcome, black's turn!");
+		if (config.getUndo()) {
+			buttonUndo.setDisable(false);
+		}
+		drawBoard();
+		setupCountdownTimer(blackTimeline, labelBlackTime);
+		setupCountdownTimer(whiteTimeline, labelWhiteTime);
+		blackTimerContinue();
 		/*
 		 * If playerBlack (which goes first by default) is an instance of
 		 * ComputerPlayer, the firstMove() method is invoked.
@@ -57,6 +119,67 @@ public class OnGameController {
 		if (app.getPlayerBlack() instanceof ComputerPlayer) {
 			firstMove();
 		}
+	}
+
+	// https://asgteach.com/2011/10/javafx-animation-and-binding-simple-countdown-timer-2/
+	// https://www.coder.work/article/5519239
+	private void setupCountdownTimer(Timeline timeline, Label label) {
+		ObjectProperty<Duration> timeLeft = new SimpleObjectProperty<>();
+		timeLeft.set(Duration.ofMinutes(config.getGameTime()));
+		label.textProperty()
+				.bind(Bindings.createStringBinding(() -> getTimeStringFromDuration(timeLeft.get()), timeLeft));
+		timeline.getKeyFrames().add(new KeyFrame(javafx.util.Duration.seconds(1), e -> updateTimer(timeLeft)));
+		timeline.setCycleCount(Timeline.INDEFINITE);
+	}
+
+	private void updateTimer(ObjectProperty<Duration> timeLeft) {
+		timeLeft.set(timeLeft.get().minusSeconds(1));
+		if (timeLeft.get().isZero()) {
+			if (blackTurn) {
+				blackTimeline.stop();
+				app.gameOver(Result.WHITE);
+			} else {
+				whiteTimeline.stop();
+				app.gameOver(Result.BLACK);
+			}
+		}
+	}
+
+	private static String getTimeStringFromDuration(Duration duration) {
+		int min = (int) (duration.getSeconds() / 60);
+		int sec = (int) (duration.getSeconds() % 60);
+		String time = sec < 10 ? min + ":0" + sec : min + ":" + sec;
+		return time;
+	}
+
+	private void continueTimer(Timeline timeline) {
+		timeline.play();
+	}
+
+	private void pauseTimer(Timeline timeline) {
+		timeline.stop();
+	}
+
+	private void blackTimerContinue() {
+		continueTimer(blackTimeline);
+		pauseTimer(whiteTimeline);
+	}
+
+	private void whiteTimerContinue() {
+		continueTimer(whiteTimeline);
+		pauseTimer(blackTimeline);
+	}
+
+	private void clearTimer(Timeline timeline) {
+		timeline.stop();
+		timeline.getKeyFrames().clear();
+	}
+
+	private void stopAllTimers() {
+		labelBlackTime.textProperty().unbind();
+		labelWhiteTime.textProperty().unbind();
+		clearTimer(blackTimeline);
+		clearTimer(whiteTimeline);
 	}
 
 	/**
@@ -79,11 +202,29 @@ public class OnGameController {
 			paneBoard.getChildren().add(hLine);
 			paneBoard.getChildren().add(vLine);
 		}
-		/*
-		 * drawPoint() is invoked at the end of the method to draw a series of dots on
-		 * the completed grid game board.
-		 */
+		drawCoord();
 		drawPoint();
+	}
+
+	private void drawCoord() {
+		Map<Integer, Character> alphabetList = config.getChessBoard().getAlphabetList();
+		for (int i = 0; i < boardSize; i++) {
+			Text textX = new Text();
+			textX.setFont(new Font(16));
+			textX.setTextAlignment(TextAlignment.CENTER);
+			textX.setWrappingWidth(20);
+			textX.setText(alphabetList.get(i + 1).toString());
+			textX.setX(-10 + (i * LINE_SPACING));
+			textX.setY(-16);
+			Text textY = new Text();
+			textY.setFont(new Font(16));
+			textY.setTextAlignment(TextAlignment.CENTER);
+			textY.setWrappingWidth(40);
+			textY.setText(String.valueOf(i + 1));
+			textY.setX(-44);
+			textY.setY(6 + (i * LINE_SPACING));
+			paneBoard.getChildren().addAll(textX, textY);
+		}
 	}
 
 	/**
@@ -137,9 +278,9 @@ public class OnGameController {
 		/*
 		 * To calculate the x and y distance of the stone with respective to the pane.
 		 */
-		int row = move.getRow() * LINE_SPACING;
-		int col = move.getCol() * LINE_SPACING;
-		Circle circle = new Circle(row, col, 17.5);
+		int y = move.getRow() * LINE_SPACING;
+		int x = move.getCol() * LINE_SPACING;
+		Circle circle = new Circle(x, y, 17.5);
 		/*
 		 * If/else statement sets the color of the stone dependent on whether the move
 		 * was made by player Black or White.
@@ -160,6 +301,57 @@ public class OnGameController {
 		ds.setOffsetY(2.0);
 		circle.setEffect(ds);
 		paneBoard.getChildren().add(circle);
+		addLog(move);
+		scrollPaneMoveLogs.setVvalue(1D);
+	}
+
+	private void removeStone(Move move) {
+		paneBoard.getChildren().remove(paneBoard.getChildren().size() - 1);
+	}
+
+	private void addLog(Move move) {
+		Map<Integer, Character> alphabetList = config.getChessBoard().getAlphabetList();
+		int row = move.getRow();
+		int col = move.getCol();
+		int count = app.getPlayerBlack().getNumOfMoves();
+		Label numOfMoves = new Label(String.valueOf(count));
+		String coord = String.valueOf(alphabetList.get(col + 1)) + (row + 1);
+		Label moveLog = new Label(coord);
+		if (move.getStone() == Stone.BLACK) {
+			gridPaneMoveLogs.add(numOfMoves, 0, count);
+			gridPaneMoveLogs.add(moveLog, 1, count);
+			gridPaneMoveLogs.getRowConstraints().add(new RowConstraints());
+			gridPaneMoveLogs.getRowConstraints().get(count).setMinHeight(30);
+			gridPaneMoveLogs.getRowConstraints().get(count).setPrefHeight(30);
+			gridPaneMoveLogs.getRowConstraints().get(count).setVgrow(Priority.SOMETIMES);
+		} else {
+			gridPaneMoveLogs.add(moveLog, 2, count);
+		}
+	}
+
+	private void removeLogs() {
+		if (blackTurn) {
+			int count = app.getPlayerWhite().getNumOfMoves();
+			removeNode(count + 1, 2);
+			removeNode(count + 1, 1);
+			removeNode(count + 1, 0);
+		} else {
+			int count = app.getPlayerBlack().getNumOfMoves();
+			removeNode(count + 1, 1);
+			removeNode(count, 2);
+			removeNode(count + 1, 0);
+		}
+	}
+
+	private void removeNode(int row, int column) {
+		ObservableList<Node> childrens = gridPaneMoveLogs.getChildren();
+		for (Node node : childrens) {
+			if (node instanceof Label && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+				Label coord = (Label) node;
+				gridPaneMoveLogs.getChildren().remove(coord);
+				return;
+			}
+		}
 	}
 
 	/**
@@ -184,24 +376,17 @@ public class OnGameController {
 		 * The mouse click is rounded to the nearest intersection at which a stone can
 		 * be placed.
 		 */
-		int xIndex = (int) Math.round(x / LINE_SPACING);
-		int yIndex = (int) Math.round(y / LINE_SPACING);
+		int col = (int) Math.round(x / LINE_SPACING);
+		int row = (int) Math.round(y / LINE_SPACING);
 		try {
-			/*
-			 * nextBlackMove()/nextWhiteMove() is invoked dependent on which player's turn
-			 * it is.
-			 */
 			if (blackTurn) {
-				/*
-				 * The coordinates of the mouse click (converted to index format) are passed as
-				 * parameters.
-				 */
-				nextBlackMove(xIndex, yIndex, app.getPlayerBlack());
+				nextBlackMove(row, col, app.getPlayerBlack());
 			} else {
-				nextWhiteMove(xIndex, yIndex, app.getPlayerWhite());
+				nextWhiteMove(row, col, app.getPlayerWhite());
 			}
 		} catch (InvalidPlacementException ex) {
-//			System.out.println(ex.getMessage());
+			labelStatusMessage.setText(ex.getMessage());
+			labelStatusMessage.setTextFill(Color.RED);
 		}
 	}
 
@@ -211,6 +396,7 @@ public class OnGameController {
 	 */
 	private void firstMove() {
 		nextAIMove(app.getPlayerBlack(), app.getPlayerWhite());
+		whiteTimerContinue();
 	}
 
 	/**
@@ -223,52 +409,33 @@ public class OnGameController {
 	private void nextAIMove(Player nextPlayer, Player currentPlayer) {
 		// If conditions checks if "nextPlayer" is an instance of ComputerPlayer.
 		if (nextPlayer instanceof ComputerPlayer) {
-			// getMove() is invoked to get the next move of the computer.
 			Move move = nextPlayer.getMove(config);
-			/*
-			 * placeMove() method is invoked to update board/move-related instance variables
-			 * with new move.
-			 */
 			placeMove(move, nextPlayer, currentPlayer);
+			if (nextPlayer.getPlayerColor() == Stone.BLACK) {
+				whiteTimerContinue();
+			} else {
+				blackTimerContinue();
+			}
 		}
 	}
 
 	/**
 	 * Method used to handle the next move made by player Black.
 	 * 
-	 * @param x           the row index of the stone.
-	 * @param y           the column index of the stone.
+	 * @param row         the row index of the stone.
+	 * @param col         the column index of the stone.
 	 * @param playerBlack a Player object for player Black, containing related info
 	 *                    such as num of moves/stone color.
 	 * @throws InvalidPlacementException if the move is invalid.
 	 */
-	private void nextBlackMove(int x, int y, Player playerBlack) throws InvalidPlacementException {
-		/*
-		 * getMove() is invoked to get the move made by player Black, as well check to
-		 * make sure the move is valid.
-		 */
-		Move blackMove = playerBlack.getMove(config, x, y);
-		/*
-		 * Local variable "opponent" is set equal to opposite player (in this case,
-		 * player White).
-		 */
+	private void nextBlackMove(int row, int col, Player playerBlack) throws InvalidPlacementException {
+		Move blackMove = playerBlack.getMove(config, row, col);
 		Player opponent = app.getPlayerWhite();
 		if (blackMove != null) {
-			/*
-			 * placeMove() method is invoked to update board/move-related instance variables
-			 * with new move.
-			 */
 			placeMove(blackMove, playerBlack, opponent);
-			/*
-			 * nextAIMove() is invoked to update board/move-related instance variables with
-			 * move made by computer (if opponent is an instance of ComputerPlayer).
-			 */
+			whiteTimerContinue();
 			nextAIMove(opponent, playerBlack);
 		} else {
-			/*
-			 * If an invalid move is detected (i.e. InvalidPlacementException), a new
-			 * exception is throw with warning message.
-			 */
 			throw new InvalidPlacementException("Invalid move, please try again");
 		}
 	}
@@ -276,17 +443,18 @@ public class OnGameController {
 	/**
 	 * Method that is used to handle the next move made by player White.
 	 * 
-	 * @param x           the row index of the stone.
-	 * @param y           the column index of the stone.
+	 * @param row         the row index of the stone.
+	 * @param col         the column index of the stone.
 	 * @param playerWhite a Player object for player White, containing related info
 	 *                    such as num of moves/stone color.
 	 * @throws InvalidPlacementException if the move is invalid.
 	 */
-	private void nextWhiteMove(int x, int y, Player playerWhite) throws InvalidPlacementException {
-		Move whiteMove = playerWhite.getMove(config, x, y);
+	private void nextWhiteMove(int row, int col, Player playerWhite) throws InvalidPlacementException {
+		Move whiteMove = playerWhite.getMove(config, row, col);
 		Player opponent = app.getPlayerBlack();
 		if (whiteMove != null) {
 			placeMove(whiteMove, playerWhite, opponent);
+			blackTimerContinue();
 			nextAIMove(opponent, playerWhite);
 		} else {
 			throw new InvalidPlacementException("Invalid move, please try again");
@@ -302,6 +470,7 @@ public class OnGameController {
 	 * @param opponent      a Player object of the opposing player.
 	 */
 	private void placeMove(Move move, Player currentPlayer, Player opponent) {
+		labelStatusMessage.setText("");
 		/*
 		 * Current player's "validMoveList" and "numOfMoves" instance variables are
 		 * updated with the latest valid move.
@@ -324,18 +493,72 @@ public class OnGameController {
 		 */
 		if (roundResult == Result.CONTINUE && checkNumOfMoves == Result.CONTINUE) {
 			blackTurn = !blackTurn;
+			signalTurn();
+		} else if (checkNumOfMoves == Result.DRAW) {
 			/*
 			 * If the board has no empty spot, the game will end with a draw result.
 			 */
-		} else if (checkNumOfMoves == Result.DRAW) {
+			stopAllTimers();
 			app.gameOver(checkNumOfMoves);
+		} else {
 			/*
 			 * For all the other cases (ie. if round result is not an enum Continue), the
 			 * game will reach the end with the round result.
 			 */
-		} else {
+			stopAllTimers();
 			app.gameOver(roundResult);
 		}
+	}
+
+	private void signalTurn() {
+		String msg = null;
+		if (blackTurn) {
+			msg = "Black's Turn";
+			onTurnStyle(labelBlack, labelBlackName, labelBlackTime);
+			resetStyle(labelWhite, labelWhiteName, labelWhiteTime);
+		} else {
+			msg = "White's Turn";
+			onTurnStyle(labelWhite, labelWhiteName, labelWhiteTime);
+			resetStyle(labelBlack, labelBlackName, labelBlackTime);
+		}
+		labelStatusMessage.setText(msg);
+		labelStatusMessage.setTextFill(Color.BLACK);
+	}
+
+	private void onTurnStyle(Label label, Label name, Label time) {
+		label.setStyle("-fx-font-weight: bold; -fx-background-color: black; -fx-font-size: 16px");
+		name.setStyle(
+				"-fx-font-weight: bold; -fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2px; -fx-font-size: 18px");
+		time.setStyle("-fx-font-weight: bold; -fx-background-color: transparent; -fx-font-size: 18px");
+	}
+
+	private void resetStyle(Label label, Label name, Label time) {
+		label.setStyle("-fx-background-color: black; -fx-font-size: 14px");
+		name.setStyle(
+				"-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2px; -fx-font-size: 18px");
+		time.setStyle("-fx-background-color: transparent; -fx-font-size: 18px");
+	}
+
+	@FXML
+	private void onUndo(ActionEvent event) {
+		Player playerBlack = app.getPlayerBlack();
+		Player playerWhite = app.getPlayerWhite();
+		try {
+			ArrayList<Move> undoMoves = config.undoMove(blackTurn, playerBlack, playerWhite);
+			for (Move move : undoMoves) {
+				removeStone(move);
+			}
+			removeLogs();
+		} catch (InvalidUndoException e) {
+			labelStatusMessage.setText(e.getMessage());
+			labelStatusMessage.setTextFill(Color.RED);
+		}
+	}
+
+	@FXML
+	private void onDraw(ActionEvent event) {
+		stopAllTimers();
+		app.gameOver(Result.DRAW);
 	}
 
 	/**
@@ -347,6 +570,7 @@ public class OnGameController {
 	@FXML
 	private void onExitGame(ActionEvent event) {
 		// exitGame() is invoked on instance variable "app" to terminate the program.
+		stopAllTimers();
 		app.exitGame();
 	}
 
@@ -362,6 +586,7 @@ public class OnGameController {
 		 * restartGame() is invoked on instance variable "app" to return the user to the
 		 * start menu.
 		 */
+		stopAllTimers();
 		app.restartGame();
 	}
 
@@ -371,8 +596,25 @@ public class OnGameController {
 	 */
 	@FXML
 	private void initialize() {
-		assert paneBoard != null : "fx:id=\"paneBoard\" was not injected: check your FXML file 'GameView.fxml'.";
+		assert labelBlackName != null
+				: "fx:id=\"labelBlackName\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert paneBoard != null : "fx:id=\"paneBoard\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert labelBlackTime != null
+				: "fx:id=\"labelBlackTime\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert labelWhiteTime != null
+				: "fx:id=\"labelWhiteTime\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert scrollPaneMoveLogs != null
+				: "fx:id=\"scrollPaneMoveLogs\" was not injected: check your FXML file 'OnGameView.fxml'.";
 		assert paneBoardArea != null
-				: "fx:id=\"paneBoardArea\" was not injected: check your FXML file 'GameView.fxml'.";
+				: "fx:id=\"paneBoardArea\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert labelBlack != null : "fx:id=\"labelBlack\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert buttonUndo != null : "fx:id=\"buttonUndo\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert labelStatusMessage != null
+				: "fx:id=\"labelStatusMessage\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert labelWhite != null : "fx:id=\"labelWhite\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert gridPaneMoveLogs != null
+				: "fx:id=\"gridPaneMoveLogs\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		assert labelWhiteName != null
+				: "fx:id=\"labelWhiteName\" was not injected: check your FXML file 'OnGameView.fxml'.";
 	}
 }
