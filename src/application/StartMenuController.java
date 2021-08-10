@@ -1,7 +1,9 @@
 package application;
 
-import java.util.function.UnaryOperator;
 
+import java.util.function.UnaryOperator;
+import java.io.File;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -14,6 +16,8 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.util.converter.IntegerStringConverter;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.*;
 
 /**
@@ -24,6 +28,7 @@ import model.*;
  */
 public class StartMenuController {
 	private GomokuGUI app;
+	private MediaPlayer buttonClickSound;
 
 	@FXML
 	private ToggleGroup opponentGroup;
@@ -62,6 +67,8 @@ public class StartMenuController {
 	 */
 	@FXML
 	private void onExitGame(ActionEvent event) {
+//		Note: audio file does not play before the termination of the program.
+		playSound();
 		app.exitGame();
 	}
 
@@ -121,6 +128,7 @@ public class StartMenuController {
 	 */
 	@FXML
 	private void onStartGame(ActionEvent event) {
+		playSound();
 		Player opponent = setupOpponent();
 		chooseColor(opponent);
 		setupGameConfig();
@@ -154,6 +162,12 @@ public class StartMenuController {
 			boardSizes.get(3).setUserData(19);
 		}
 	}
+	
+	private void playSound() {
+		Media audioClip = new Media(new File("src/resources/Pokemon-Button-Click.mp3").toURI().toString());
+		this.buttonClickSound = new MediaPlayer(audioClip);
+		buttonClickSound.play();
+	}
 
 	/**
 	 * Set user data to each toggle button and add listener to a toggle group.
@@ -170,13 +184,14 @@ public class StartMenuController {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> observable, final Toggle oldValue,
 					final Toggle newValue) {
+				playSound();
 				/*
 				 * Prohibits a toggle group with no selected toggle. Clicking on a toggle twice
 				 * or more will set the selected value to previous selected toggle.
 				 */
 				if (newValue == null) {
 					toggleGroup.selectToggle(oldValue);
-				}
+				} 
 				/*
 				 * Disable difficulty toggle group if opponent is chosen to be a human player,
 				 * reset otherwise.

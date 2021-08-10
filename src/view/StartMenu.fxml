@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -13,16 +16,13 @@
 			<center>
 				<VBox alignment="CENTER" BorderPane.alignment="CENTER">
 					<children>
-						<HBox alignment="CENTER" fillHeight="false" minHeight="-Infinity" prefHeight="100.0">
+						<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 							<children>
-								<Label alignment="CENTER" contentDisplay="CENTER" text="Welcome to Gomoku!" textAlignment="CENTER">
-									<font>
-										<Font name="System Bold" size="36.0" />
-									</font>
-									<HBox.margin>
-										<Insets />
-									</HBox.margin>
-								</Label>
+								<ImageView fitHeight="97.0" fitWidth="399.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../resources/Gomoku-Title.png" />
+									</image>
+								</ImageView>
 							</children>
 						</HBox>
 						<GridPane maxHeight="350.0" maxWidth="450.0" minHeight="302.0" minWidth="450.0" prefHeight="302.0" prefWidth="450.0" BorderPane.alignment="CENTER">
@@ -41,7 +41,7 @@
 							<children>
 								<Label text="Play Against">
 									<font>
-										<Font size="18.0" />
+										<Font name="Microsoft YaHei UI Light" size="18.0" />
 									</font>
 									<GridPane.margin>
 										<Insets right="10.0" />
@@ -49,7 +49,7 @@
 								</Label>
 								<Label text="Difficulty" GridPane.rowIndex="1">
 									<font>
-										<Font size="18.0" />
+										<Font name="Microsoft YaHei UI Light" size="18.0" />
 									</font>
 									<GridPane.margin>
 										<Insets right="10.0" />
@@ -57,7 +57,7 @@
 								</Label>
 								<Label text="Play As" GridPane.rowIndex="2">
 									<font>
-										<Font size="18.0" />
+										<Font name="Microsoft YaHei UI Light" size="18.0" />
 									</font>
 									<GridPane.margin>
 										<Insets right="10.0" />
@@ -65,7 +65,23 @@
 								</Label>
 								<Label text="Board Size" GridPane.rowIndex="3">
 									<font>
-										<Font size="18.0" />
+										<Font name="Microsoft YaHei UI Light" size="18.0" />
+									</font>
+									<GridPane.margin>
+										<Insets right="10.0" />
+									</GridPane.margin>
+								</Label>
+								<Label text="Game Time" GridPane.rowIndex="4">
+									<font>
+										<Font name="Microsoft YaHei UI Light" size="18.0" />
+									</font>
+									<GridPane.margin>
+										<Insets right="10.0" />
+									</GridPane.margin>
+								</Label>
+								<Label text="No Undo" GridPane.rowIndex="5">
+									<font>
+										<Font name="Microsoft YaHei UI Light" size="18.0" />
 									</font>
 									<GridPane.margin>
 										<Insets right="10.0" />
@@ -73,7 +89,7 @@
 								</Label>
 								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
 									<children>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" stylesheets="@../resources/startMenuStyling.css">
 											<toggleGroup>
 												<ToggleGroup fx:id="opponentGroup" />
 											</toggleGroup>
@@ -83,20 +99,34 @@
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
+											<graphic>
+												<ImageView fitHeight="35.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../resources/Computer-Icon.png" />
+													</image>
+												</ImageView>
+											</graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" toggleGroup="$opponentGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$opponentGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
+											<graphic>
+												<ImageView fitHeight="24.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../resources/Human-Icon.png" />
+													</image>
+												</ImageView>
+											</graphic>
 										</ToggleButton>
 									</children>
 								</HBox>
 								<HBox fx:id="hBoxDifficulty" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<children>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" stylesheets="@../resources/startMenuStyling.css">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -106,28 +136,49 @@
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
+											<graphic>
+												<ImageView fitHeight="23.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../resources/Easy-Graphic.png" />
+													</image>
+												</ImageView>
+											</graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" toggleGroup="$difficultyGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$difficultyGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
+											<graphic>
+												<ImageView fitHeight="24.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../resources/Medium-Graphic.png" />
+													</image>
+												</ImageView>
+											</graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" toggleGroup="$difficultyGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$difficultyGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
+											<graphic>
+												<ImageView fitHeight="23.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../resources/Hard-Graphic.png" />
+													</image>
+												</ImageView>
+											</graphic>
 										</ToggleButton>
 									</children>
 								</HBox>
 								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
 									<children>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" stylesheets="@../resources/startMenuStyling.css">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -137,20 +188,34 @@
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
+											<graphic>
+												<Circle radius="12.0" stroke="BLACK" strokeType="INSIDE">
+													<effect>
+														<DropShadow offsetX="2.0" offsetY="2.0" />
+													</effect>
+												</Circle>
+											</graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" toggleGroup="$userColorGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$userColorGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
+											<graphic>
+												<Circle fill="WHITE" radius="12.0" stroke="WHITE" strokeType="INSIDE">
+													<effect>
+														<DropShadow offsetX="2.0" offsetY="2.0" />
+													</effect>
+												</Circle>
+											</graphic>
 										</ToggleButton>
 									</children>
 								</HBox>
 								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
 									<children>
-										<ToggleButton mnemonicParsing="false" prefWidth="79.5">
+										<ToggleButton mnemonicParsing="false" prefWidth="79.5" stylesheets="@../resources/startMenuStyling.css">
 											<toggleGroup>
 												<ToggleGroup fx:id="boardSizeGroup" />
 											</toggleGroup>
@@ -161,7 +226,7 @@
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="79.5" toggleGroup="$boardSizeGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="79.5" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$boardSizeGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -169,7 +234,7 @@
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="79.5" selected="true" toggleGroup="$boardSizeGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="79.5" selected="true" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$boardSizeGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -177,7 +242,7 @@
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="79.5" toggleGroup="$boardSizeGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="79.5" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$boardSizeGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -204,16 +269,6 @@
 										</CheckBox>
 									</children>
 								</HBox>
-								<Label text="Game Time" GridPane.rowIndex="4">
-									<font>
-										<Font size="18.0" />
-									</font>
-								</Label>
-								<Label text="No Undo" GridPane.rowIndex="5">
-									<font>
-										<Font size="18.0" />
-									</font>
-								</Label>
 							</children>
 							<BorderPane.margin>
 								<Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
@@ -221,7 +276,7 @@
 						</GridPane>
 						<HBox alignment="CENTER" minHeight="-Infinity" prefHeight="100.0">
 							<children>
-								<Button mnemonicParsing="false" onAction="#onExitGame" prefWidth="200.0" text="Quit">
+								<Button mnemonicParsing="false" onAction="#onExitGame" prefWidth="200.0" stylesheets="@../resources/startMenuStyling.css">
 									<font>
 										<Font size="18.0" />
 									</font>
@@ -231,8 +286,15 @@
 									<padding>
 										<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
 									</padding>
+									<graphic>
+										<ImageView fitHeight="22.0" fitWidth="114.0" pickOnBounds="true" preserveRatio="true">
+											<image>
+												<Image url="@../resources/Black-X-Letter.png" />
+											</image>
+										</ImageView>
+									</graphic>
 								</Button>
-								<Button mnemonicParsing="false" onAction="#onStartGame" prefWidth="200.0" text="Start">
+								<Button mnemonicParsing="false" onAction="#onStartGame" prefWidth="200.0" stylesheets="@../resources/startMenuStyling.css">
 									<font>
 										<Font size="18.0" />
 									</font>
@@ -242,6 +304,13 @@
 									<padding>
 										<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
 									</padding>
+									<graphic>
+										<ImageView fitHeight="22.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
+											<image>
+												<Image url="@../resources/Play-Graphic.png" />
+											</image>
+										</ImageView>
+									</graphic>
 								</Button>
 							</children>
 						</HBox>
