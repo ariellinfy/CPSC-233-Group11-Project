@@ -4,11 +4,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.*;
 
 /**
@@ -200,6 +202,13 @@ public class GomokuGUI extends Application {
 			// Pass the result of the game to the controller.
 			gameOverController.linkWithApplication(this, result);
 			gameOverview.sizeToScene();
+			gameOverview.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent event) {
+					gameOverview.close();
+					restartGame();
+				}
+			});
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
@@ -219,6 +228,7 @@ public class GomokuGUI extends Application {
 	 * Method that ends the application.
 	 */
 	void exitGame() {
+		primaryStage.close();
 		System.exit(0);
 	}
 

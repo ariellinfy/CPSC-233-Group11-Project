@@ -137,10 +137,10 @@ public class OnGameController {
 		if (timeLeft.get().isZero()) {
 			if (blackTurn) {
 				blackTimeline.stop();
-				app.gameOver(Result.BLACK);
+				app.gameOver(Result.WHITE);
 			} else {
 				whiteTimeline.stop();
-				app.gameOver(Result.WHITE);
+				app.gameOver(Result.BLACK);
 			}
 		}
 	}
@@ -170,11 +170,16 @@ public class OnGameController {
 		pauseTimer(blackTimeline);
 	}
 
+	private void clearTimer(Timeline timeline) {
+		timeline.stop();
+		timeline.getKeyFrames().clear();
+	}
+
 	private void stopAllTimers() {
 		labelBlackTime.textProperty().unbind();
 		labelWhiteTime.textProperty().unbind();
-		blackTimeline.stop();
-		whiteTimeline.stop();
+		clearTimer(blackTimeline);
+		clearTimer(whiteTimeline);
 	}
 
 	/**
@@ -565,6 +570,7 @@ public class OnGameController {
 	@FXML
 	private void onExitGame(ActionEvent event) {
 		// exitGame() is invoked on instance variable "app" to terminate the program.
+		stopAllTimers();
 		app.exitGame();
 	}
 
@@ -580,6 +586,7 @@ public class OnGameController {
 		 * restartGame() is invoked on instance variable "app" to return the user to the
 		 * start menu.
 		 */
+		stopAllTimers();
 		app.restartGame();
 	}
 

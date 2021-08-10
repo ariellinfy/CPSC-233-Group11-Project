@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import model.Result;
 
 /**
@@ -64,7 +65,8 @@ public class GameOverController {
 	@FXML
 	private void onRestart(ActionEvent event) {
 		app.restartGame();
-		buttonRestart.getScene().getWindow().hide();
+		Stage stage = (Stage) buttonRestart.getScene().getWindow();
+		stage.close();
 	}
 
 	/**

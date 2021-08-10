@@ -8,48 +8,48 @@
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane prefHeight="260.0" prefWidth="445.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GameOverController">
-   <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" onAction="#onExit" prefWidth="160.0" text="End">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <HBox.margin>
-                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
-               </padding>
-            </Button>
-            <Button fx:id="buttonRestart" mnemonicParsing="false" onAction="#onRestart" prefWidth="160.0" text="Start New Game">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <HBox.margin>
-                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
-               </padding>
-            </Button>
-         </children>
-      </HBox>
-   </bottom>
-   <center>
-      <VBox alignment="CENTER" prefHeight="144.0" prefWidth="445.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="labelWinning" alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="375.0" textAlignment="CENTER" wrapText="true">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="labelScore" alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="375.0" textAlignment="CENTER" wrapText="true">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </VBox>
-   </center>
+	<bottom>
+		<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<children>
+				<Button mnemonicParsing="false" onAction="#onExit" prefWidth="165.0" text="End">
+					<font>
+						<Font size="18.0" />
+					</font>
+					<HBox.margin>
+						<Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+					</HBox.margin>
+					<padding>
+						<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
+					</padding>
+				</Button>
+				<Button fx:id="buttonRestart" mnemonicParsing="false" onAction="#onRestart" prefWidth="165.0" text="Start New Game">
+					<font>
+						<Font size="18.0" />
+					</font>
+					<HBox.margin>
+						<Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+					</HBox.margin>
+					<padding>
+						<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
+					</padding>
+				</Button>
+			</children>
+		</HBox>
+	</bottom>
+	<center>
+		<VBox alignment="CENTER" prefHeight="144.0" prefWidth="445.0" BorderPane.alignment="CENTER">
+			<children>
+				<Label fx:id="labelWinning" alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="375.0" textAlignment="CENTER" wrapText="true">
+					<font>
+						<Font size="18.0" />
+					</font>
+				</Label>
+				<Label fx:id="labelScore" alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="375.0" textAlignment="CENTER" wrapText="true">
+					<font>
+						<Font size="18.0" />
+					</font>
+				</Label>
+			</children>
+		</VBox>
+	</center>
 </BorderPane>

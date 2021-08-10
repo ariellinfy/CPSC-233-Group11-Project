@@ -11,7 +11,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.util.converter.IntegerStringConverter;
@@ -229,6 +228,5 @@ public class StartMenuController {
 		initToggleListener(userColorGroup);
 		initToggleListener(boardSizeGroup);
 		initSpinnerListener();
-		spinnerGameTime.setStyle("-fx-font-size: 17px");
 	}
 }

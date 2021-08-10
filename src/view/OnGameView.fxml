@@ -111,9 +111,9 @@
 											<HBox.margin>
 												<Insets left="10.0" right="10.0" />
 											</HBox.margin>
-                                 <padding>
-                                    <Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
-                                 </padding>
+											<padding>
+												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+											</padding>
 										</Button>
 										<Button fx:id="buttonUndo" disable="true" mnemonicParsing="false" onAction="#onUndo" prefWidth="100.0" text="Undo">
 											<font>
@@ -122,9 +122,9 @@
 											<HBox.margin>
 												<Insets left="10.0" right="10.0" />
 											</HBox.margin>
-                                 <padding>
-                                    <Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
-                                 </padding>
+											<padding>
+												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+											</padding>
 										</Button>
 									</children>
 									<VBox.margin>
@@ -165,9 +165,9 @@
 											<VBox.margin>
 												<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 											</VBox.margin>
-                                 <padding>
-                                    <Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
-                                 </padding>
+											<padding>
+												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+											</padding>
 										</Button>
 										<Button mnemonicParsing="false" onAction="#onRestart" prefWidth="210.0" text="Start New Game">
 											<font>
@@ -176,9 +176,9 @@
 											<VBox.margin>
 												<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 											</VBox.margin>
-                                 <padding>
-                                    <Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
-                                 </padding>
+											<padding>
+												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+											</padding>
 										</Button>
 									</children>
 								</VBox>
