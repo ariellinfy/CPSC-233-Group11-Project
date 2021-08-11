@@ -275,6 +275,7 @@ public class OnGameController {
 	 *             placed.
 	 */
 	private void drawStone(Move move) {
+		config.getChessBoard().printBoard();
 		/*
 		 * To calculate the x and y distance of the stone with respective to the pane.
 		 */
