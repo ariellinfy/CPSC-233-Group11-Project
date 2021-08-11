@@ -33,7 +33,6 @@ public class GomokuGUI extends Application {
 	private MediaPlayer menuButtonSound;
 	private MediaPlayer boardSound;
 	private MediaPlayer victorySound;
-	private MediaPlayer backgroundMusic;
 
 	/**
 	 * Get current game configuration.

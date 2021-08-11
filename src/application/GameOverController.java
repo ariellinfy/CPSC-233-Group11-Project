@@ -1,9 +1,13 @@
 package application;
 
+import java.io.File;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import model.Result;
 
@@ -17,10 +21,10 @@ public class GameOverController {
 	private GomokuGUI app;
 
 	@FXML
-	private Label labelScore;
+	private ImageView winningImage;
 
 	@FXML
-	private Label labelWinning;
+	private Label labelScore;
 
 	@FXML
 	private Button buttonRestart;
@@ -35,13 +39,13 @@ public class GameOverController {
 		this.app = app;
 		app.playVictorySound();
 		if (result == Result.BLACK) {
-			labelWinning.setText("Black Wins!");
+			winningImage.setImage(new Image(new File("src/resources/Black-Wins-Graphic.png").toURI().toString()));
 			labelScore.setText("Winner score is: " + app.getWinnerScore());
 		} else if (result == Result.WHITE) {
-			labelWinning.setText("White Wins!");
+			winningImage.setImage(new Image(new File("src/resources/White-Wins-Graphic.png").toURI().toString()));
 			labelScore.setText("Winner score is: " + app.getWinnerScore());
 		} else if (result == Result.DRAW) {
-			labelWinning.setText("It's a draw!");
+			winningImage.setImage(new Image(new File("src/resources/Draw-Graphic.png").toURI().toString()));
 			labelScore.setText("Game score is: " + app.getWinnerScore());
 		}
 	}
@@ -65,6 +69,7 @@ public class GameOverController {
 	 */
 	@FXML
 	private void onRestart(ActionEvent event) {
+		app.playMenuSound();
 		app.restartGame();
 		Stage stage = (Stage) buttonRestart.getScene().getWindow();
 		stage.close();
@@ -77,7 +82,7 @@ public class GameOverController {
 	@FXML
 	private void initialize() {
 		assert labelScore != null : "fx:id=\"labelScore\" was not injected: check your FXML file 'GameOverView.fxml'.";
-		assert labelWinning != null
-				: "fx:id=\"labelWinning\" was not injected: check your FXML file 'GameOverView.fxml'.";
+		assert winningImage != null
+				: "fx:id=\"winningImage\" was not injected: check your FXML file 'GameOverView.fxml'.";
 	}
 }
