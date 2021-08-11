@@ -136,8 +136,8 @@ public class GomokuGUI extends Application {
 			gameViewController.linkWithApplication(this);
 			// When boardSize is 19x19, adjusts the stage size to show the whole board.
 			if (boardSize > 15) {
-				primaryStage.setWidth(1450);
-				primaryStage.setHeight(875);
+				primaryStage.setWidth(1500);
+				primaryStage.setHeight(900);
 			} else {
 				primaryStage.sizeToScene();
 			}

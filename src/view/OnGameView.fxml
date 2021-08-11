@@ -9,58 +9,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="675.0" prefWidth="1280.0" stylesheets="@../resources/onGameStyling.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="675.0" prefWidth="1300.0" stylesheets="@../resources/onGameStyling.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
 	<content>
-		<BorderPane fx:id="borderPaneArea" prefWidth="1270.0">
+		<BorderPane fx:id="borderPaneArea" prefWidth="1290.0">
 			<center>
 				<StackPane fx:id="paneBoardArea" BorderPane.alignment="CENTER">
 					<children>
 						<Pane fx:id="paneBoard" onMouseClicked="#onNextMove" style="-fx-border-radius: 5; -fx-cursor: hand;" />
 					</children>
 					<BorderPane.margin>
-						<Insets left="20.0" />
+						<Insets />
 					</BorderPane.margin>
 				</StackPane>
 			</center>
-			<right>
+         <left>
 				<VBox alignment="CENTER" prefWidth="285.0" BorderPane.alignment="CENTER">
-					<BorderPane.margin>
-						<Insets right="20.0" />
-					</BorderPane.margin>
-					<children>
-                  <StackPane>
-                     <children>
-      						<Label fx:id="labelStatusMessage" alignment="CENTER" lineSpacing="5.0" prefHeight="98.0" prefWidth="182.0" text="message" textAlignment="CENTER" wrapText="true">
-      							<font>
-      								<Font name="Microsoft JhengHei UI" size="18.0" />
-      							</font>
-                           <StackPane.margin>
-                              <Insets bottom="50.0" />
-                           </StackPane.margin>
-      						</Label>
-                        <ImageView fitHeight="239.0" fitWidth="268.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/Comic-Speech-Bubble.png" />
-                           </image></ImageView>
-                     </children>
-                  </StackPane>
-                  <ImageView fitHeight="359.0" fitWidth="253.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resources/Comic-Speech-Bubble.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </StackPane>
-            <ImageView fitHeight="359.0" fitWidth="253.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/Ninja-Sitting.png" />
-               </image>
-            </ImageView>
-					</children>
-				</VBox>
-			</right>
-			<left>
-				<VBox alignment="CENTER">
 					<children>
 						<VBox prefWidth="285.0" BorderPane.alignment="CENTER">
 							<children>
@@ -134,13 +97,13 @@
 											<padding>
 												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
 											</padding>
-                           <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="118.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/Draw-Icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="118.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/Draw-Icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
 										</Button>
 										<Button fx:id="buttonUndo" disable="true" mnemonicParsing="false" onAction="#onUndo" prefWidth="100.0">
 											<font>
@@ -152,13 +115,13 @@
 											<padding>
 												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
 											</padding>
-                           <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/Undo-Icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/Undo-Icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
 										</Button>
 									</children>
 									<VBox.margin>
@@ -202,13 +165,13 @@
 											<padding>
 												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
 											</padding>
-                           <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="114.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/Black-X-Letter.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="114.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/Black-X-Letter.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
 										</Button>
 										<Button mnemonicParsing="false" onAction="#onRestart" prefWidth="210.0">
 											<font>
@@ -220,13 +183,13 @@
 											<padding>
 												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
 											</padding>
-                           <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/Play-Graphic.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/Play-Graphic.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
 										</Button>
 									</children>
 								</VBox>
@@ -236,9 +199,42 @@
 							</padding>
 						</VBox>
 					</children>
-					<BorderPane.margin>
-						<Insets left="20.0" />
-					</BorderPane.margin>
+               <BorderPane.margin>
+                  <Insets left="20.0" right="20.0" />
+               </BorderPane.margin>
 				</VBox>
-			</left>
+         </left>
+         <right>
+				<VBox alignment="CENTER" prefWidth="285.0" BorderPane.alignment="CENTER">
+					<children>
+                  <StackPane>
+                     <children>
+      						<Label fx:id="labelStatusMessage" alignment="CENTER" lineSpacing="5.0" prefHeight="118.0" prefWidth="204.0" text="message" textAlignment="CENTER" wrapText="true">
+      							<font>
+      								<Font name="Microsoft YaHei UI" size="18.0" />
+      							</font>
+                           <StackPane.margin>
+                              <Insets bottom="50.0" />
+                           </StackPane.margin>
+      						</Label>
+                        <ImageView fitHeight="244.0" fitWidth="295.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../resources/Comic-Speech-Bubble.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </StackPane>
+                  <ImageView fitHeight="359.0" fitWidth="253.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/Ninja-Sitting.png" />
+                     </image>
+                  </ImageView>
+					</children>
+               <BorderPane.margin>
+                  <Insets left="20.0" right="20.0" />
+               </BorderPane.margin>
+				</VBox>
+         </right>
 		</BorderPane>
+	</content>
+</ScrollPane>
