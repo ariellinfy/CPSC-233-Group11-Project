@@ -18,6 +18,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -52,6 +58,9 @@ public class OnGameController {
 	private Timeline blackTimeline = new Timeline();
 	private Timeline whiteTimeline = new Timeline();
 
+    @FXML
+    private BorderPane borderPaneArea;
+    
 	// A layout container containing both board image and grids.
 	@FXML
 	private StackPane paneBoardArea;
@@ -733,5 +742,10 @@ public class OnGameController {
 				: "fx:id=\"gridPaneMoveLogs\" was not injected: check your FXML file 'OnGameView.fxml'.";
 		assert labelWhiteName != null
 				: "fx:id=\"labelWhiteName\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		Image backgroundImage = new Image("file:src/resources/Game-Board.jpg");
+		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true);
+		Background background = new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bSize));
+		borderPaneArea.setBackground(background);
 	}
 }

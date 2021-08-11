@@ -1,7 +1,6 @@
 package application;
 
 import java.util.function.UnaryOperator;
-import java.io.File;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -12,10 +11,15 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.converter.IntegerStringConverter;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import model.*;
 
 /**
@@ -27,6 +31,9 @@ import model.*;
 public class StartMenuController {
 	private GomokuGUI app;
 
+	@FXML
+	private BorderPane borderPaneArea;
+	
 	@FXML
 	private ToggleGroup opponentGroup;
 
@@ -215,7 +222,7 @@ public class StartMenuController {
 			}
 		});
 	}
-	
+
 	private void initUndoListener() {
 		checkBoxUndo.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
@@ -246,5 +253,10 @@ public class StartMenuController {
 		initToggleListener(boardSizeGroup);
 		initSpinnerListener();
 		initUndoListener();
+		Image backgroundImage = new Image("file:src/resources/Game-Board.jpg");
+		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true);
+		Background background = new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bSize));
+		borderPaneArea.setBackground(background);
 	}
 }

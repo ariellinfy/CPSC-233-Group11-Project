@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="675.0" prefWidth="1260.0" stylesheets="@../resources/onGameStyling.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="675.0" prefWidth="1280.0" stylesheets="@../resources/onGameStyling.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
 	<content>
-		<BorderPane prefWidth="1250.0">
+		<BorderPane fx:id="borderPaneArea" prefWidth="1270.0">
 			<center>
 				<StackPane fx:id="paneBoardArea" BorderPane.alignment="CENTER">
 					<children>
 						<Pane fx:id="paneBoard" onMouseClicked="#onNextMove" style="-fx-border-radius: 5; -fx-cursor: hand;" />
 					</children>
 					<BorderPane.margin>
-						<Insets />
+						<Insets left="20.0" />
 					</BorderPane.margin>
 				</StackPane>
 			</center>
@@ -30,9 +30,9 @@
 					<children>
                   <StackPane>
                      <children>
-      						<Label fx:id="labelStatusMessage" alignment="CENTER" lineSpacing="5.0" prefHeight="193.0" prefWidth="241.0" text="message" textAlignment="CENTER" wrapText="true">
+      						<Label fx:id="labelStatusMessage" alignment="CENTER" lineSpacing="5.0" prefHeight="98.0" prefWidth="182.0" text="message" textAlignment="CENTER" wrapText="true">
       							<font>
-      								<Font name="Microsoft YaHei UI Light" size="18.0" />
+      								<Font name="Microsoft JhengHei UI" size="18.0" />
       							</font>
                            <StackPane.margin>
                               <Insets bottom="50.0" />
@@ -71,12 +71,12 @@
 											<children>
 												<Label fx:id="labelBlack" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: black; -fx-font-weight: bold; -fx-font-size: 16;" text="Black" textFill="WHITE">
 													<font>
-														<Font name="System Bold" size="14.0" />
+														<Font name="Microsoft YaHei UI Bold" size="14.0" />
 													</font>
 												</Label>
 												<Label fx:id="labelWhite" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: black;" text="White" textFill="WHITE">
 													<font>
-														<Font name="System Bold" size="14.0" />
+														<Font name="Microsoft YaHei UI" size="14.0" />
 													</font>
 												</Label>
 											</children>
@@ -85,12 +85,12 @@
 											<children>
 												<Label fx:id="labelBlackName" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2; -fx-font-weight: bold; -fx-font-size: 18;" text="player1">
 													<font>
-														<Font size="18.0" />
+														<Font name="Microsoft YaHei UI" size="18.0" />
 													</font>
 												</Label>
 												<Label fx:id="labelWhiteName" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2;" text="player2">
 													<font>
-														<Font size="18.0" />
+														<Font name="Microsoft YaHei UI" size="18.0" />
 													</font>
 												</Label>
 											</children>
@@ -99,12 +99,12 @@
 											<children>
 												<Label fx:id="labelBlackTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 18;" text="5:00">
 													<font>
-														<Font size="18.0" />
+														<Font name="Microsoft YaHei UI" size="18.0" />
 													</font>
 												</Label>
 												<Label fx:id="labelWhiteTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: transparent;" text="5:00">
 													<font>
-														<Font name="Microsoft YaHei UI Light" size="18.0" />
+														<Font name="Microsoft YaHei UI" size="18.0" />
 													</font>
 												</Label>
 											</children>

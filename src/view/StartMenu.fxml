@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -12,20 +13,23 @@
 
 <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="570.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StartMenuController">
 	<content>
-		<BorderPane prefHeight="570.0" prefWidth="785.0" stylesheets="@../resources/startMenuStyling.css">
+		<BorderPane fx:id="borderPaneArea" prefHeight="570.0" prefWidth="785.0" stylesheets="@../resources/startMenuStyling.css">
 			<center>
 				<VBox alignment="CENTER" BorderPane.alignment="CENTER">
 					<children>
 						<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 							<children>
-								<ImageView fitHeight="97.0" fitWidth="399.0" pickOnBounds="true" preserveRatio="true">
+								<ImageView fitHeight="126.0" fitWidth="440.0" pickOnBounds="true" preserveRatio="true">
 									<image>
 										<Image url="@../resources/Gomoku-Title.png" />
 									</image>
+                           <HBox.margin>
+                              <Insets bottom="20.0" top="15.0" />
+                           </HBox.margin>
 								</ImageView>
 							</children>
 						</HBox>
-						<GridPane maxHeight="350.0" maxWidth="450.0" minHeight="302.0" minWidth="450.0" prefHeight="302.0" prefWidth="450.0" BorderPane.alignment="CENTER">
+						<GridPane maxHeight="350.0" maxWidth="503.0" minHeight="302.0" minWidth="450.0" prefHeight="302.0" prefWidth="503.0" BorderPane.alignment="CENTER">
 							<columnConstraints>
 								<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="337.0" minWidth="10.0" prefWidth="127.0" />
 								<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="476.0" minWidth="10.0" prefWidth="323.0" />
@@ -39,49 +43,49 @@
 								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 							</rowConstraints>
 							<children>
-								<Label text="Play Against">
+								<Label text="Play Against" textFill="#525151">
 									<font>
-										<Font name="Microsoft YaHei UI Light" size="18.0" />
+										<Font name="AcmeFont Regular" size="20.0" />
 									</font>
 									<GridPane.margin>
 										<Insets right="10.0" />
 									</GridPane.margin>
 								</Label>
-								<Label text="Difficulty" GridPane.rowIndex="1">
+								<Label text="Difficulty" GridPane.rowIndex="1" textFill="#525151">
 									<font>
-										<Font name="Microsoft YaHei UI Light" size="18.0" />
+										<Font name="AcmeFont Regular" size="20.0" />
 									</font>
 									<GridPane.margin>
 										<Insets right="10.0" />
 									</GridPane.margin>
 								</Label>
-								<Label text="Play As" GridPane.rowIndex="2">
+								<Label text="Play As" GridPane.rowIndex="2" textFill="#525151">
 									<font>
-										<Font name="Microsoft YaHei UI Light" size="18.0" />
+										<Font name="AcmeFont Regular" size="20.0" />
 									</font>
 									<GridPane.margin>
 										<Insets right="10.0" />
 									</GridPane.margin>
 								</Label>
-								<Label text="Board Size" GridPane.rowIndex="3">
+								<Label text="Board Size" GridPane.rowIndex="3" textFill="#525151">
 									<font>
-										<Font name="Microsoft YaHei UI Light" size="18.0" />
+										<Font name="AcmeFont Regular" size="20.0" />
 									</font>
 									<GridPane.margin>
 										<Insets right="10.0" />
 									</GridPane.margin>
 								</Label>
-								<Label text="Game Time" GridPane.rowIndex="4">
+								<Label text="Game Time" GridPane.rowIndex="4" textFill="#525151">
 									<font>
-										<Font name="Microsoft YaHei UI Light" size="18.0" />
+										<Font name="AcmeFont Regular" size="20.0" />
 									</font>
 									<GridPane.margin>
 										<Insets right="10.0" />
 									</GridPane.margin>
 								</Label>
-								<Label text="No Undo" GridPane.rowIndex="5">
+								<Label text="No Undo" GridPane.rowIndex="5" textFill="#525151">
 									<font>
-										<Font name="Microsoft YaHei UI Light" size="18.0" />
+										<Font name="AcmeFont Regular" size="20.0" />
 									</font>
 									<GridPane.margin>
 										<Insets right="10.0" />
