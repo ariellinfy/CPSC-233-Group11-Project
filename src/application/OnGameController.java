@@ -388,6 +388,7 @@ public class OnGameController {
 		ds.setOffsetY(2.0);
 		circle.setEffect(ds);
 		paneBoard.getChildren().add(circle);
+		app.playBoardSound();
 	}
 
 	/**
@@ -742,7 +743,7 @@ public class OnGameController {
 				: "fx:id=\"gridPaneMoveLogs\" was not injected: check your FXML file 'OnGameView.fxml'.";
 		assert labelWhiteName != null
 				: "fx:id=\"labelWhiteName\" was not injected: check your FXML file 'OnGameView.fxml'.";
-		Image backgroundImage = new Image("file:src/resources/Game-Board.jpg");
+		Image backgroundImage = new Image("file:src/resources/Light-Wood-Background.png");
 		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true);
 		Background background = new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bSize));

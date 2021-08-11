@@ -253,7 +253,7 @@ public class StartMenuController {
 		initToggleListener(boardSizeGroup);
 		initSpinnerListener();
 		initUndoListener();
-		Image backgroundImage = new Image("file:src/resources/Game-Board.jpg");
+		Image backgroundImage = new Image("file:src/resources/Light-Wood-Background.png");
 		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true);
 		Background background = new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bSize));
