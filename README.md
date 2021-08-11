@@ -33,7 +33,43 @@ A class diagram is included with the source code folder (public/gomoku-class-dia
 5. Follow instructions to set up and play the game.
 6. Have fun!
 
-## Resources
+## References
+JavaFX Button Styling CSS
+- http://fxexperience.com/2011/12/styling-fx-buttons-with-css/
+
+Pokémon Sound Effects (Menu button sound and Victory sound)
+- The Pokémon Company ©
+
+Board Sound Effect
+- https://opengameart.org/
+
+"BRUSHSTRIKE" and "Last Ninja" Font Styles (Title/Button Graphics)
+- https://www.dafont.com/brushstrike.font
+- https://www.dafont.com/last-ninja.font
+
+Light Wood Background Image
+- https://unblast.com/5-free-light-wood-background-textures-jpg/
+
+Computer Icon Graphic
+- https://www.stickpng.com/img/electronics/computer-pcs/desktop-computer-icon
+
+Human Icon Graphic
+- https://eventbooster.ch/img/user.svg
+
+Black X Letter Graphic
+- https://www.lifepng.com/photo/579/black-x-letter-hd-png/
+
+Thin Arrow Graphic
+- https://www.clipartmax.com/middle/m2H7m2i8m2m2A0A0_thin-wire-arrow-barbed-wire-jail-icon-with-png-and-thin-arrow/
+
+Undo Icon Graphic
+- https://www.freepik.com/free-icon/undo-button_779423.htm
+
+Ninja Clipart Graphic
+- https://imgbin.com/png/PvUtz24Z/ninja-ninjutsu-martial-arts-dojo-samurai-png
+
+Comic Speech Bubble Graphic
+- https://www.onlygfx.com/6-drawn-comic-speech-bubble-png-transparent/
 
 
 
