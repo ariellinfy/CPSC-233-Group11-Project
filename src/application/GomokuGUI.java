@@ -250,6 +250,12 @@ public class GomokuGUI extends Application {
 		this.boardSound = new MediaPlayer(audioClip);
 		boardSound.play();
 	}
+	
+	void playVictorySound() {
+		Media audioClip = new Media(new File("src/resources/Pokemon-Level-Up.mp3").toURI().toString());
+		this.victorySound = new MediaPlayer(audioClip);
+		victorySound.play();
+	}
 
 	/**
 	 * The main entry point for this JavaFX application. Initializes and sets up
