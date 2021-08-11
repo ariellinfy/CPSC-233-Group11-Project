@@ -382,12 +382,13 @@ public class OnGameController {
 			circle.setStroke(Color.WHITE);
 			circle.setFill(Color.WHITE);
 		}
-		// Add shadow to added aesthetic.
+		// Add shadow for added aesthetics.
 		DropShadow ds = new DropShadow();
 		ds.setOffsetX(2.0);
 		ds.setOffsetY(2.0);
 		circle.setEffect(ds);
 		paneBoard.getChildren().add(circle);
+		// Board sound is played before the end of the method.		
 		app.playBoardSound();
 	}
 
