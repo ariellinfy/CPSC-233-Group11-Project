@@ -1,4 +1,5 @@
 package model;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,7 +69,8 @@ public class Board {
 	 * Method that is responsible for printing out the game board in the terminal.
 	 */
 	public void printBoard() {
-		// Beginning for loop iterates through "alphabetList" to print out index for x-axis.
+		// Beginning for loop iterates through "alphabetList" to print out index for
+		// x-axis.
 		System.out.print("  ");
 		for (int i = 1; i <= boardSize; i++) {
 			System.out.print(" " + alphabetList.get(i));

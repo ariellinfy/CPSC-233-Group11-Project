@@ -1,9 +1,7 @@
 package application;
 
-
 import java.util.function.UnaryOperator;
 import java.io.File;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -21,7 +19,7 @@ import javafx.scene.media.MediaPlayer;
 import model.*;
 
 /**
- * A view for users to set the setting of a game.
+ * A view for users to set the setting and start a game.
  * 
  * @author Fu-Yin Lin
  *
@@ -107,7 +105,7 @@ public class StartMenuController {
 	}
 
 	/**
-	 * Updates boardSize in config object based on user selected size.
+	 * Updates variables in config object: board size, undo, and game time.
 	 */
 	private void setupGameConfig() {
 		GameConfiguration config = app.getGameConfiguration();
@@ -159,7 +157,7 @@ public class StartMenuController {
 			boardSizes.get(3).setUserData(19);
 		}
 	}
-	
+
 	/**
 	 * Set user data to each toggle button and add listener to a toggle group.
 	 * 
@@ -182,7 +180,7 @@ public class StartMenuController {
 				 */
 				if (newValue == null) {
 					toggleGroup.selectToggle(oldValue);
-				} 
+				}
 				/*
 				 * Disable difficulty toggle group if opponent is chosen to be a human player,
 				 * reset otherwise.
@@ -196,6 +194,9 @@ public class StartMenuController {
 		});
 	}
 
+	/**
+	 * Add listener to the game time spinner so that only numeric input is allowed.
+	 */
 	private void initSpinnerListener() {
 		// Allows only integer number as input.
 		UnaryOperator<TextFormatter.Change> filter = change -> {

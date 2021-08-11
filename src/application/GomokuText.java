@@ -19,17 +19,18 @@ public class GomokuText {
 	private int winnerScore = 20;
 
 	/**
-	 * Getter method that returns the instance variable "playerBlack".
+	 * Get current player black of the game.
 	 * 
 	 * @return playerBlack a Player object that contains information related to the
-	 *         player (i.e. name of player, num of moves made, color of player).
+	 *         player of color Black (i.e. name of player, num of moves made, color
+	 *         of player).
 	 */
 	public Player getPlayerBlack() {
 		return playerBlack;
 	}
 
 	/**
-	 * Getter method that returns the instance variable "playerWhite".
+	 * Get current player white of the game.
 	 * 
 	 * @return playerWhite a Player object that contains information related to the
 	 *         player of color White (i.e. name of player, num of moves made, color
@@ -45,7 +46,7 @@ public class GomokuText {
 	 * 
 	 * @param scanner a Scanner object used to read the text from user input.
 	 * @param message the message used to prompt the user in the terminal.
-	 * @return
+	 * @return the next line entered by user.
 	 */
 	private String promptUser(Scanner scanner, String message) {
 		System.out.print(message);
@@ -99,8 +100,7 @@ public class GomokuText {
 	 * Method that handles the user prompts for the stone color filter option.
 	 * 
 	 * @param scanner  a Scanner object used to read the text from user input.
-	 * @param opponent a HumanPlayer/ComputerPlayer object used to access the stone
-	 *                 color setter method.
+	 * @param opponent the opponent player set from previous user choice.
 	 */
 	private void chooseColor(Scanner scanner, Player opponent) {
 		String userColor = promptUser(scanner, "You want to play as? black always goes first (black/white) ");
@@ -114,7 +114,7 @@ public class GomokuText {
 			this.playerBlack = opponent;
 			/*
 			 * If an invalid input is entered (i.e. not white or black), the color of the
-			 * first player is set to black by default.
+			 * main player is set to black by default.
 			 */
 		} else {
 			messageToUser("Invalid input, your color is set to black.\n");
@@ -146,7 +146,12 @@ public class GomokuText {
 			this.config.setChessBoard(new Board());
 		}
 	}
-	
+
+	/**
+	 * Method that handles the user prompts for the undo option.
+	 * 
+	 * @param scanner a Scanner object used to read the text from user input.
+	 */
 	private void setUndo(Scanner scanner) {
 		String noUndo = promptUser(scanner, "No Undo (y/n): ");
 		if (noUndo.equalsIgnoreCase("y")) {
@@ -155,15 +160,13 @@ public class GomokuText {
 			this.config.setUndo(true);
 		} else {
 			messageToUser("Invalid input, default set to no undo in this game.\n");
-			this.config.setUndo(false);
+			this.config.setUndo(false); // Default is no undo.
 		}
 	}
 
 	/**
 	 * Method that is responsible for handling user inputs for all available game
-	 * options, as well as running the game application in the terminal. This method
-	 * uses all user-prompt related local methods, as well as the play() method to
-	 * run the game.
+	 * options, as well as running the game application in the terminal.
 	 * 
 	 * @param scanner a Scanner object used to read the text from user input.
 	 */
@@ -217,35 +220,47 @@ public class GomokuText {
 			 */
 			messageToUser("");
 			chessboard.printBoard();
-			// Check if the game is over or not.
+			// Check if the game is over or not, skip if undo entered.
 			if (move.getStone() != Stone.EMPTY) {
 				gameOver = checkRoundResult(move);
 			}
 		}
 	}
 
+	/**
+	 * This method generates move from the current player, also handles undo if user
+	 * enters undo to undo previous moves.
+	 * 
+	 * @param currentPlayer the player that is making the next move.
+	 * @param scanner       a Scanner object used to read the text from user input.
+	 * @return the next move object generated from either AI or human.
+	 */
 	private Move nextMove(Player currentPlayer, Scanner scanner) {
 		Move move = null;
 		/*
-		 * The local variable "move" is set equal to the getMove() method invoked on the
-		 * corresponding player (playerBlack or playerWhite). "Move" will then be
-		 * checked in a later conditional to see if the move is valid.
+		 * The user is only prompted if the corresponding player is a human. If
+		 * ComputerPlayer was selected, no message is printed and instead the computer
+		 * just makes it's own move accordingly.
 		 */
 		if (currentPlayer instanceof ComputerPlayer) {
 			move = currentPlayer.getMove(config);
 		} else {
-			/*
-			 * The user is only prompted if the corresponding player is a human. If
-			 * ComputerPlayer was selected, no message is printed and instead the computer
-			 * just makes it's own move accordingly.
-			 */
 			String prompt = promptUser(scanner, currentPlayer.getPlayerColor()
 					+ "'s turn, enter a valid coord (eg. A2) or 'undo' to undo previous move: ").toUpperCase();
+			/*
+			 * Check if user input is "undo" and check if undo is allowed in the current
+			 * game setting.
+			 */
 			if (config.getUndo() && prompt.equalsIgnoreCase("undo")) {
-				move = onUndo(blackTurn, playerBlack, playerWhite);
+				move = onUndo(playerBlack, playerWhite);
 				if (move != null) {
+					// If onUndo returns a move other than null, then set the move stone to empty.
 					move.setEmptyStone();
 				} else {
+					/*
+					 * This new move is meant to be a placeholder only, so we can pass the gameover
+					 * check when return.
+					 */
 					move = new Move(-1, -1, Stone.EMPTY);
 				}
 			} else {
@@ -254,8 +269,16 @@ public class GomokuText {
 		}
 		return move;
 	}
-	
-	private Move onUndo(boolean blackTurn, Player playerBlack, Player playerWhite) {
+
+	/**
+	 * Method that will undo the last move(s) and update all related variables.
+	 * 
+	 * @param playerBlack the current black player of the game.
+	 * @param playerWhite the current white player of the game.
+	 * @return the last valid move of the game, or null if no moves have made to the
+	 *         game.
+	 */
+	private Move onUndo(Player playerBlack, Player playerWhite) {
 		Move lastMove = null;
 		try {
 			ArrayList<Move> undoMoves = config.undoMove(blackTurn, playerBlack, playerWhite);
@@ -277,12 +300,7 @@ public class GomokuText {
 	private boolean checkValidMove(Move latestMove, Player currentPlayer) {
 		boolean validInput = false;
 		if (latestMove != null) {
-			/*
-			 * (Need to review) The board is updated with the new move, and added to the
-			 * corresponding player's "validMoveList" ArrayList (instance variable) using
-			 * the add() method on getAllValidMoves(). Additionally, the "numOfMoves"
-			 * integer (instance variable) is incremented.
-			 */
+			// Update board and corresponding player data.
 			if (latestMove.getStone() != Stone.EMPTY) {
 				config.updateBoard(latestMove);
 				currentPlayer.getAllValidMoves().add(latestMove);
@@ -344,8 +362,7 @@ public class GomokuText {
 	}
 
 	/**
-	 * Setter method used to update the instance variable "winnerScore" to 0 if a
-	 * draw occurs.
+	 * Set winner score to be 0 if a draw occurs.
 	 */
 	private void setDrawScore() {
 		this.winnerScore = 0;

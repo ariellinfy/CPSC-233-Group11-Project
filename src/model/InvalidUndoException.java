@@ -1,7 +1,14 @@
 package model;
 
+/**
+ * A custom exception class that will throw an InvalidUndoException when an undo
+ * can not be performed or an error occurs while performing the undo.
+ * 
+ * @author Fu-Yin Lin
+ *
+ */
 public class InvalidUndoException extends Exception {
-
+	// Below constructors come from superclass Exception.
 	public InvalidUndoException() {
 		// TODO Auto-generated constructor stub
 	}

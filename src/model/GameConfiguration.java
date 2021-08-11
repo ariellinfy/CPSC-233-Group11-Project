@@ -36,22 +36,42 @@ public class GameConfiguration {
 		chessBoard.initBoard();
 	}
 
+	/**
+	 * Get current game undo setting.
+	 * 
+	 * @return a boolean of whether undo is allowed in current game.
+	 */
 	public boolean getUndo() {
 		return allowUndo;
 	}
-	
+
+	/**
+	 * Update undo based on user selection.
+	 * 
+	 * @param undo a boolean of whether undo is allowed in current game.
+	 */
 	public void setUndo(boolean undo) {
 		this.allowUndo = undo;
 	}
-	
+
+	/**
+	 * Get total time allowed for the current game.
+	 * 
+	 * @return total available time for the game.
+	 */
 	public int getGameTime() {
 		return gameTime;
 	}
-	
+
+	/**
+	 * Set game time based on user choice.
+	 * 
+	 * @param gameTime total available time for the game.
+	 */
 	public void setGameTime(int gameTime) {
 		this.gameTime = gameTime;
 	}
-	
+
 	/**
 	 * Add a move and update the game board.
 	 * 
@@ -60,20 +80,48 @@ public class GameConfiguration {
 	public void updateBoard(Move move) {
 		chessBoard.setCoord(move.getRow(), move.getCol(), move.getStone());
 	}
-	
+
+	/**
+	 * A helper method to check whether both players' move count are the same or
+	 * not.
+	 * 
+	 * @param playerBlack the black player of the game.
+	 * @param playerWhite the white player of the game.
+	 * @return a boolean based on the equality of number of moves from both players.
+	 */
 	public boolean checkPlayersNumOfMoves(Player playerBlack, Player playerWhite) {
 		return playerBlack.getNumOfMoves() == playerWhite.getNumOfMoves();
 	}
-	
+
+	/**
+	 * A helper method that checks whether a player has made a move or not.
+	 * 
+	 * @param currentPlayer the target player to check number of valid moves.
+	 * @return a boolean based on if a move is available for the target player to
+	 *         perform undo.
+	 */
 	public boolean isMoveAvailable(Player currentPlayer) {
 		return currentPlayer.getNumOfMoves() > 0;
 	}
-	
-	public ArrayList<Move> undoMove(boolean blackTurn, Player playerBlack, Player playerWhite) throws InvalidUndoException {
+
+	/**
+	 * Perform move undo based on current turn color (white acts differently than
+	 * black), and return all undo moves.
+	 * 
+	 * @param blackTurn   a boolean of whether current turn color is black or not.
+	 * @param playerBlack the black player of the game.
+	 * @param playerWhite the white player of the game.
+	 * @return an arrayList of all undo moves.
+	 * @throws InvalidUndoException if an undo can not be performed or an error
+	 *                              occurs while performing the undo.
+	 */
+	public ArrayList<Move> undoMove(boolean blackTurn, Player playerBlack, Player playerWhite)
+			throws InvalidUndoException {
 		ArrayList<Move> undoMoves = new ArrayList<Move>();
 		Move lastMove = null;
 		if (blackTurn) {
-			if (checkPlayersNumOfMoves(playerBlack, playerWhite) && isMoveAvailable(playerWhite) && isMoveAvailable(playerBlack)) {
+			if (checkPlayersNumOfMoves(playerBlack, playerWhite) && isMoveAvailable(playerWhite)
+					&& isMoveAvailable(playerBlack)) {
 				lastMove = removeMove(playerWhite);
 				undoMoves.add(lastMove);
 				lastMove = removeMove(playerBlack);
@@ -99,7 +147,13 @@ public class GameConfiguration {
 		}
 		return undoMoves;
 	}
-	
+
+	/**
+	 * Updates all related variables to realize undoing a move.
+	 * 
+	 * @param currentPlayer the player that does the undo.
+	 * @return the latest undo move from the current player.
+	 */
 	public Move removeMove(Player currentPlayer) {
 		Move lastMove = currentPlayer.getAllValidMoves().get(currentPlayer.getNumOfMoves() - 1);
 		currentPlayer.getAllValidMoves().remove(currentPlayer.getNumOfMoves() - 1);
@@ -139,7 +193,8 @@ public class GameConfiguration {
 	}
 
 	/**
-	 * A method checks whether a move is valid or not.
+	 * A method checks whether a move is valid or not. This method is mainly used
+	 * for the text app.
 	 * 
 	 * @param coord a string representation of the targeting location of a move.
 	 * @param stone the stone color of current player that makes a move.
@@ -174,7 +229,8 @@ public class GameConfiguration {
 	}
 
 	/**
-	 * A method checks whether a move is valid or not.
+	 * A method checks whether a move is valid or not. This method is mainly used
+	 * for GUI app and it overloads the previous one.
 	 * 
 	 * @param row   the row index number of the board.
 	 * @param col   the column index number of the board.
