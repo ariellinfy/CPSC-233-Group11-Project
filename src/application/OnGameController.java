@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -23,12 +25,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.io.File;
 import java.time.Duration;
 import model.*;
 
@@ -47,7 +52,7 @@ public class OnGameController {
 	private GameConfiguration config;
 	private Timeline blackTimeline = new Timeline();
 	private Timeline whiteTimeline = new Timeline();
-
+    
 	@FXML
 	private StackPane paneBoardArea;
 
@@ -197,11 +202,21 @@ public class OnGameController {
 		 * container) to produce the grid game board.
 		 */
 		for (int i = 0; i < boardSize; i++) {
-			Line hLine = new Line(0, LINE_SPACING * i, boardLength, LINE_SPACING * i);
-			Line vLine = new Line(LINE_SPACING * i, 0, LINE_SPACING * i, boardLength);
+			Line hLine = new Line(10, LINE_SPACING * i + 10, boardLength + 10, LINE_SPACING * i + 10);
+			Line vLine = new Line(LINE_SPACING * i + 10, 10, LINE_SPACING * i + 10, boardLength + 10);
 			paneBoard.getChildren().add(hLine);
 			paneBoard.getChildren().add(vLine);
 		}
+		
+		Rectangle rectangle = new Rectangle(0, 0, boardLength + 75, boardLength + 75);
+		rectangle.setArcWidth(15);
+		rectangle.setArcHeight(15);
+		Image imgBoard = new Image("file:src/resources/game-board.jpg");
+		ImagePattern pattern = new ImagePattern(imgBoard);
+		rectangle.setFill(pattern);
+		rectangle.setEffect(new DropShadow(20, Color.BLACK));	
+		paneBoardArea.getChildren().add(rectangle);
+		paneBoard.toFront();
 		drawCoord();
 		drawPoint();
 	}
@@ -214,15 +229,15 @@ public class OnGameController {
 			textX.setTextAlignment(TextAlignment.CENTER);
 			textX.setWrappingWidth(20);
 			textX.setText(alphabetList.get(i + 1).toString());
-			textX.setX(-10 + (i * LINE_SPACING));
-			textX.setY(-16);
+			textX.setX(i * LINE_SPACING);
+			textX.setY(-5);
 			Text textY = new Text();
 			textY.setFont(new Font(16));
 			textY.setTextAlignment(TextAlignment.CENTER);
 			textY.setWrappingWidth(40);
 			textY.setText(String.valueOf(i + 1));
-			textY.setX(-44);
-			textY.setY(6 + (i * LINE_SPACING));
+			textY.setX(-34);
+			textY.setY(16 + (i * LINE_SPACING));
 			paneBoard.getChildren().addAll(textX, textY);
 		}
 	}
@@ -237,12 +252,12 @@ public class OnGameController {
 		 * The location of these dots differs depending on the board size selected by
 		 * the user.
 		 */
-		int top = 3 * LINE_SPACING;
-		int center = Math.round(boardSize / 2) * LINE_SPACING;
-		int bottom = (boardSize - 4) * LINE_SPACING;
+		int top = 3 * LINE_SPACING + 10;
+		int center = Math.round(boardSize / 2) * LINE_SPACING + 10;
+		int bottom = (boardSize - 4) * LINE_SPACING + 10;
 		if (boardSize < 13) {
-			top = 2 * LINE_SPACING;
-			bottom = (boardSize - 3) * LINE_SPACING;
+			top = 2 * LINE_SPACING + 10;
+			bottom = (boardSize - 3) * LINE_SPACING + 10;
 		}
 		/*
 		 * Regardless of board size, a center dot surrounded by 4 dots diagonally is
@@ -279,8 +294,8 @@ public class OnGameController {
 		/*
 		 * To calculate the x and y distance of the stone with respective to the pane.
 		 */
-		int y = move.getRow() * LINE_SPACING;
-		int x = move.getCol() * LINE_SPACING;
+		int y = move.getRow() * LINE_SPACING + 10;
+		int x = move.getCol() * LINE_SPACING + 10;
 		Circle circle = new Circle(x, y, 17.5);
 		/*
 		 * If/else statement sets the color of the stone dependent on whether the move

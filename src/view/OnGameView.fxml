@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -12,13 +13,9 @@
 	<content>
 		<BorderPane prefWidth="1250.0">
 			<center>
-				<StackPane fx:id="paneBoardArea">
+				<StackPane fx:id="paneBoardArea" BorderPane.alignment="CENTER">
 					<children>
-						<Pane fx:id="paneBoard" onMouseClicked="#onNextMove" style="-fx-border-radius: 5; -fx-cursor: hand;">
-							<StackPane.margin>
-								<Insets bottom="30.0" left="60.0" right="20.0" top="60.0" />
-							</StackPane.margin>
-						</Pane>
+						<Pane fx:id="paneBoard" onMouseClicked="#onNextMove" style="-fx-border-radius: 5; -fx-cursor: hand;" />
 					</children>
 					<BorderPane.margin>
 						<Insets />
