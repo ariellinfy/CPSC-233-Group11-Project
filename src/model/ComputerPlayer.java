@@ -6,8 +6,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import javafx.scene.control.Label;
-
 /**
  * The class that contains data and logic related to the artificial intelligence
  * of the game.

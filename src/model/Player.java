@@ -135,10 +135,10 @@ public abstract class Player {
 	public void incrementMoveCount() {
 		this.numOfMoves++;
 	}
-	
+
 	/**
-	 * Every time a player undoes move, the total number of moves of this
-	 * player will decrement by one.
+	 * Every time a player undoes move, the total number of moves of this player
+	 * will decrement by one.
 	 */
 	public void decrementMoveCount() {
 		this.numOfMoves--;

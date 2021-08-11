@@ -1,9 +1,7 @@
 package model;
 
 /**
- * The class contains data needed for a single move in a game. Setter methods
- * are not provided in the class, since a Move object is not allowed to be
- * mutated after initialization.
+ * The class contains data needed for a single move in a game.
  * 
  * @author Fu-Yin Lin
  * 
@@ -52,7 +50,7 @@ public class Move {
 	public Stone getStone() {
 		return stone;
 	}
-	
+
 	/**
 	 * Reset this move to be an empty stone.
 	 */

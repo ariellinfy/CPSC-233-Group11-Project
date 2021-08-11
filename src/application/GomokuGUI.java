@@ -29,7 +29,7 @@ public class GomokuGUI extends Application {
 	private int winnerScore = 20;
 
 	/**
-	 * Getter method that returns the instance variable "config".
+	 * Get current game configuration.
 	 * 
 	 * @return config a GameConfiguration object that contains game board related
 	 *         methods and variables.
@@ -39,17 +39,18 @@ public class GomokuGUI extends Application {
 	}
 
 	/**
-	 * Getter method that returns the instance variable "playerBlack".
+	 * Get current player black of the game.
 	 * 
 	 * @return playerBlack a Player object that contains information related to the
-	 *         player (i.e. name of player, num of moves made, color of player).
+	 *         player of color Black (i.e. name of player, num of moves made, color
+	 *         of player).
 	 */
 	Player getPlayerBlack() {
 		return playerBlack;
 	}
 
 	/**
-	 * Setter method used to update the value of instance variable "playerBlack".
+	 * Set player black of the game.
 	 * 
 	 * @param playerBlack a Player object that contains information related to the
 	 *                    player of color Black (i.e. name of player, num of moves
@@ -60,7 +61,7 @@ public class GomokuGUI extends Application {
 	}
 
 	/**
-	 * Getter method that returns the instance variable "playerWhite".
+	 * Get current player white of the game.
 	 * 
 	 * @return playerWhite a Player object that contains information related to the
 	 *         player of color White (i.e. name of player, num of moves made, color
@@ -71,7 +72,7 @@ public class GomokuGUI extends Application {
 	}
 
 	/**
-	 * Setter method used to update the value of instance variable "playerBlack".
+	 * Set player white of the game.
 	 * 
 	 * @param playerWhite a Player object that contains information related to the
 	 *                    player of color White (i.e. name of player, num of moves
@@ -82,9 +83,9 @@ public class GomokuGUI extends Application {
 	}
 
 	/**
-	 * Getter method that returns the instance variable "winnerScore".
+	 * Get the winner score of the game.
 	 * 
-	 * @return winnerScore the score of the winning player at the end of the game.
+	 * @return the score of the winning player at the end of the game.
 	 */
 	int getWinnerScore() {
 		return winnerScore;
@@ -99,17 +100,9 @@ public class GomokuGUI extends Application {
 			Parent startMenu = loader.load();
 			primaryStage.setScene(new Scene(startMenu));
 			primaryStage.show();
-			/*
-			 * StartMenuController is linked with the StartMenu scene using the
-			 * linkWithApplication() method.
-			 */
 			StartMenuController startMenuController = loader.getController();
 			startMenuController.linkWithApplication(this);
-			/*
-			 * sizeToScene() is used to match the size of the window with the contents (i.e.
-			 * widgets) of the window.
-			 */
-			primaryStage.sizeToScene();
+			primaryStage.sizeToScene(); // make sure window size matches contents
 			/*
 			 * FileNotFoundException and IOException is handled in these catch blocks by
 			 * printing an error message in the terminal.
@@ -131,13 +124,11 @@ public class GomokuGUI extends Application {
 			primaryStage.setScene(new Scene(gameView));
 			primaryStage.show();
 			OnGameController gameViewController = loader.getController();
-			/*
-			 * The board size in OnGameController is set using current data of the config
-			 * object.
-			 */
+			// Pass chosen boardSize to OnGameController to draw the correct board.
 			int boardSize = config.getChessBoard().getBoardSize();
 			gameViewController.setBoardSize(boardSize);
 			gameViewController.linkWithApplication(this);
+			// When boardSize is 19x19, adjusts the stage size to show the whole board.
 			if (boardSize > 15) {
 				primaryStage.setWidth(1450);
 				primaryStage.setHeight(875);
@@ -158,10 +149,7 @@ public class GomokuGUI extends Application {
 	 * @param the result of the game.
 	 */
 	void gameOver(Result result) {
-		/*
-		 * Series of if conditions checks if black has won, white has won, or a draw has
-		 * occurred and updates "winnerScore" accordingly using calculateScore() method.
-		 */
+		// Update score based on the result of the game.
 		if (result == Result.BLACK) {
 			this.winnerScore = config.calculateScore(playerBlack, playerWhite);
 		} else if (result == Result.WHITE) {
@@ -169,10 +157,7 @@ public class GomokuGUI extends Application {
 		} else if (result == Result.DRAW) {
 			this.winnerScore = 0;
 		}
-		/*
-		 * At the end of this method, displayResult() is invoked to load the game
-		 * overview window at the end of the game.
-		 */
+		// Display separate result window.
 		displayResult(result);
 	}
 
@@ -183,29 +168,33 @@ public class GomokuGUI extends Application {
 	 * @param result the enum result of the current game.
 	 */
 	private void displayResult(Result result) {
-		final Stage gameOverview = new Stage();
+		final Stage gameOverView = new Stage();
 		/*
-		 * initModality() is invoked on gameOverview stage to prevent events such as
+		 * initModality() is invoked on gameOverView stage to prevent events such as
 		 * user clicks from occurring on the primary stage (ie. game board) while the
-		 * game overview window is displayed. Set gameOverview stage to be a child of
+		 * game overview window is displayed. Set gameOverView stage to be a child of
 		 * primary stage, so that user won't be able to close the primary stage without
 		 * first interact (eg. closing) with the child.
 		 */
-		gameOverview.initModality(Modality.APPLICATION_MODAL);
-		gameOverview.initOwner(primaryStage);
+		gameOverView.initModality(Modality.APPLICATION_MODAL);
+		gameOverView.initOwner(primaryStage);
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/GameOverView.fxml"));
 			Parent gameView = loader.load();
-			gameOverview.setScene(new Scene(gameView));
-			gameOverview.show();
+			gameOverView.setScene(new Scene(gameView));
+			gameOverView.show();
 			GameOverController gameOverController = loader.getController();
 			// Pass the result of the game to the controller.
 			gameOverController.linkWithApplication(this, result);
-			gameOverview.sizeToScene();
-			gameOverview.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			gameOverView.sizeToScene();
+			/*
+			 * When user selects the x icon of the window, the app will resume back to the
+			 * start menu.
+			 */
+			gameOverView.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
 				public void handle(WindowEvent event) {
-					gameOverview.close();
+					gameOverView.close();
 					restartGame();
 				}
 			});
@@ -220,7 +209,6 @@ public class GomokuGUI extends Application {
 	 * Method that restarts the game by returning to the start menu.
 	 */
 	void restartGame() {
-		// startMenu() is invoked to return to the start menu.
 		startMenu();
 	}
 
