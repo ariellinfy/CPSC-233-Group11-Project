@@ -33,5 +33,8 @@ A class diagram is included with the source code folder (public/gomoku-class-dia
 5. Follow instructions to set up and play the game.
 6. Have fun!
 
+## Resources
+
+
 
 Group 11, CPSC 233 Summer 2021
