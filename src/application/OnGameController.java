@@ -303,6 +303,7 @@ public class OnGameController {
 		paneBoard.getChildren().add(circle);
 		addLog(move);
 		scrollPaneMoveLogs.setVvalue(1D);
+		app.playBoardSound();
 	}
 
 	private void removeStone(Move move) {

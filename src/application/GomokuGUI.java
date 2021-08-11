@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -8,6 +9,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -27,6 +30,10 @@ public class GomokuGUI extends Application {
 	private Player playerBlack;
 	private Player playerWhite;
 	private int winnerScore = 20;
+	private MediaPlayer menuButtonSound;
+	private MediaPlayer boardSound;
+	private MediaPlayer victorySound;
+	private MediaPlayer backgroundMusic;
 
 	/**
 	 * Getter method that returns the instance variable "config".
@@ -230,6 +237,18 @@ public class GomokuGUI extends Application {
 	void exitGame() {
 		primaryStage.close();
 		System.exit(0);
+	}
+	
+	void playMenuSound() {
+		Media audioClip = new Media(new File("src/resources/Pokemon-Button-Click.mp3").toURI().toString());
+		this.menuButtonSound = new MediaPlayer(audioClip);
+		menuButtonSound.play();
+	}
+	
+	void playBoardSound() {
+		Media audioClip = new Media(new File("src/resources/Mouse-Click.wav").toURI().toString());
+		this.boardSound = new MediaPlayer(audioClip);
+		boardSound.play();
 	}
 
 	/**
