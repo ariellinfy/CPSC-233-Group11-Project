@@ -225,19 +225,29 @@ public class GomokuGUI extends Application {
 		primaryStage.close();
 		System.exit(0);
 	}
-	
+
+	/**
+	 * Method that plays a sound clip whenever any of the JavaFX widgets in each
+	 * scene are updated/pressed.
+	 */
 	void playMenuSound() {
 		Media audioClip = new Media(new File("src/resources/Pokemon-Button-Click.mp3").toURI().toString());
 		this.menuButtonSound = new MediaPlayer(audioClip);
 		menuButtonSound.play();
 	}
-	
+
+	/**
+	 * Method that plays a sound clip whenever a stone is placed in the Game scene.
+	 */
 	void playBoardSound() {
 		Media audioClip = new Media(new File("src/resources/Mouse-Click.wav").toURI().toString());
 		this.boardSound = new MediaPlayer(audioClip);
 		boardSound.play();
 	}
-	
+
+	/**
+	 * Method that plays a sound clip when the Game overview scene pops up.
+	 */
 	void playVictorySound() {
 		Media audioClip = new Media(new File("src/resources/Pokemon-Level-Up.mp3").toURI().toString());
 		this.victorySound = new MediaPlayer(audioClip);
