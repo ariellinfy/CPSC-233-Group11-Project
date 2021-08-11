@@ -361,7 +361,6 @@ public class OnGameController {
 	 *             placed.
 	 */
 	private void drawStone(Move move) {
-		config.getChessBoard().printBoard();
 		// To calculate the x and y distance of the stone with respective to the pane.
 		int y = move.getRow() * LINE_SPACING + 10;
 		int x = move.getCol() * LINE_SPACING + 10;
