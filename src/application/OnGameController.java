@@ -16,15 +16,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -33,8 +42,9 @@ import java.time.Duration;
 import model.*;
 
 /**
- * A view that displays the game board, and handles board-related events such as
- * stone placements.
+ * A view that displays the game board and on game menu. It handles
+ * board-related events such as stone placements as well as allows user to
+ * select draw, undo, quit or start new game options.
  * 
  * @author Fu-Yin Lin, Justin Chua
  *
@@ -48,6 +58,10 @@ public class OnGameController {
 	private Timeline blackTimeline = new Timeline();
 	private Timeline whiteTimeline = new Timeline();
 
+    @FXML
+    private BorderPane borderPaneArea;
+    
+	// A layout container containing both board image and grids.
 	@FXML
 	private StackPane paneBoardArea;
 
@@ -86,7 +100,7 @@ public class OnGameController {
 	private Button buttonUndo;
 
 	/**
-	 * Set boardSize and draw board based on user selected size in the start menu.
+	 * Set boardSize based on user selected size in the start menu.
 	 * 
 	 * @param boardSize the specified board size selected by the user.
 	 */
@@ -95,43 +109,66 @@ public class OnGameController {
 	}
 
 	/**
-	 * Method used to link this controller with the GomokuGUI.
+	 * Method used to link this controller with the GomokuGUI. It also initializes
+	 * all the settings from configuration data.
 	 * 
 	 * @param app the instance of GomokuGUI when running the program.
 	 */
 	void linkWithApplication(GomokuGUI app) {
 		this.app = app;
 		this.config = app.getGameConfiguration();
+		// Update player labels with player names.
 		labelBlackName.setText(app.getPlayerBlack().getPlayerName());
 		labelWhiteName.setText(app.getPlayerWhite().getPlayerName());
+		// Set welcome message
 		labelStatusMessage.setText("Welcome, black's turn!");
+		// Enable undo button by user choice.
 		if (config.getUndo()) {
 			buttonUndo.setDisable(false);
 		}
+		// Draw the game board.
 		drawBoard();
+		// Setup timelines for both players.
 		setupCountdownTimer(blackTimeline, labelBlackTime);
 		setupCountdownTimer(whiteTimeline, labelWhiteTime);
+		// Start black timer.
 		blackTimerContinue();
-		/*
-		 * If playerBlack (which goes first by default) is an instance of
-		 * ComputerPlayer, the firstMove() method is invoked.
-		 */
+		// If playerBlack is of type ComputerPlayer, it will place first move.
 		if (app.getPlayerBlack() instanceof ComputerPlayer) {
 			firstMove();
 		}
 	}
 
-	// https://asgteach.com/2011/10/javafx-animation-and-binding-simple-countdown-timer-2/
-	// https://www.coder.work/article/5519239
+	/**
+	 * Setup a countdown timer based on user selected game time. Referenced from:
+	 * https://asgteach.com/2011/10/javafx-animation-and-binding-simple-countdown-timer-2/
+	 * https://www.coder.work/article/5519239
+	 * 
+	 * @param timeline the timeline to be setup with a new 1 second keyframe.
+	 * @param label    the label to be binded with the timeLeft variable.
+	 */
 	private void setupCountdownTimer(Timeline timeline, Label label) {
 		ObjectProperty<Duration> timeLeft = new SimpleObjectProperty<>();
 		timeLeft.set(Duration.ofMinutes(config.getGameTime()));
+		// Time label is binded to actual time left
 		label.textProperty()
 				.bind(Bindings.createStringBinding(() -> getTimeStringFromDuration(timeLeft.get()), timeLeft));
+		/*
+		 * Set the timeline with a keyframe so that every second it will update to
+		 * reflect the correct timeLeft variable.
+		 */
 		timeline.getKeyFrames().add(new KeyFrame(javafx.util.Duration.seconds(1), e -> updateTimer(timeLeft)));
 		timeline.setCycleCount(Timeline.INDEFINITE);
 	}
 
+	/**
+	 * The onFinished function that will be invoked every one second to decrement
+	 * the time by 1 second. If timeLeft reaches zero, the timeline will stop
+	 * invoking its keyframes and app will show the termination view.
+	 * 
+	 * @param timeLeft the wrapped Duration that reflects the actual time left for a
+	 *                 player.
+	 */
 	private void updateTimer(ObjectProperty<Duration> timeLeft) {
 		timeLeft.set(timeLeft.get().minusSeconds(1));
 		if (timeLeft.get().isZero()) {
@@ -145,36 +182,71 @@ public class OnGameController {
 		}
 	}
 
-	private static String getTimeStringFromDuration(Duration duration) {
+	/**
+	 * This method translates timeLeft duration into readable string representation.
+	 * 
+	 * @param duration the Duration object that contains information about the time
+	 *                 left for a player.
+	 * @return a time string representation of the duration.
+	 */
+	private String getTimeStringFromDuration(Duration duration) {
 		int min = (int) (duration.getSeconds() / 60);
 		int sec = (int) (duration.getSeconds() % 60);
 		String time = sec < 10 ? min + ":0" + sec : min + ":" + sec;
 		return time;
 	}
 
+	/**
+	 * A generic method that will play/continue the provided timeline.
+	 * 
+	 * @param timeline the timeline to be played.
+	 */
 	private void continueTimer(Timeline timeline) {
 		timeline.play();
 	}
 
+	/**
+	 * A generic method that will stop/pause the provided timeline.
+	 * 
+	 * @param timeline the timeline to be stop.
+	 */
 	private void pauseTimer(Timeline timeline) {
 		timeline.stop();
 	}
 
+	/**
+	 * This method is invoked when it's black's turn, where black timer will
+	 * continue and white timer will be paused.
+	 */
 	private void blackTimerContinue() {
 		continueTimer(blackTimeline);
 		pauseTimer(whiteTimeline);
 	}
 
+	/**
+	 * This method is invoked when it's white's turn, where white timer will
+	 * continue and black timer will be paused.
+	 */
 	private void whiteTimerContinue() {
 		continueTimer(whiteTimeline);
 		pauseTimer(blackTimeline);
 	}
 
+	/**
+	 * Stop and clear all keyframes in a timeline.
+	 * 
+	 * @param timeline the timeline to be stop and cleared.
+	 */
 	private void clearTimer(Timeline timeline) {
 		timeline.stop();
 		timeline.getKeyFrames().clear();
 	}
 
+	/**
+	 * Stop and clear both black and white timers, also unbind labels (it is due the
+	 * stop method is an asynchronous call, unbinding will force the animation to
+	 * stop changing immediately).
+	 */
 	private void stopAllTimers() {
 		labelBlackTime.textProperty().unbind();
 		labelWhiteTime.textProperty().unbind();
@@ -188,24 +260,37 @@ public class OnGameController {
 	 */
 	private void drawBoard() {
 		int boardLength = LINE_SPACING * (boardSize - 1);
-		// The size of the layout container is set equal to boardLength.
+		/*
+		 * Manually set the board size, so the pane can fit different board size
+		 * dynamically.
+		 */
 		paneBoard.setMinSize(boardLength, boardLength);
 		paneBoard.setPrefSize(boardLength, boardLength);
 		paneBoard.setMaxSize(boardLength, boardLength);
-		/*
-		 * For loop creates and adds horizontal/vertical lines to "paneBoard" (layout
-		 * container) to produce the grid game board.
-		 */
+		// Draw horizontal/vertical lines to pane to produce the grid game board.
 		for (int i = 0; i < boardSize; i++) {
-			Line hLine = new Line(0, LINE_SPACING * i, boardLength, LINE_SPACING * i);
-			Line vLine = new Line(LINE_SPACING * i, 0, LINE_SPACING * i, boardLength);
+			Line hLine = new Line(10, LINE_SPACING * i + 10, boardLength + 10, LINE_SPACING * i + 10);
+			Line vLine = new Line(LINE_SPACING * i + 10, 10, LINE_SPACING * i + 10, boardLength + 10);
 			paneBoard.getChildren().add(hLine);
 			paneBoard.getChildren().add(vLine);
 		}
-		drawCoord();
-		drawPoint();
+		// Add decoration to board: board image, coords and dots.
+		Rectangle rectangle = new Rectangle(0, 0, boardLength + 75, boardLength + 75);
+		rectangle.setArcWidth(15);
+		rectangle.setArcHeight(15);
+		Image imgBoard = new Image("file:src/resources/Game-Board.jpg");
+		ImagePattern pattern = new ImagePattern(imgBoard);
+		rectangle.setFill(pattern);
+		rectangle.setEffect(new DropShadow(20, Color.BLACK));
+		paneBoardArea.getChildren().add(rectangle);
+		paneBoard.toFront(); // Bring grids to the front.
+		drawCoord(); // Draw board coordinates.
+		drawPoint(); // Draw board dots.
 	}
 
+	/**
+	 * Draw the horizontal and vertical coordinates to the pane.
+	 */
 	private void drawCoord() {
 		Map<Integer, Character> alphabetList = config.getChessBoard().getAlphabetList();
 		for (int i = 0; i < boardSize; i++) {
@@ -214,35 +299,34 @@ public class OnGameController {
 			textX.setTextAlignment(TextAlignment.CENTER);
 			textX.setWrappingWidth(20);
 			textX.setText(alphabetList.get(i + 1).toString());
-			textX.setX(-10 + (i * LINE_SPACING));
-			textX.setY(-16);
+			textX.setX(i * LINE_SPACING);
+			textX.setY(-5);
 			Text textY = new Text();
 			textY.setFont(new Font(16));
 			textY.setTextAlignment(TextAlignment.CENTER);
 			textY.setWrappingWidth(40);
 			textY.setText(String.valueOf(i + 1));
-			textY.setX(-44);
-			textY.setY(6 + (i * LINE_SPACING));
+			textY.setX(-34);
+			textY.setY(16 + (i * LINE_SPACING));
 			paneBoard.getChildren().addAll(textX, textY);
 		}
 	}
 
 	/**
-	 * Method that is used to draw a series of dots on the game board. These dots
-	 * are meant to mimic the 5 or 9 dots commonly found on traditional Gomoku game
-	 * boards.
+	 * Draw a series of dots on the game board. These dots are meant to mimic the 5
+	 * or 9 dots commonly found on traditional Gomoku game boards.
 	 */
 	private void drawPoint() {
 		/*
 		 * The location of these dots differs depending on the board size selected by
 		 * the user.
 		 */
-		int top = 3 * LINE_SPACING;
-		int center = Math.round(boardSize / 2) * LINE_SPACING;
-		int bottom = (boardSize - 4) * LINE_SPACING;
+		int top = 3 * LINE_SPACING + 10;
+		int center = Math.round(boardSize / 2) * LINE_SPACING + 10;
+		int bottom = (boardSize - 4) * LINE_SPACING + 10;
 		if (boardSize < 13) {
-			top = 2 * LINE_SPACING;
-			bottom = (boardSize - 3) * LINE_SPACING;
+			top = 2 * LINE_SPACING + 10;
+			bottom = (boardSize - 3) * LINE_SPACING + 10;
 		}
 		/*
 		 * Regardless of board size, a center dot surrounded by 4 dots diagonally is
@@ -268,23 +352,29 @@ public class OnGameController {
 	}
 
 	/**
-	 * Method that is used to draw the stone on the game board whenever a stone is
-	 * placed by the user/computer.
+	 * Update the pane with the provided move.
+	 * 
+	 * @param move the latest move to add to the OnGameView.
+	 */
+	private void updatePane(Move move) {
+		drawStone(move);
+		addLog(move);
+		scrollPaneMoveLogs.setVvalue(1D);
+	}
+
+	/**
+	 * Draw the stone on the game board whenever a stone is placed by the
+	 * user/computer.
 	 * 
 	 * @param move a Move object containing the coordinates of where the stone is
 	 *             placed.
 	 */
 	private void drawStone(Move move) {
-		/*
-		 * To calculate the x and y distance of the stone with respective to the pane.
-		 */
-		int y = move.getRow() * LINE_SPACING;
-		int x = move.getCol() * LINE_SPACING;
+		// To calculate the x and y distance of the stone with respective to the pane.
+		int y = move.getRow() * LINE_SPACING + 10;
+		int x = move.getCol() * LINE_SPACING + 10;
 		Circle circle = new Circle(x, y, 17.5);
-		/*
-		 * If/else statement sets the color of the stone dependent on whether the move
-		 * was made by player Black or White.
-		 */
+		// Set stone color based on player placed move.
 		if (move.getStone() == Stone.BLACK) {
 			circle.setStroke(Color.BLACK);
 			circle.setFill(Color.BLACK);
@@ -292,24 +382,30 @@ public class OnGameController {
 			circle.setStroke(Color.WHITE);
 			circle.setFill(Color.WHITE);
 		}
-		/*
-		 * For aesthetic purposes, a drop shadow is added to the circles to portray a
-		 * more reflective, stone-like effect.
-		 */
+		// Add shadow to added aesthetic.
 		DropShadow ds = new DropShadow();
 		ds.setOffsetX(2.0);
 		ds.setOffsetY(2.0);
 		circle.setEffect(ds);
 		paneBoard.getChildren().add(circle);
-		addLog(move);
-		scrollPaneMoveLogs.setVvalue(1D);
 		app.playBoardSound();
 	}
 
+	/**
+	 * Remove the last stone drawn to the pane.
+	 * 
+	 * @param move the undo move.
+	 */
 	private void removeStone(Move move) {
 		paneBoard.getChildren().remove(paneBoard.getChildren().size() - 1);
 	}
 
+	/**
+	 * Translate the latest move into its corresponding coordinate and add to the
+	 * move log in the OnGameView.
+	 * 
+	 * @param move the latest move to be added to the move log.
+	 */
 	private void addLog(Move move) {
 		Map<Integer, Character> alphabetList = config.getChessBoard().getAlphabetList();
 		int row = move.getRow();
@@ -330,6 +426,11 @@ public class OnGameController {
 		}
 	}
 
+	/**
+	 * Remove corresponding logs when player undo moves. The latest black move,
+	 * latest white move and move count will be remove together in one undo
+	 * selection.
+	 */
 	private void removeLogs() {
 		if (blackTurn) {
 			int count = app.getPlayerWhite().getNumOfMoves();
@@ -344,6 +445,13 @@ public class OnGameController {
 		}
 	}
 
+	/**
+	 * A helper method that will find the corresponding node for the undo move and
+	 * remove it from the log.
+	 * 
+	 * @param row    the row index of the log to be removed.
+	 * @param column the column index of the log to be removed.
+	 */
 	private void removeNode(int row, int column) {
 		ObservableList<Node> childrens = gridPaneMoveLogs.getChildren();
 		for (Node node : childrens) {
@@ -386,14 +494,15 @@ public class OnGameController {
 				nextWhiteMove(row, col, app.getPlayerWhite());
 			}
 		} catch (InvalidPlacementException ex) {
+			// Update the message label to show user the error message.
 			labelStatusMessage.setText(ex.getMessage());
 			labelStatusMessage.setTextFill(Color.RED);
 		}
 	}
 
 	/**
-	 * Method that is used to invoke the nextAIMove() method when the computer is
-	 * selected to go first by the user.
+	 * This method is invoked only when the computer is selected to go first by the
+	 * user.
 	 */
 	private void firstMove() {
 		nextAIMove(app.getPlayerBlack(), app.getPlayerWhite());
@@ -408,7 +517,7 @@ public class OnGameController {
 	 * @param currentPlayer a Player object of the current player.
 	 */
 	private void nextAIMove(Player nextPlayer, Player currentPlayer) {
-		// If conditions checks if "nextPlayer" is an instance of ComputerPlayer.
+		// Checks if "nextPlayer" is of type ComputerPlayer.
 		if (nextPlayer instanceof ComputerPlayer) {
 			Move move = nextPlayer.getMove(config);
 			placeMove(move, nextPlayer, currentPlayer);
@@ -472,19 +581,13 @@ public class OnGameController {
 	 */
 	private void placeMove(Move move, Player currentPlayer, Player opponent) {
 		labelStatusMessage.setText("");
-		/*
-		 * Current player's "validMoveList" and "numOfMoves" instance variables are
-		 * updated with the latest valid move.
-		 */
+		// Update current player move data.
 		currentPlayer.getAllValidMoves().add(move);
 		currentPlayer.incrementMoveCount();
-		/*
-		 * updateBoard() is invoked on instance variable "config" to update the board
-		 * (i.e. 2D array) with new move.
-		 */
+		// Update backend board in the central game configuration with the new move.
 		config.updateBoard(move);
-		// drawstone() is invoked to draw the stone onto the OnGame scene.
-		drawStone(move);
+		// Update game scene with the new move.
+		updatePane(move);
 		// Winning lines are checked, as well as if the board is full.
 		Result roundResult = config.checkWinningLine(move);
 		Result checkNumOfMoves = config.isBoardFull(currentPlayer, opponent);
@@ -496,9 +599,7 @@ public class OnGameController {
 			blackTurn = !blackTurn;
 			signalTurn();
 		} else if (checkNumOfMoves == Result.DRAW) {
-			/*
-			 * If the board has no empty spot, the game will end with a draw result.
-			 */
+			// If the board has no empty spot, the game will end with a draw result.
 			stopAllTimers();
 			app.gameOver(checkNumOfMoves);
 		} else {
@@ -511,6 +612,10 @@ public class OnGameController {
 		}
 	}
 
+	/**
+	 * Update message label and scene styling when switching player to indicate next
+	 * player's turn.
+	 */
 	private void signalTurn() {
 		String msg = null;
 		if (blackTurn) {
@@ -526,6 +631,13 @@ public class OnGameController {
 		labelStatusMessage.setTextFill(Color.BLACK);
 	}
 
+	/**
+	 * A helper method to update styling for current player's labels.
+	 * 
+	 * @param label label to show player color.
+	 * @param name  label to show player name.
+	 * @param time  label to show player time left.
+	 */
 	private void onTurnStyle(Label label, Label name, Label time) {
 		label.setStyle("-fx-font-weight: bold; -fx-background-color: black; -fx-font-size: 16px");
 		name.setStyle(
@@ -533,6 +645,13 @@ public class OnGameController {
 		time.setStyle("-fx-font-weight: bold; -fx-background-color: transparent; -fx-font-size: 18px");
 	}
 
+	/**
+	 * A helper method to reset player's label styling to original.
+	 * 
+	 * @param label label to show player color.
+	 * @param name  label to show player name.
+	 * @param time  label to show player time left.
+	 */
 	private void resetStyle(Label label, Label name, Label time) {
 		label.setStyle("-fx-background-color: black; -fx-font-size: 14px");
 		name.setStyle(
@@ -540,22 +659,35 @@ public class OnGameController {
 		time.setStyle("-fx-background-color: transparent; -fx-font-size: 18px");
 	}
 
+	/**
+	 * Method that will undo the last two moves and update all corresponding
+	 * variables when "Undo" button is clicked.
+	 * 
+	 * @param event an action event invokes when user clicked on "Undo" button.
+	 */
 	@FXML
 	private void onUndo(ActionEvent event) {
 		Player playerBlack = app.getPlayerBlack();
 		Player playerWhite = app.getPlayerWhite();
 		try {
+			// Update all related variables except ones in GUI when undo is requested.
 			ArrayList<Move> undoMoves = config.undoMove(blackTurn, playerBlack, playerWhite);
 			for (Move move : undoMoves) {
-				removeStone(move);
+				removeStone(move); // Remove stone in the OnGameView.
 			}
-			removeLogs();
+			removeLogs(); // Remove logs in the OnGameView.
 		} catch (InvalidUndoException e) {
 			labelStatusMessage.setText(e.getMessage());
 			labelStatusMessage.setTextFill(Color.RED);
 		}
 	}
 
+	/**
+	 * The game will result in draw once a player clicks on the "Draw" button. The
+	 * game will stop and show the game over window.
+	 * 
+	 * @param event an action event invokes when user clicked on "Draw" button.
+	 */
 	@FXML
 	private void onDraw(ActionEvent event) {
 		stopAllTimers();
@@ -565,12 +697,10 @@ public class OnGameController {
 	/**
 	 * Method that exits the game by terminating the application.
 	 * 
-	 * @param event an ActionEvent object that is invoked whenever the "Quit" button
-	 *              is pressed by the user.
+	 * @param event an action event invokes whenever user clicked the "Quit" button.
 	 */
 	@FXML
 	private void onExitGame(ActionEvent event) {
-		// exitGame() is invoked on instance variable "app" to terminate the program.
 		stopAllTimers();
 		app.exitGame();
 	}
@@ -578,15 +708,11 @@ public class OnGameController {
 	/**
 	 * Method that restarts the game by returning the user to the start menu.
 	 * 
-	 * @param event an ActionEvent object that is invoked whenever the "Start new
-	 *              game" button is pressed by the user.
+	 * @param event an action event invokes whenever user clicked the "Start New
+	 *              Game" button.
 	 */
 	@FXML
 	private void onRestart(ActionEvent event) {
-		/*
-		 * restartGame() is invoked on instance variable "app" to return the user to the
-		 * start menu.
-		 */
 		stopAllTimers();
 		app.restartGame();
 	}
@@ -617,5 +743,10 @@ public class OnGameController {
 				: "fx:id=\"gridPaneMoveLogs\" was not injected: check your FXML file 'OnGameView.fxml'.";
 		assert labelWhiteName != null
 				: "fx:id=\"labelWhiteName\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		Image backgroundImage = new Image("file:src/resources/Light-Wood-Background.png");
+		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true);
+		Background background = new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bSize));
+		borderPaneArea.setBackground(background);
 	}
 }
