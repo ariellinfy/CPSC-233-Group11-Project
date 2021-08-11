@@ -33,6 +33,7 @@ public class GameOverController {
 	 */
 	void linkWithApplication(GomokuGUI app, Result result) {
 		this.app = app;
+		app.playVictorySound();
 		if (result == Result.BLACK) {
 			labelWinning.setText("Black Wins!");
 			labelScore.setText("Winner score is: " + app.getWinnerScore());

@@ -26,7 +26,6 @@ import model.*;
  */
 public class StartMenuController {
 	private GomokuGUI app;
-	private MediaPlayer buttonClickSound;
 
 	@FXML
 	private ToggleGroup opponentGroup;
@@ -65,8 +64,6 @@ public class StartMenuController {
 	 */
 	@FXML
 	private void onExitGame(ActionEvent event) {
-		// Note: audio file does not play before the termination of the program.
-		playSound();
 		app.exitGame();
 	}
 
@@ -126,7 +123,7 @@ public class StartMenuController {
 	 */
 	@FXML
 	private void onStartGame(ActionEvent event) {
-		playSound();
+		app.playMenuSound();
 		Player opponent = setupOpponent();
 		chooseColor(opponent);
 		setupGameConfig();
@@ -161,12 +158,6 @@ public class StartMenuController {
 		}
 	}
 
-	private void playSound() {
-		Media audioClip = new Media(new File("src/resources/Pokemon-Button-Click.mp3").toURI().toString());
-		this.buttonClickSound = new MediaPlayer(audioClip);
-		buttonClickSound.play();
-	}
-
 	/**
 	 * Set user data to each toggle button and add listener to a toggle group.
 	 * 
@@ -182,7 +173,7 @@ public class StartMenuController {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> observable, final Toggle oldValue,
 					final Toggle newValue) {
-				playSound();
+				app.playMenuSound();
 				/*
 				 * Prohibits a toggle group with no selected toggle. Clicking on a toggle twice
 				 * or more will set the selected value to previous selected toggle.
@@ -218,8 +209,18 @@ public class StartMenuController {
 		spinnerGameTime.getEditor().setTextFormatter(gameTimeFormatter);
 		// Set spinner default to 5 min if spinner field is empty.
 		spinnerGameTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+			app.playMenuSound();
 			if (newValue == null) {
 				spinnerGameTime.getValueFactory().setValue(5);
+			}
+		});
+	}
+	
+	private void initUndoListener() {
+		checkBoxUndo.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				app.playMenuSound();
 			}
 		});
 	}
@@ -244,5 +245,6 @@ public class StartMenuController {
 		initToggleListener(userColorGroup);
 		initToggleListener(boardSizeGroup);
 		initSpinnerListener();
+		initUndoListener();
 	}
 }
