@@ -54,11 +54,10 @@
 	<center>
 		<VBox alignment="CENTER" prefHeight="144.0" prefWidth="445.0" BorderPane.alignment="CENTER">
 			<children>
-				<Label fx:id="labelWinning" alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="375.0" textAlignment="CENTER" wrapText="true">
-					<font>
-						<Font size="18.0" />
-					</font>
-				</Label>
+            <ImageView fx:id="winningImage" fitHeight="80.0" fitWidth="277.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin></ImageView>
 				<Label fx:id="labelScore" alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="375.0" textAlignment="CENTER" wrapText="true">
 					<font>
 						<Font size="18.0" />

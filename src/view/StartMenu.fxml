@@ -10,9 +10,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="570.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StartMenuController">
-	<content>
-		<BorderPane prefHeight="570.0" prefWidth="785.0" stylesheets="@../resources/startMenuStyling.css">
+
+		<BorderPane prefHeight="570.0" prefWidth="785.0" stylesheets="@../resources/startMenuStyling.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StartMenuController">
 			<center>
 				<VBox alignment="CENTER" BorderPane.alignment="CENTER">
 					<children>
@@ -89,7 +88,7 @@
 								</Label>
 								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
 									<children>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" stylesheets="@../resources/startMenuStyling.css">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true">
 											<toggleGroup>
 												<ToggleGroup fx:id="opponentGroup" />
 											</toggleGroup>
@@ -107,7 +106,7 @@
 												</ImageView>
 											</graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$opponentGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" toggleGroup="$opponentGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -126,7 +125,7 @@
 								</HBox>
 								<HBox fx:id="hBoxDifficulty" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<children>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" stylesheets="@../resources/startMenuStyling.css">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -144,7 +143,7 @@
 												</ImageView>
 											</graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$difficultyGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" toggleGroup="$difficultyGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -159,7 +158,7 @@
 												</ImageView>
 											</graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$difficultyGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" toggleGroup="$difficultyGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -178,7 +177,7 @@
 								</HBox>
 								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
 									<children>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true" stylesheets="@../resources/startMenuStyling.css">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" selected="true">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -196,7 +195,7 @@
 												</Circle>
 											</graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="106.0" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$userColorGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="106.0" toggleGroup="$userColorGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -215,7 +214,7 @@
 								</HBox>
 								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
 									<children>
-										<ToggleButton mnemonicParsing="false" prefWidth="79.5" stylesheets="@../resources/startMenuStyling.css">
+										<ToggleButton mnemonicParsing="false" prefWidth="79.5">
 											<toggleGroup>
 												<ToggleGroup fx:id="boardSizeGroup" />
 											</toggleGroup>
@@ -225,69 +224,69 @@
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../resources/9-Icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/9-Icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="79.5" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$boardSizeGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="79.5" toggleGroup="$boardSizeGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../resources/13-Icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/13-Icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="79.5" selected="true" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$boardSizeGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="79.5" selected="true" toggleGroup="$boardSizeGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../resources/15-Icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/15-Icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
 										</ToggleButton>
-										<ToggleButton mnemonicParsing="false" prefWidth="79.5" stylesheets="@../resources/startMenuStyling.css" toggleGroup="$boardSizeGroup">
+										<ToggleButton mnemonicParsing="false" prefWidth="79.5" toggleGroup="$boardSizeGroup">
 											<font>
 												<Font size="18.0" />
 											</font>
 											<padding>
 												<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 											</padding>
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../resources/19-Icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/19-Icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
 										</ToggleButton>
 									</children>
 								</HBox>
-								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" stylesheets="@../resources/startMenuStyling.css" GridPane.columnIndex="1" GridPane.rowIndex="4">
+								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
 									<children>
 										<Spinner fx:id="spinnerGameTime" editable="true" initialValue="5" max="60" min="1" prefHeight="35.0" prefWidth="110.0" style="-fx-font-size: 17px" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 									</children>
 								</HBox>
 								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
 									<children>
-										<CheckBox fx:id="checkBoxUndo" mnemonicParsing="false" selected="true" stylesheets="@../resources/startMenuStyling.css">
+										<CheckBox fx:id="checkBoxUndo" mnemonicParsing="false" selected="true">
 											<font>
 												<Font size="20.0" />
 											</font>
@@ -304,7 +303,7 @@
 						</GridPane>
 						<HBox alignment="CENTER" minHeight="-Infinity" prefHeight="100.0">
 							<children>
-								<Button mnemonicParsing="false" onAction="#onExitGame" prefWidth="200.0" stylesheets="@../resources/startMenuStyling.css">
+								<Button mnemonicParsing="false" onAction="#onExitGame" prefWidth="200.0">
 									<font>
 										<Font size="18.0" />
 									</font>
@@ -322,7 +321,7 @@
 										</ImageView>
 									</graphic>
 								</Button>
-								<Button mnemonicParsing="false" onAction="#onStartGame" prefWidth="200.0" stylesheets="@../resources/startMenuStyling.css">
+								<Button mnemonicParsing="false" onAction="#onStartGame" prefWidth="200.0">
 									<font>
 										<Font size="18.0" />
 									</font>
@@ -349,5 +348,3 @@
 				</VBox>
 			</center>
 		</BorderPane>
-	</content>
-</ScrollPane>

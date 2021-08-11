@@ -33,7 +33,6 @@ public class GomokuGUI extends Application {
 	private MediaPlayer menuButtonSound;
 	private MediaPlayer boardSound;
 	private MediaPlayer victorySound;
-	private MediaPlayer backgroundMusic;
 
 	/**
 	 * Getter method that returns the instance variable "config".
