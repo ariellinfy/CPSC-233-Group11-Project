@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -7,11 +8,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="260.0" prefWidth="445.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GameOverController">
+<BorderPane prefHeight="260.0" prefWidth="445.0" stylesheets="@../resources/gameOverviewStyling.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GameOverController">
 	<bottom>
 		<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
-				<Button mnemonicParsing="false" onAction="#onExit" prefWidth="165.0" text="End">
+				<Button mnemonicParsing="false" onAction="#onExit" prefWidth="165.0">
 					<font>
 						<Font size="18.0" />
 					</font>
@@ -21,8 +22,15 @@
 					<padding>
 						<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 					</padding>
+               <graphic>
+                  <ImageView fitHeight="22.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/Black-X-Letter.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
 				</Button>
-				<Button fx:id="buttonRestart" mnemonicParsing="false" onAction="#onRestart" prefWidth="165.0" text="Start New Game">
+				<Button fx:id="buttonRestart" mnemonicParsing="false" onAction="#onRestart" prefWidth="165.0">
 					<font>
 						<Font size="18.0" />
 					</font>
@@ -32,6 +40,13 @@
 					<padding>
 						<Insets bottom="9.0" left="10.0" right="10.0" top="9.0" />
 					</padding>
+               <graphic>
+                  <ImageView fitHeight="22.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/Play-Graphic.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
 				</Button>
 			</children>
 		</HBox>
