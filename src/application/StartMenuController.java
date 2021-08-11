@@ -217,8 +217,18 @@ public class StartMenuController {
 		spinnerGameTime.getEditor().setTextFormatter(gameTimeFormatter);
 		// Set spinner default to 5 min if spinner field is empty.
 		spinnerGameTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+			playSound();
 			if (newValue == null) {
 				spinnerGameTime.getValueFactory().setValue(5);
+			}
+		});
+	}
+	
+	private void initUndoListener() {
+		checkBoxUndo.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				playSound();
 			}
 		});
 	}
@@ -243,5 +253,6 @@ public class StartMenuController {
 		initToggleListener(userColorGroup);
 		initToggleListener(boardSizeGroup);
 		initSpinnerListener();
+		initUndoListener();
 	}
 }

@@ -1,4 +1,4 @@
-.root {
+.startMenu {
 	-fx-background-image: url("Light-Wood-Background.png");
 	-fx-background-size: 100% 100%;
 }
@@ -57,4 +57,50 @@
         #7a4332,
         #a15741,
         radial-gradient(center 50% 50%, radius 100%, #886550, #80563e);
+}
+
+.check-box {
+    -fx-padding: 2 8 8 8;
+    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #ad6440 0%, #9d5b3b 100%),
+        #a15741,
+        #d58157,
+        radial-gradient(center 50% 50%, radius 100%, #d09979, #c3815b);
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+}
+
+.check-box .box {
+	-fx-border-color: #292929;
+	-fx-border-width: 2;
+	-fx-background-insets: 0 0 2 0;
+}
+
+.spinner {
+    -fx-padding: 2 8 8 8;
+    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #ad6440 0%, #9d5b3b 100%),
+        #a15741,
+        #d58157,
+        radial-gradient(center 50% 50%, radius 100%, #d09979, #c3815b);
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+}
+
+.spinner .increment-arrow-button .increment-arrow {
+    -fx-background-color: #e60000;
+}
+
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: #e60000;
+}
+
+.spinner .increment-arrow-button {
+    -fx-background-color: #292929;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-background-color: #292929;
 }
