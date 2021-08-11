@@ -33,7 +33,7 @@ public class StartMenuController {
 
 	@FXML
 	private BorderPane borderPaneArea;
-	
+
 	@FXML
 	private ToggleGroup opponentGroup;
 
@@ -130,6 +130,7 @@ public class StartMenuController {
 	 */
 	@FXML
 	private void onStartGame(ActionEvent event) {
+		// Menu button sound is played when the start button is selected.
 		app.playMenuSound();
 		Player opponent = setupOpponent();
 		chooseColor(opponent);
@@ -180,6 +181,7 @@ public class StartMenuController {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> observable, final Toggle oldValue,
 					final Toggle newValue) {
+				// Menu button sound is played whenever each set of toggle buttons update.
 				app.playMenuSound();
 				/*
 				 * Prohibits a toggle group with no selected toggle. Clicking on a toggle twice
@@ -216,6 +218,7 @@ public class StartMenuController {
 		spinnerGameTime.getEditor().setTextFormatter(gameTimeFormatter);
 		// Set spinner default to 5 min if spinner field is empty.
 		spinnerGameTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+			// Menu button sound is played whenever spinner value is updated.
 			app.playMenuSound();
 			if (newValue == null) {
 				spinnerGameTime.getValueFactory().setValue(5);
@@ -227,6 +230,7 @@ public class StartMenuController {
 		checkBoxUndo.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				// Menu sound is played when undo button is selected/deselected.
 				app.playMenuSound();
 			}
 		});
