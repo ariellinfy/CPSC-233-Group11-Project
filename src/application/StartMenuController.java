@@ -58,10 +58,10 @@ public class StartMenuController {
 
 	@FXML
 	private CheckBox checkBoxUndo;
-	
+
 	@FXML
 	private Button muteButton;
-	
+
 	@FXML
 	private ImageView volumeImage;
 
@@ -72,16 +72,12 @@ public class StartMenuController {
 	 */
 	void linkWithApplication(GomokuGUI app) {
 		this.app = app;
-	}
-
-	/**
-	 * Method that ends the application when "Quit" button is clicked.
-	 * 
-	 * @param event an action event invokes when user clicked on "Quit" button.
-	 */
-	@FXML
-	private void onExitGame(ActionEvent event) {
-		app.exitGame();
+		// Update image for background music button.
+		if (app.getBackgroundPlayer().getStatus() == MediaPlayer.Status.STOPPED) {
+			volumeImage.setImage(new Image(new File("src/resources/Volume-Muted-Icon.png").toURI().toString()));
+		} else {
+			volumeImage.setImage(new Image(new File("src/resources/Volume-Icon.png").toURI().toString()));
+		}
 	}
 
 	/**
@@ -122,7 +118,7 @@ public class StartMenuController {
 	}
 
 	/**
-	 * Updates variables in config object: board size, undo, and game time.
+	 * Updates variables in config object: boardSize, allowUndo, and gameTime.
 	 */
 	private void setupGameConfig() {
 		GameConfiguration config = app.getGameConfiguration();
@@ -147,7 +143,12 @@ public class StartMenuController {
 		setupGameConfig();
 		app.playGame();
 	}
-	
+
+	/**
+	 * Method that toggles the background music on and off based on user choice.
+	 * 
+	 * @param event an action event invokes when user clicked on "Volume" button.
+	 */
 	@FXML
 	private void onMute(ActionEvent event) {
 		app.playMenuSound();
@@ -158,6 +159,16 @@ public class StartMenuController {
 			volumeImage.setImage(new Image(new File("src/resources/Volume-Muted-Icon.png").toURI().toString()));
 			app.stopBackgroundMusic();
 		}
+	}
+
+	/**
+	 * Method that ends the application when "Quit" button is clicked.
+	 * 
+	 * @param event an action event invokes when user clicked on "Quit" button.
+	 */
+	@FXML
+	private void onExitGame(ActionEvent event) {
+		app.exitGame();
 	}
 
 	/**
@@ -248,6 +259,10 @@ public class StartMenuController {
 		});
 	}
 
+	/**
+	 * Add listener to undo checkbox to play sound effect when user clicks on the
+	 * checkbox.
+	 */
 	private void initUndoListener() {
 		checkBoxUndo.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
@@ -260,8 +275,8 @@ public class StartMenuController {
 
 	/**
 	 * Initialize method that is invoked once to set up this controller once the
-	 * StartMenu.fxml file has been loaded. This method also setup toggle listener
-	 * to each toggle group.
+	 * StartMenu.fxml file has been loaded. This method also setup event listener
+	 * and update background image.
 	 */
 	@FXML
 	private void initialize() {
@@ -273,12 +288,14 @@ public class StartMenuController {
 				: "fx:id=\"opponentGroup\" was not injected: check your FXML file 'StartMenu.fxml'.";
 		assert difficultyGroup != null
 				: "fx:id=\"difficultyGroup\" was not injected: check your FXML file 'StartMenu.fxml'.";
+		// Add listeners to controls.
 		initToggleListener(opponentGroup);
 		initToggleListener(difficultyGroup);
 		initToggleListener(userColorGroup);
 		initToggleListener(boardSizeGroup);
 		initSpinnerListener();
 		initUndoListener();
+		// Set scene background image.
 		Image backgroundImage = new Image("file:src/resources/Light-Wood-Background.png");
 		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true);
 		Background background = new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,

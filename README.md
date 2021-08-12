@@ -37,7 +37,7 @@ A class diagram is included with the public folder (public/gomoku-class-diagram.
 4. GUI app: Navigate to application.GomokuGUI in the project src folder and run as Java application.
 5. Text app: Navigate to application.GomokuText in the project src folder and run as Java application.
 5. Follow instructions to set up and play the game.
-6. [Presentation]()
+6. [Presentation](https://youtu.be/azVboqJ3-oY)
 
 ## References
 JavaFX Button Styling CSS

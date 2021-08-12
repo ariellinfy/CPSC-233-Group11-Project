@@ -61,9 +61,9 @@ public class OnGameController {
 	private Timeline blackTimeline = new Timeline();
 	private Timeline whiteTimeline = new Timeline();
 
-    @FXML
-    private BorderPane borderPaneArea;
-    
+	@FXML
+	private BorderPane borderPaneArea;
+
 	// A layout container containing both board image and grids.
 	@FXML
 	private StackPane paneBoardArea;
@@ -101,10 +101,10 @@ public class OnGameController {
 
 	@FXML
 	private Button buttonUndo;
-	
+
 	@FXML
 	private Button muteButton;
-	
+
 	@FXML
 	private ImageView volumeImage;
 
@@ -126,6 +126,12 @@ public class OnGameController {
 	void linkWithApplication(GomokuGUI app) {
 		this.app = app;
 		this.config = app.getGameConfiguration();
+		// Update image for background music button.
+		if (app.getBackgroundPlayer().getStatus() == MediaPlayer.Status.STOPPED) {
+			volumeImage.setImage(new Image(new File("src/resources/Volume-Muted-Icon.png").toURI().toString()));
+		} else {
+			volumeImage.setImage(new Image(new File("src/resources/Volume-Icon.png").toURI().toString()));
+		}
 		// Update player labels with player names.
 		labelBlackName.setText(app.getPlayerBlack().getPlayerName());
 		labelWhiteName.setText(app.getPlayerWhite().getPlayerName());
@@ -397,7 +403,7 @@ public class OnGameController {
 		ds.setOffsetY(2.0);
 		circle.setEffect(ds);
 		paneBoard.getChildren().add(circle);
-		// Board sound is played before the end of the method.		
+		// Board sound is played before the end of the method.
 		app.playBoardSound();
 	}
 
@@ -726,7 +732,12 @@ public class OnGameController {
 		stopAllTimers();
 		app.restartGame();
 	}
-	
+
+	/**
+	 * Method that toggles the background music on and off based on user choice.
+	 * 
+	 * @param event an action event invokes when user clicked on "Volume" button.
+	 */
 	@FXML
 	private void onMute(ActionEvent event) {
 		app.playMenuSound();
@@ -741,7 +752,8 @@ public class OnGameController {
 
 	/**
 	 * Initialize method is called once to implement this controller when the
-	 * OnGameView.fxml file is completely loaded.
+	 * OnGameView.fxml file is completely loaded. Background image is also updated
+	 * accordingly.
 	 */
 	@FXML
 	private void initialize() {
@@ -765,6 +777,7 @@ public class OnGameController {
 				: "fx:id=\"gridPaneMoveLogs\" was not injected: check your FXML file 'OnGameView.fxml'.";
 		assert labelWhiteName != null
 				: "fx:id=\"labelWhiteName\" was not injected: check your FXML file 'OnGameView.fxml'.";
+		// Set scene background image.
 		Image backgroundImage = new Image("file:src/resources/Light-Wood-Background.png");
 		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true);
 		Background background = new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,

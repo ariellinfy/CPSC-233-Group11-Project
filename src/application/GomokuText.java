@@ -90,6 +90,10 @@ public class GomokuText {
 		} else if (playAgainst.equalsIgnoreCase("human")) {
 			opponent = new HumanPlayer();
 		} else {
+			/*
+			 * If an invalid input is entered (i.e. not computer or human), the opponent is
+			 * set to medium level AI by default.
+			 */
 			messageToUser("Invalid input, opponent set to an AI in medium level.\n");
 			opponent = new ComputerPlayer(Level.MEDIUM);
 		}
@@ -112,11 +116,11 @@ public class GomokuText {
 			this.playerWhite = new HumanPlayer(Stone.WHITE);
 			opponent.setPlayerColor(Stone.BLACK);
 			this.playerBlack = opponent;
+		} else {
 			/*
 			 * If an invalid input is entered (i.e. not white or black), the color of the
 			 * main player is set to black by default.
 			 */
-		} else {
 			messageToUser("Invalid input, your color is set to black.\n");
 			this.playerBlack = new HumanPlayer(Stone.BLACK);
 			opponent.setPlayerColor(Stone.WHITE);
@@ -137,11 +141,11 @@ public class GomokuText {
 			} else {
 				throw new NumberFormatException();
 			}
+		} catch (NumberFormatException ex) {
 			/*
 			 * If an invalid board size is entered, a NumberFormatException is thrown and
 			 * board size is set to 15 by default.
 			 */
-		} catch (NumberFormatException ex) {
 			messageToUser("Invalid input, the board size was set to 15x15 by default.\n");
 			this.config.setChessBoard(new Board());
 		}
@@ -159,6 +163,10 @@ public class GomokuText {
 		} else if (noUndo.equalsIgnoreCase("n")) {
 			this.config.setUndo(true);
 		} else {
+			/*
+			 * If an invalid input is entered (i.e. not y or n), undo is not allowed by
+			 * default.
+			 */
 			messageToUser("Invalid input, default set to no undo in this game.\n");
 			this.config.setUndo(false); // Default is no undo.
 		}
@@ -205,10 +213,10 @@ public class GomokuText {
 			while (!validInput) {
 				if (blackTurn) {
 					currentPlayer = playerBlack;
-					move = nextMove(playerBlack, scanner);
+					move = nextMove(currentPlayer, scanner);
 				} else {
 					currentPlayer = playerWhite;
-					move = nextMove(playerWhite, scanner);
+					move = nextMove(currentPlayer, scanner);
 				}
 				// Check if the move is valid or not and update the game accordingly.
 				validInput = checkValidMove(move, currentPlayer);
@@ -320,7 +328,7 @@ public class GomokuText {
 	}
 
 	/**
-	 * At the end of each while loop execution, we check on if the game has a a
+	 * At the end of each while loop execution, we check on if the game has a
 	 * winning line (of 5 stones) and if the board has empty spot available. If
 	 * there is no winning line and spots are available on the board, the game
 	 * continues and it becomes the other player's turn. If there is a winning

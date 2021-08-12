@@ -37,7 +37,7 @@ public class HumanPlayer extends Player {
 
 	/**
 	 * Constructor that creates a HumanPlayer object with instance variables
-	 * "playerName" and "stoneColor" initialized.
+	 * "playerName" and "playerColor" initialized.
 	 * 
 	 * @param playerName the name of the specified player entered by the user.
 	 * @param stone      a Stone object containing the color of the Go stone for

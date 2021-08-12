@@ -87,7 +87,8 @@ public class GameConfiguration {
 	 * 
 	 * @param playerBlack the black player of the game.
 	 * @param playerWhite the white player of the game.
-	 * @return a boolean based on the equality of number of moves from both players.
+	 * @return a boolean based on the equality check of number of moves from both
+	 *         players.
 	 */
 	private boolean checkPlayersNumOfMoves(Player playerBlack, Player playerWhite) {
 		return playerBlack.getNumOfMoves() == playerWhite.getNumOfMoves();
@@ -120,23 +121,28 @@ public class GameConfiguration {
 		ArrayList<Move> undoMoves = new ArrayList<Move>();
 		Move lastMove = null;
 		if (blackTurn) {
+			/*
+			 * If black's undoing a move, both players' valid move counts should be the
+			 * same, and there must be move(s) available to perform the undo, else throw an
+			 * error.
+			 */
 			if (checkPlayersNumOfMoves(playerBlack, playerWhite) && isMoveAvailable(playerWhite)
 					&& isMoveAvailable(playerBlack)) {
 				lastMove = removeMove(playerWhite);
 				undoMoves.add(lastMove);
 				lastMove = removeMove(playerBlack);
 				undoMoves.add(lastMove);
-			} else if (isMoveAvailable(playerBlack)) {
-				lastMove = removeMove(playerBlack);
-				undoMoves.add(lastMove);
 			} else {
 				throw new InvalidUndoException("Undo is not allowed in current board status.");
 			}
 		} else {
-			if (checkPlayersNumOfMoves(playerBlack, playerWhite) && isMoveAvailable(playerWhite)) {
-				lastMove = removeMove(playerWhite);
-				undoMoves.add(lastMove);
-			} else if (isMoveAvailable(playerBlack) && isMoveAvailable(playerWhite)) {
+			/*
+			 * If white's undoing a move, it's valid move count should be always 1 less than
+			 * the playerBlack, and there must be at least 1 move available to perform an
+			 * undo.
+			 */
+			if (!checkPlayersNumOfMoves(playerBlack, playerWhite) && isMoveAvailable(playerBlack)
+					&& isMoveAvailable(playerWhite)) {
 				lastMove = removeMove(playerBlack);
 				undoMoves.add(lastMove);
 				lastMove = removeMove(playerWhite);

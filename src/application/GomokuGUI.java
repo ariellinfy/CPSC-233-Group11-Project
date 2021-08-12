@@ -98,7 +98,12 @@ public class GomokuGUI extends Application {
 	int getWinnerScore() {
 		return winnerScore;
 	}
-	
+
+	/**
+	 * Get current background music media player.
+	 * 
+	 * @return Media Player of the background music.
+	 */
 	MediaPlayer getBackgroundPlayer() {
 		return backgroundMusic;
 	}
@@ -143,7 +148,7 @@ public class GomokuGUI extends Application {
 			// When boardSize is 19x19, adjusts the stage size to show the whole board.
 			if (boardSize > 15) {
 				primaryStage.setWidth(1500);
-				primaryStage.setHeight(900);
+				primaryStage.setHeight(925);
 			} else {
 				primaryStage.sizeToScene();
 			}
@@ -259,7 +264,7 @@ public class GomokuGUI extends Application {
 		this.victorySound = new MediaPlayer(audioClip);
 		victorySound.play();
 	}
-	
+
 	/**
 	 * Method that plays background music for the program.
 	 */
@@ -267,6 +272,7 @@ public class GomokuGUI extends Application {
 		Media audioClip = new Media(new File("src/resources/BackGround-Music.mp3").toURI().toString());
 		this.backgroundMusic = new MediaPlayer(audioClip);
 		backgroundMusic.play();
+		// Replay the background music until stop by user or the end of the application.
 		backgroundMusic.setOnEndOfMedia(new Runnable() {
 			@Override
 			public void run() {
@@ -275,7 +281,7 @@ public class GomokuGUI extends Application {
 			}
 		});
 	}
-	
+
 	/**
 	 * Method that stops the background music for the program.
 	 */

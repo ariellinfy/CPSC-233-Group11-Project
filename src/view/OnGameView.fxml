@@ -9,70 +9,108 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="700.0" prefWidth="1300.0" stylesheets="@../resources/onGameStyling.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
+<ScrollPane fitToHeight="true" fitToWidth="true"
+	prefHeight="725.0" prefWidth="1350.0"
+	stylesheets="@../resources/onGameStyling.css"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="application.OnGameController">
 	<content>
-		<BorderPane fx:id="borderPaneArea" prefWidth="1300.0">
+		<BorderPane fx:id="borderPaneArea" prefWidth="1350.0">
 			<center>
-				<StackPane fx:id="paneBoardArea" BorderPane.alignment="CENTER">
+				<StackPane fx:id="paneBoardArea"
+					BorderPane.alignment="CENTER">
 					<children>
-						<Pane fx:id="paneBoard" onMouseClicked="#onNextMove" style="-fx-border-radius: 5; -fx-cursor: hand;" />
+						<Pane fx:id="paneBoard" onMouseClicked="#onNextMove"
+							style="-fx-border-radius: 5; -fx-cursor: hand;" />
 					</children>
 					<BorderPane.margin>
 						<Insets />
 					</BorderPane.margin>
 				</StackPane>
 			</center>
-         <left>
-				<VBox alignment="CENTER" prefWidth="290.0" BorderPane.alignment="CENTER">
+			<left>
+				<VBox alignment="CENTER" prefWidth="290.0"
+					BorderPane.alignment="CENTER">
 					<children>
 						<VBox prefWidth="285.0" BorderPane.alignment="CENTER">
 							<children>
-								<GridPane alignment="CENTER" minHeight="120.0" prefHeight="140.0" prefWidth="285.0">
+								<GridPane alignment="CENTER" minHeight="120.0"
+									prefHeight="140.0" prefWidth="285.0">
 									<columnConstraints>
-										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+										<ColumnConstraints halignment="CENTER"
+											hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0" prefHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="15.0" valignment="CENTER" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0"
+											prefHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0"
+											prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0"
+											prefHeight="15.0" valignment="CENTER" vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+										<HBox alignment="CENTER" prefHeight="100.0"
+											prefWidth="200.0">
 											<children>
-												<Label fx:id="labelBlack" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: black; -fx-font-weight: bold; -fx-font-size: 16;" text="Black" textFill="WHITE">
+												<Label fx:id="labelBlack" alignment="CENTER"
+													maxHeight="1.7976931348623157E308"
+													maxWidth="1.7976931348623157E308" prefWidth="150.0"
+													style="-fx-background-color: black; -fx-font-weight: bold; -fx-font-size: 16;"
+													text="Black" textFill="WHITE">
 													<font>
 														<Font name="Microsoft YaHei UI Bold" size="14.0" />
 													</font>
 												</Label>
-												<Label fx:id="labelWhite" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: black;" text="White" textFill="WHITE">
+												<Label fx:id="labelWhite" alignment="CENTER"
+													maxHeight="1.7976931348623157E308"
+													maxWidth="1.7976931348623157E308" prefWidth="150.0"
+													style="-fx-background-color: black;" text="White"
+													textFill="WHITE">
 													<font>
 														<Font name="Microsoft YaHei UI" size="14.0" />
 													</font>
 												</Label>
 											</children>
 										</HBox>
-										<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+										<HBox alignment="CENTER" prefHeight="100.0"
+											prefWidth="200.0" GridPane.rowIndex="1">
 											<children>
-												<Label fx:id="labelBlackName" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2; -fx-font-weight: bold; -fx-font-size: 18;" text="player1">
+												<Label fx:id="labelBlackName" alignment="CENTER"
+													maxHeight="1.7976931348623157E308"
+													maxWidth="1.7976931348623157E308" prefWidth="150.0"
+													style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2; -fx-font-weight: bold; -fx-font-size: 18;"
+													text="player1">
 													<font>
 														<Font name="Microsoft YaHei UI" size="18.0" />
 													</font>
 												</Label>
-												<Label fx:id="labelWhiteName" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2;" text="player2">
+												<Label fx:id="labelWhiteName" alignment="CENTER"
+													maxHeight="1.7976931348623157E308"
+													maxWidth="1.7976931348623157E308" prefWidth="150.0"
+													style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 2;"
+													text="player2">
 													<font>
 														<Font name="Microsoft YaHei UI" size="18.0" />
 													</font>
 												</Label>
 											</children>
 										</HBox>
-										<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+										<HBox alignment="CENTER" prefHeight="100.0"
+											prefWidth="200.0" GridPane.rowIndex="2">
 											<children>
-												<Label fx:id="labelBlackTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 18;" text="5:00">
+												<Label fx:id="labelBlackTime" alignment="CENTER"
+													maxHeight="1.7976931348623157E308"
+													maxWidth="1.7976931348623157E308" prefWidth="150.0"
+													style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 18;"
+													text="5:00">
 													<font>
 														<Font name="Microsoft YaHei UI" size="18.0" />
 													</font>
 												</Label>
-												<Label fx:id="labelWhiteTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: transparent;" text="5:00">
+												<Label fx:id="labelWhiteTime" alignment="CENTER"
+													maxHeight="1.7976931348623157E308"
+													maxWidth="1.7976931348623157E308" prefWidth="150.0"
+													style="-fx-background-color: transparent;" text="5:00">
 													<font>
 														<Font name="Microsoft YaHei UI" size="18.0" />
 													</font>
@@ -85,9 +123,11 @@
 									</VBox.margin>
 								</GridPane>
 								<Separator prefWidth="200.0" />
-								<HBox alignment="CENTER" prefHeight="75.0" prefWidth="200.0">
+								<HBox alignment="CENTER" prefHeight="75.0"
+									prefWidth="200.0">
 									<children>
-										<Button mnemonicParsing="false" onAction="#onDraw" prefWidth="100.0">
+										<Button mnemonicParsing="false" onAction="#onDraw"
+											prefWidth="100.0">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -97,15 +137,17 @@
 											<padding>
 												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
 											</padding>
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="118.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../resources/Draw-Icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+											<graphic>
+												<ImageView fitHeight="22.0" fitWidth="118.0"
+													pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../resources/Draw-Icon.png" />
+													</image>
+												</ImageView>
+											</graphic>
 										</Button>
-										<Button fx:id="buttonUndo" disable="true" mnemonicParsing="false" onAction="#onUndo" prefWidth="100.0">
+										<Button fx:id="buttonUndo" disable="true"
+											mnemonicParsing="false" onAction="#onUndo" prefWidth="100.0">
 											<font>
 												<Font size="18.0" />
 											</font>
@@ -115,81 +157,108 @@
 											<padding>
 												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
 											</padding>
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../resources/Undo-Icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+											<graphic>
+												<ImageView fitHeight="22.0" fitWidth="66.0"
+													pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../resources/Undo-Icon.png" />
+													</image>
+												</ImageView>
+											</graphic>
 										</Button>
 									</children>
 									<VBox.margin>
 										<Insets bottom="10.0" top="10.0" />
 									</VBox.margin>
 								</HBox>
-								<ScrollPane fx:id="scrollPaneMoveLogs" fitToHeight="true" fitToWidth="true" minHeight="100.0" prefHeight="274.0" prefWidth="285.0" style="-fx-background-radius: 5; -fx-background-insets: 5;" vvalue="1.0">
+								<ScrollPane fx:id="scrollPaneMoveLogs"
+									fitToHeight="true" fitToWidth="true" minHeight="100.0"
+									prefHeight="274.0" prefWidth="285.0"
+									style="-fx-background-radius: 5; -fx-background-insets: 5;"
+									vvalue="1.0">
 									<VBox.margin>
 										<Insets />
 									</VBox.margin>
 									<content>
-										<GridPane fx:id="gridPaneMoveLogs" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" prefHeight="272.0" prefWidth="283.0" style="-fx-background-color: white; -fx-font-size: 16;">
+										<GridPane fx:id="gridPaneMoveLogs"
+											alignment="TOP_CENTER" maxHeight="1.7976931348623157E308"
+											prefHeight="272.0" prefWidth="283.0"
+											style="-fx-background-color: white; -fx-font-size: 16;">
 											<columnConstraints>
-												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="117.5" />
-												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="117.5" />
+												<ColumnConstraints halignment="CENTER"
+													hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+												<ColumnConstraints halignment="CENTER"
+													hgrow="SOMETIMES" minWidth="10.0" prefWidth="117.5" />
+												<ColumnConstraints halignment="CENTER"
+													hgrow="SOMETIMES" minWidth="10.0" prefWidth="117.5" />
 											</columnConstraints>
 											<rowConstraints>
-												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity"
+													minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity"
+													minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity"
+													minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity"
+													minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity"
+													minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity"
+													minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity"
+													minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity"
+													minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="-Infinity"
+													minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
 											</rowConstraints>
 										</GridPane>
 									</content>
 								</ScrollPane>
-								<VBox alignment="CENTER" prefHeight="175.0" prefWidth="100.0">
+								<VBox alignment="CENTER" prefHeight="175.0"
+									prefWidth="100.0">
 									<children>
-										<Button mnemonicParsing="false" onAction="#onExitGame" prefWidth="210.0">
+										<Button mnemonicParsing="false" onAction="#onExitGame"
+											prefWidth="210.0">
 											<font>
 												<Font size="18.0" />
 											</font>
 											<VBox.margin>
-												<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+												<Insets bottom="10.0" left="10.0" right="10.0"
+													top="10.0" />
 											</VBox.margin>
 											<padding>
 												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
 											</padding>
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="114.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../resources/Black-X-Letter.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+											<graphic>
+												<ImageView fitHeight="22.0" fitWidth="114.0"
+													pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../resources/Black-X-Letter.png" />
+													</image>
+												</ImageView>
+											</graphic>
 										</Button>
-										<Button mnemonicParsing="false" onAction="#onRestart" prefWidth="210.0">
+										<Button mnemonicParsing="false" onAction="#onRestart"
+											prefWidth="210.0">
 											<font>
 												<Font size="18.0" />
 											</font>
 											<VBox.margin>
-												<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+												<Insets bottom="10.0" left="10.0" right="10.0"
+													top="10.0" />
 											</VBox.margin>
 											<padding>
 												<Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
 											</padding>
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../resources/Play-Graphic.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+											<graphic>
+												<ImageView fitHeight="22.0" fitWidth="74.0"
+													pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../resources/Play-Graphic.png" />
+													</image>
+												</ImageView>
+											</graphic>
 										</Button>
 									</children>
 								</VBox>
@@ -199,56 +268,72 @@
 							</padding>
 						</VBox>
 					</children>
-               <BorderPane.margin>
-                  <Insets left="20.0" right="20.0" />
-               </BorderPane.margin>
+					<BorderPane.margin>
+						<Insets left="20.0" right="20.0" />
+					</BorderPane.margin>
 				</VBox>
-         </left>
-         <right>
-				<VBox alignment="CENTER" prefWidth="285.0" BorderPane.alignment="CENTER">
+			</left>
+			<right>
+				<VBox alignment="CENTER" prefWidth="285.0"
+					BorderPane.alignment="CENTER">
 					<children>
-                  <StackPane>
-                     <children>
-      						<Label fx:id="labelStatusMessage" alignment="CENTER" lineSpacing="5.0" prefHeight="118.0" prefWidth="204.0" text="message" textAlignment="CENTER" wrapText="true">
-      							<font>
-      								<Font name="Microsoft YaHei UI" size="18.0" />
-      							</font>
-                           <StackPane.margin>
-                              <Insets bottom="50.0" />
-                           </StackPane.margin>
-      						</Label>
-                        <ImageView fitHeight="244.0" fitWidth="295.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../resources/Comic-Speech-Bubble.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-                  <ImageView fitHeight="359.0" fitWidth="253.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resources/Ninja-Sitting.png" />
-                     </image>
-                  </ImageView>
+						<StackPane>
+							<children>
+								<Label fx:id="labelStatusMessage" alignment="CENTER"
+									lineSpacing="5.0" prefHeight="118.0" prefWidth="204.0"
+									text="message" textAlignment="CENTER" wrapText="true">
+									<font>
+										<Font name="Microsoft YaHei UI" size="18.0" />
+									</font>
+									<StackPane.margin>
+										<Insets bottom="50.0" />
+									</StackPane.margin>
+								</Label>
+								<ImageView fitHeight="244.0" fitWidth="295.0"
+									pickOnBounds="true">
+									<image>
+										<Image url="@../resources/Comic-Speech-Bubble.png" />
+									</image>
+								</ImageView>
+							</children>
+						</StackPane>
+						<ImageView fitHeight="359.0" fitWidth="253.0"
+							pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../resources/Ninja-Sitting.png" />
+							</image>
+						</ImageView>
 					</children>
-               <BorderPane.margin>
-                  <Insets left="20.0" right="20.0" />
-               </BorderPane.margin>
+					<BorderPane.margin>
+						<Insets left="20.0" right="20.0" />
+					</BorderPane.margin>
 				</VBox>
-         </right>
-         <bottom>
-            <Button fx:id="muteButton" alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#onMute" BorderPane.alignment="BASELINE_RIGHT">
-               <graphic>
-                  <ImageView fx:id="volumeImage" fitHeight="21.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resources/Volume-Icon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <BorderPane.margin>
-                  <Insets bottom="-5.0" left="10.0" right="30.0" top="10.0" />
-               </BorderPane.margin>
-            </Button>
-         </bottom>
+			</right>
+			<bottom>
+				<Button fx:id="muteButton" alignment="BOTTOM_RIGHT"
+					mnemonicParsing="false" onAction="#onMute"
+					BorderPane.alignment="BASELINE_RIGHT">
+					<graphic>
+						<ImageView fx:id="volumeImage" fitHeight="21.0"
+							fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../resources/Volume-Icon.png" />
+							</image>
+						</ImageView>
+					</graphic>
+					<BorderPane.margin>
+						<Insets bottom="-5.0" left="10.0" right="30.0" top="10.0" />
+					</BorderPane.margin>
+				</Button>
+			</bottom>
+			<top>
+				<HBox alignment="CENTER" prefHeight="30.0"
+					BorderPane.alignment="CENTER">
+					<BorderPane.margin>
+						<Insets />
+					</BorderPane.margin>
+				</HBox>
+			</top>
 		</BorderPane>
 	</content>
 </ScrollPane>
