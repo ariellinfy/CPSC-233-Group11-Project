@@ -33,6 +33,7 @@ public class GomokuGUI extends Application {
 	private MediaPlayer menuButtonSound;
 	private MediaPlayer boardSound;
 	private MediaPlayer victorySound;
+	private MediaPlayer backgroundMusic;
 
 	/**
 	 * Get current game configuration.
@@ -95,6 +96,10 @@ public class GomokuGUI extends Application {
 	 */
 	int getWinnerScore() {
 		return winnerScore;
+	}
+	
+	MediaPlayer getBackgroundPlayer() {
+		return backgroundMusic;
 	}
 
 	/**
@@ -253,6 +258,22 @@ public class GomokuGUI extends Application {
 		this.victorySound = new MediaPlayer(audioClip);
 		victorySound.play();
 	}
+	
+	/**
+	 * Method that plays background music for the program.
+	 */
+	void playBackgroundMusic() {
+		Media audioClip = new Media(new File("src/resources/BackGround-Music.mp3").toURI().toString());
+		this.backgroundMusic = new MediaPlayer(audioClip);
+		backgroundMusic.play();
+	}
+	
+	/**
+	 * Method that stops the background music for the program.
+	 */
+	void stopBackgroundMusic() {
+		backgroundMusic.stop();
+	}
 
 	/**
 	 * The main entry point for this JavaFX application. Initializes and sets up
@@ -262,6 +283,7 @@ public class GomokuGUI extends Application {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Gomoku");
+		playBackgroundMusic();
 		startMenu();
 	}
 

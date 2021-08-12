@@ -235,6 +235,17 @@
                </BorderPane.margin>
 				</VBox>
          </right>
+         <bottom>
+            <Button fx:id="muteButton" alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#onMute" BorderPane.alignment="BASELINE_RIGHT">
+               <graphic>
+                  <ImageView fx:id="volumeImage" fitHeight="21.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/Volume-Icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </bottom>
 		</BorderPane>
 	</content>
 </ScrollPane>

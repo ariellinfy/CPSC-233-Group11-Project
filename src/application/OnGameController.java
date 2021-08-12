@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -29,6 +30,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -38,6 +40,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.io.File;
 import java.time.Duration;
 import model.*;
 
@@ -98,6 +101,12 @@ public class OnGameController {
 
 	@FXML
 	private Button buttonUndo;
+	
+	@FXML
+	private Button muteButton;
+	
+	@FXML
+	private ImageView volumeImage;
 
 	/**
 	 * Set boardSize based on user selected size in the start menu.
@@ -716,6 +725,18 @@ public class OnGameController {
 	private void onRestart(ActionEvent event) {
 		stopAllTimers();
 		app.restartGame();
+	}
+	
+	@FXML
+	private void onMute(ActionEvent event) {
+		app.playMenuSound();
+		if (app.getBackgroundPlayer().getStatus() == MediaPlayer.Status.STOPPED) {
+			volumeImage.setImage(new Image(new File("src/resources/Volume-Icon.png").toURI().toString()));
+			app.playBackgroundMusic();
+		} else {
+			volumeImage.setImage(new Image(new File("src/resources/Volume-Muted-Icon.png").toURI().toString()));
+			app.stopBackgroundMusic();
+		}
 	}
 
 	/**

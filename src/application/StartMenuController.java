@@ -1,17 +1,20 @@
 package application;
 
+import java.io.File;
 import java.util.function.UnaryOperator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -19,6 +22,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.converter.IntegerStringConverter;
 import model.*;
 
@@ -54,6 +58,12 @@ public class StartMenuController {
 
 	@FXML
 	private CheckBox checkBoxUndo;
+	
+	@FXML
+	private Button muteButton;
+	
+	@FXML
+	private ImageView volumeImage;
 
 	/**
 	 * Grant access to the GomokuGUI main controller.
@@ -136,6 +146,18 @@ public class StartMenuController {
 		chooseColor(opponent);
 		setupGameConfig();
 		app.playGame();
+	}
+	
+	@FXML
+	private void onMute(ActionEvent event) {
+		app.playMenuSound();
+		if (app.getBackgroundPlayer().getStatus() == MediaPlayer.Status.STOPPED) {
+			volumeImage.setImage(new Image(new File("src/resources/Volume-Icon.png").toURI().toString()));
+			app.playBackgroundMusic();
+		} else {
+			volumeImage.setImage(new Image(new File("src/resources/Volume-Muted-Icon.png").toURI().toString()));
+			app.stopBackgroundMusic();
+		}
 	}
 
 	/**
