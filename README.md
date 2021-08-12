@@ -8,37 +8,43 @@ The current application will prompt the user several setting options before star
 - Difficulty level of the computer player (if computer is chosen in #1) - medium by default
 - To play as black or white stone (black always goes first) - user goes first by default
 - Set the board size (9/13/15/19) - 15x15 by default
+- Total time for the game (1 - 60 mins) - 5 mins by default (option not available in the text-based version)
+- No undo (true/false) - no undo by default
 
-A class diagram is included with the source code folder (public/gomoku-class-diagram.png).
+A class diagram is included with the public folder (public/gomoku-class-diagram.png).
 
-## Text-Based Application
-### For Eclipse User
-1. The text-based version of this application is found under iteration-1 branch.
+## For Eclipse User (Our program evolves through 3 iterations)
+
+### Iteration 1 (Basic Text Application)
+1. The basic game logic implementation of this application is found under iteration-1 branch.
 2. When cloning the repository to Eclipse, on the Local Destination page: set initial branch to iteration-1.
 3. Click on the project folder (CPSC_233_Group11_Project) in Package Explorer, then run the game by clicking on the green run icon in the tool bar.
 4. Follow instructions to play the game and have fun!
+5. [Presentation](https://youtu.be/9exlNxKA8N0)
 
-### For All Other Editors (make sure a Java SDK is installed on your device)
-1. Clone or download the repository files to a folder in your device.
-2. In a terminal, navigate to the  project src folder.
-3. Compile files using command line: javac application/GomokuText.java
-4. Run game using command line: java application.GomokuText
-5. Follow instructions to play the game and have fun!
-
-## Graphical User Interface
-1. The GUI version of this application is found under iteration-2 branch.
+### Iteration 2 (Basic GUI Application)
+1. The basic GUI implementation is found under iteration-2 branch.
 2. When cloning the repository to Eclipse, on the Local Destination page: set initial branch to iteration-2.
 3. Add external libraries to the project module path: JavaFX SDK and User Library (JavaFX).
 4. Navigate to application.GomokuGUI in the project src folder and run as Java application.
 5. Follow instructions to set up and play the game.
-6. Have fun!
+6. [Presentation](https://youtu.be/bFNUTb7zZOg)
+
+### Iteration 3 (Full Functionalities Implemented in Both Text ad GUI applications)
+1. The completed text/GUI applications are found under iteration-3 branch.
+2. When cloning the repository to Eclipse, on the Local Destination page: set initial branch to iteration-3.
+3. Add external libraries to the project module path: JavaFX SDK and User Library (JavaFX).
+4. GUI app: Navigate to application.GomokuGUI in the project src folder and run as Java application.
+5. Text app: Navigate to application.GomokuText in the project src folder and run as Java application.
+5. Follow instructions to set up and play the game.
+6. [Presentation]()
 
 ## References
 JavaFX Button Styling CSS
 - http://fxexperience.com/2011/12/styling-fx-buttons-with-css/
 
-Pokémon Sound Effects (Menu button sound and Victory sound)
-- The Pokémon Company ©
+Pokemon  Sound Effects (Menu button sound and Victory sound)
+- The Pokemon  Company
 
 Board Sound Effect
 - https://opengameart.org/
@@ -77,6 +83,10 @@ Volume Icon Graphic
 Volume Muted Icon Graphic
 - https://icon-library.com/icon/speaker-mute-icon-4.html
 
-
+Board Background Image (Author: Stepan Sargsyan on Unsplash)
+- https://unsplash.com/@stepansarg?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText
+  
+Background Music (Title: Side Path, Artist: Kevin MacLeod)
+- https://www.youtube.com/watch?v=goB8d9wSXF4
 
 Group 11, CPSC 233 Summer 2021
