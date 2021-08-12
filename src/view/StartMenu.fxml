@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="570.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StartMenuController">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="580.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StartMenuController">
 	<content>
-		<BorderPane fx:id="borderPaneArea" prefHeight="570.0" prefWidth="785.0" stylesheets="@../resources/startMenuStyling.css">
+		<BorderPane fx:id="borderPaneArea" prefHeight="580.0" prefWidth="785.0" stylesheets="@../resources/startMenuStyling.css">
 			<center>
 				<VBox alignment="CENTER" BorderPane.alignment="CENTER">
 					<children>

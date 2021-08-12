@@ -71,6 +71,12 @@ Ninja Clipart Graphic
 Comic Speech Bubble Graphic
 - https://www.onlygfx.com/6-drawn-comic-speech-bubble-png-transparent/
 
+Volume Icon Graphic
+- https://commons.wikimedia.org/wiki/File:Speaker_Icon.svg
+
+Volume Muted Icon Graphic
+- https://icon-library.com/icon/speaker-mute-icon-4.html
+
 
 
 Group 11, CPSC 233 Summer 2021
