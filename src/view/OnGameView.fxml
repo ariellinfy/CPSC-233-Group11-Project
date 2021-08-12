@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="675.0" prefWidth="1300.0" stylesheets="@../resources/onGameStyling.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="700.0" prefWidth="1300.0" stylesheets="@../resources/onGameStyling.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnGameController">
 	<content>
-		<BorderPane fx:id="borderPaneArea" prefWidth="1290.0">
+		<BorderPane fx:id="borderPaneArea" prefWidth="1300.0">
 			<center>
 				<StackPane fx:id="paneBoardArea" BorderPane.alignment="CENTER">
 					<children>
@@ -23,7 +23,7 @@
 				</StackPane>
 			</center>
          <left>
-				<VBox alignment="CENTER" prefWidth="285.0" BorderPane.alignment="CENTER">
+				<VBox alignment="CENTER" prefWidth="290.0" BorderPane.alignment="CENTER">
 					<children>
 						<VBox prefWidth="285.0" BorderPane.alignment="CENTER">
 							<children>
@@ -244,6 +244,9 @@
                      </image>
                   </ImageView>
                </graphic>
+               <BorderPane.margin>
+                  <Insets bottom="-5.0" left="10.0" right="30.0" top="10.0" />
+               </BorderPane.margin>
             </Button>
          </bottom>
 		</BorderPane>

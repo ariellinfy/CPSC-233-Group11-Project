@@ -89,7 +89,7 @@ public class GameConfiguration {
 	 * @param playerWhite the white player of the game.
 	 * @return a boolean based on the equality of number of moves from both players.
 	 */
-	public boolean checkPlayersNumOfMoves(Player playerBlack, Player playerWhite) {
+	private boolean checkPlayersNumOfMoves(Player playerBlack, Player playerWhite) {
 		return playerBlack.getNumOfMoves() == playerWhite.getNumOfMoves();
 	}
 
@@ -100,7 +100,7 @@ public class GameConfiguration {
 	 * @return a boolean based on if a move is available for the target player to
 	 *         perform undo.
 	 */
-	public boolean isMoveAvailable(Player currentPlayer) {
+	private boolean isMoveAvailable(Player currentPlayer) {
 		return currentPlayer.getNumOfMoves() > 0;
 	}
 
@@ -154,7 +154,7 @@ public class GameConfiguration {
 	 * @param currentPlayer the player that does the undo.
 	 * @return the latest undo move from the current player.
 	 */
-	public Move removeMove(Player currentPlayer) {
+	private Move removeMove(Player currentPlayer) {
 		Move lastMove = currentPlayer.getAllValidMoves().get(currentPlayer.getNumOfMoves() - 1);
 		currentPlayer.getAllValidMoves().remove(currentPlayer.getNumOfMoves() - 1);
 		currentPlayer.decrementMoveCount();

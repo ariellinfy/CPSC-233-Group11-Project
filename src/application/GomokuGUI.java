@@ -14,6 +14,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 import model.*;
 
 /**
@@ -266,6 +267,13 @@ public class GomokuGUI extends Application {
 		Media audioClip = new Media(new File("src/resources/BackGround-Music.mp3").toURI().toString());
 		this.backgroundMusic = new MediaPlayer(audioClip);
 		backgroundMusic.play();
+		backgroundMusic.setOnEndOfMedia(new Runnable() {
+			@Override
+			public void run() {
+				backgroundMusic.seek(Duration.ZERO);
+				backgroundMusic.play();
+			}
+		});
 	}
 	
 	/**
