@@ -1,8 +1,10 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Random;
+import java.util.Map;
 
 /**
  * The class that contains data and logic related to the artificial intelligence
@@ -14,6 +16,7 @@ import java.util.Random;
 public class ComputerPlayer extends Player {
 	private static final HashMap<Level, Integer> levelMap = new HashMap<Level, Integer>();
 	private Level difficultyLevel = Level.MEDIUM;
+	private int[] bestMove = new int[2];
 
 	/**
 	 * Constructor with only difficulty level defined. Set the computer player
@@ -53,9 +56,9 @@ public class ComputerPlayer extends Player {
 	 * score.
 	 */
 	private void initLevelMap() {
-		levelMap.put(Level.EASY, 3);
+		levelMap.put(Level.EASY, 1);
 		levelMap.put(Level.MEDIUM, 2);
-		levelMap.put(Level.HARD, 1);
+		levelMap.put(Level.HARD, 3);
 	}
 
 	/**
@@ -67,103 +70,276 @@ public class ComputerPlayer extends Player {
 		return difficultyLevel;
 	}
 
+	private Map<Integer, Character> alphabetList = new HashMap<Integer, Character>();
+
 	/**
 	 * Depending on the difficulty level set by the user, this method determines the
 	 * next computer move by using both generateMoveList and calculateScores helper
 	 * methods to generate a list of possible moves ranked in descending order and
 	 * randomly picks a move from the list.
 	 * 
-	 * @param currentConfig current game configuration used to access current board data.
+	 * @param currentConfig current game configuration used to access current board
+	 *                      data.
 	 * @return the computer player's next move in the current game.
 	 */
 	@Override
 	public Move getMove(GameConfiguration currentConfig) {
 		Stone[][] board = currentConfig.getChessBoard().getBoard();
-		int boardSize = currentConfig.getChessBoard().getBoardSize();
-		int targetRow = -1;
-		int targetCol = -1;
-		Move computerMove = null;
-		/*
-		 * Get a move list that includes a list of coord(s) that has the highest scores
-		 * from the score table. The number of coords in the list is determined by the
-		 * difficulty level of the computer player.
-		 */
-		ArrayList<int[]> moveList = generateMoveList(board, boardSize);
-		// Uses Random class to randomly pick one coord from the move list.
-		Random rand = new Random();
-		int[] pickedMove = moveList.get(rand.nextInt(moveList.size()));
-		targetRow = pickedMove[0];
-		targetCol = pickedMove[1];
-		/*
-		 * Make sure the target move index does not exceed the board size before
-		 * creating the new move object.
-		 */
-		if (targetRow > -1 && targetCol > -1 && targetRow < boardSize && targetCol < boardSize) {
-			computerMove = new Move(targetRow, targetCol, getPlayerColor());
-		}
-		return computerMove;
+		this.alphabetList = currentConfig.getChessBoard().getAlphabetList();
+		bestMove[0] = board.length / 2;
+		bestMove[1] = board.length / 2;
+		int depth = levelMap.get(difficultyLevel);
+		int alpha = Integer.MIN_VALUE;
+		int beta = Integer.MAX_VALUE;
+		alphaBeta(board, depth, alpha, beta, getPlayerColor());
+		return new Move(bestMove[0], bestMove[1], getPlayerColor());
 	}
 
-	/**
-	 * A helper method that uses score table and difficulty level of the game to
-	 * generate a list of possible moves for the computer player.
-	 * 
-	 * @param board     current board of the game.
-	 * @param boardSize the size of the board.
-	 * @return an arrayList with a number of array items of possible moves.
-	 */
-	private ArrayList<int[]> generateMoveList(Stone[][] board, int boardSize) {
-		ArrayList<int[]> moveList = new ArrayList<int[]>();
-		/*
-		 * Number of times the for loop will run is determined by the level of
-		 * difficulty.
-		 */
-		for (int counter = 0; counter < levelMap.get(difficultyLevel); counter++) {
-			// Generate next highest move and add it to the move list.
-			int[] moveCoord = getHighestMoveCoord(moveList, board, boardSize);
-			moveList.add(moveCoord);
+	private class Point {
+		int x, y, weight;
+
+		private Point(int x, int y, int weight) {
+			this.x = x;
+			this.y = y;
+			this.weight = weight;
 		}
-		return moveList;
+
+		int getWeight() {
+			return weight;
+		}
 	}
 
-	/**
-	 * Get the highest score coord in the current score table.
-	 * 
-	 * @param moveList  current list of possible moves.
-	 * @param board     current board of the game.
-	 * @param boardSize the size of the board.
-	 * @return the current highest score coord data in the score table.
-	 */
-	private int[] getHighestMoveCoord(ArrayList<int[]> moveList, Stone[][] board, int boardSize) {
-		int[][] scoreTable = calculateScores(board, boardSize);
-		/*
-		 * Set all the coords in the moveList to be -1, so next loop won't repeat the
-		 * same index positions.
-		 */
-		for (int[] move : moveList) {
-			scoreTable[move[0]][move[1]] = -1;
+	private int alphaBeta(Stone[][] board, int depth, int alpha, int beta, Stone color) {
+		int score = evaluate(board, color);
+		if (depth <= 0 || Math.abs(score) >= 5000000) {
+			return score;
 		}
-		int maxScore = 0;
-		int goalRow = -1;
-		int goalCol = -1;
-		/*
-		 * Loop through all the scores in the score table and get the empty coordinate
-		 * with the highest score in the board.
-		 */
-		for (int i = 0; i < boardSize; i++) {
-			for (int j = 0; j < boardSize; j++) {
-				if (board[i][j] == Stone.EMPTY && scoreTable[i][j] > maxScore) {
-					maxScore = scoreTable[i][j];
-					goalRow = i;
-					goalCol = j;
+		int value = color == getPlayerColor() ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+		ArrayList<Point> availablePoints = sortedAvailablePoints(board);
+		for (Point point : availablePoints) {
+			Stone opponentColor = color == Stone.BLACK? Stone.WHITE : Stone.BLACK;
+			board[point.x][point.y] = color;
+			score = alphaBeta(board, depth - 1, alpha, beta, opponentColor);
+			board[point.x][point.y] = Stone.EMPTY;
+			if (color == getPlayerColor()) {
+				if (value < score) {
+					value = score;
+					bestMove[0] = point.x;
+					bestMove[1] = point.y;
+				}
+				alpha = Integer.max(alpha, score);
+			} else {
+				if (value > score) {
+					value = score;
+					bestMove[0] = point.x;
+					bestMove[1] = point.y;
+				}
+				beta = Integer.min(beta, score);
+			}
+		}
+		return value;
+		
+		// NegMax
+//		int score = evaluate(board, color);
+//		if (depth <= 0 || Math.abs(score) >= 5000000) {
+//			return score;
+//		}
+//		System.out.println("new alpha beta, " + score + ", " + depth + ", " + color);
+//		int value = color == Stone.BLACK ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+//		ArrayList<Point> availablePoints = sortedAvailablePoints(board);
+//		System.out.print(availablePoints.size() + ", ");
+//		for (Point point : availablePoints) {
+//			Stone opponentColor = color == Stone.BLACK? Stone.WHITE : Stone.BLACK;
+//			board[point.x][point.y] = color;
+//			score = -alphaBeta(board, depth - 1, -beta, -alpha, opponentColor);
+//			System.out.println(String.valueOf(alphabetList.get(point.y + 1)) + (point.x + 1) + ", " + score);
+//			board[point.x][point.y] = Stone.EMPTY;
+//			if (score > alpha) {
+//				alpha = score;
+//				bestMove[0] = point.x;
+//				bestMove[1] = point.y;
+//				if (alpha >= beta) {
+//					break;
+//				}
+//			}
+//		}
+//		return alpha;
+		// Split methods
+//		int value = 0;
+//		if (color == getPlayerColor()) {
+//			value = max_alphaBeta(board, depth, alpha, beta, color);
+//		}
+//		return value;
+		// every empty and nearby sorted point
+		// evaluate
+		// return max
+	}
+
+	private int max_alphaBeta(Stone[][] board, int depth, int alpha, int beta, Stone color) {
+//		System.out.println("max color: " + color);
+		int value = Integer.MIN_VALUE;
+		int score = evaluate(board, color);
+		if (depth <= 0 || Math.abs(score) >= 5000000) {
+			return score;
+		}
+		ArrayList<Point> availablePoints = sortedAvailablePoints(board);
+		Stone opponentColor = color == Stone.BLACK ? Stone.WHITE : Stone.BLACK;
+		for (Point point : availablePoints) {
+			int i = point.x;
+			int j = point.y;
+			board[i][j] = color;
+			score = min_alphaBeta(board, depth - 1, alpha, beta, opponentColor);
+			if (score > value) {
+				value = score;
+				bestMove[0] = i;
+				bestMove[1] = j;
+			}
+			board[i][j] = Stone.EMPTY;
+			alpha = Math.max(alpha, score);
+			if (alpha >= beta) {
+				break;
+			}
+		}
+		return value;
+	}
+
+	private int min_alphaBeta(Stone[][] board, int depth, int alpha, int beta, Stone color) {
+		int value = Integer.MAX_VALUE;
+		int score = evaluate(board, color);
+		if (depth <= 0 || Math.abs(score) >= 5000000) {
+			return score;
+		}
+		ArrayList<Point> availablePoints = sortedAvailablePoints(board);
+		Stone opponentColor = color == Stone.BLACK ? Stone.WHITE : Stone.BLACK;
+		for (Point point : availablePoints) {
+			int i = point.x;
+			int j = point.y;
+			board[i][j] = color;
+			score = max_alphaBeta(board, depth - 1, alpha, beta, opponentColor);
+			if (score < value) {
+				value = score;
+				bestMove[0] = i;
+				bestMove[1] = j;
+			}
+			board[i][j] = Stone.EMPTY;
+			beta = Math.min(beta, score);
+			if (beta <= alpha) {
+				break;
+			}
+		}
+		return value;
+	}
+
+	private ArrayList<Point> sortedAvailablePoints(Stone[][] board) {
+		ArrayList<Point> availablePoints = emptyPoints(board);
+		Collections.sort(availablePoints, Comparator.comparing(Point::getWeight).reversed());
+//		for (Point point : availablePoints) {
+//			System.out.println(point.x + ", " + point.y + ": " + point.weight);
+//		}
+		return availablePoints;
+	}
+
+	private ArrayList<Point> emptyPoints(Stone[][] board) {
+		ArrayList<Point> emptyPoints = new ArrayList<Point>();
+		int[][] pointWeights = initScoreTable(board.length);
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				if (board[i][j] == Stone.EMPTY && nearBy(board, i, j, 1)) {
+					Point point = new Point(i, j, pointWeights[i][j]);
+					emptyPoints.add(point);
 				}
 			}
 		}
-		// Put row and column indices in an array and return it.
-		int[] moveCoord = new int[2];
-		moveCoord[0] = goalRow;
-		moveCoord[1] = goalCol;
-		return moveCoord;
+		return emptyPoints;
+	}
+
+	private boolean nearBy(Stone[][] board, int x, int y, int radius) {
+		int boardBoundary = board.length - 1;
+		int startX = Integer.max(x - radius, 0), endX = Integer.min(x + radius, boardBoundary);
+		int startY = Integer.max(y - radius, 0), endY = Integer.min(y + radius, boardBoundary);
+		for (int i = startX; i <= endX; i++) {
+			for (int j = startY; j <= endY; j++) {
+				if (board[i][j] != Stone.EMPTY) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private int evaluate(Stone[][] board, Stone playerColor) {
+		int[][] pointWeights = initScoreTable(board.length);
+		int myScore = 0;
+		int opponentScore = 0;
+		Stone opponentColor = playerColor == Stone.BLACK ? Stone.WHITE : Stone.BLACK;
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				if (board[i][j] == playerColor) {
+					myScore += evaluateSinglePoint(board, i, j, playerColor, pointWeights[i][j]);
+				} else if (board[i][j] == opponentColor) {
+					opponentScore += evaluateSinglePoint(board, i, j, opponentColor, pointWeights[i][j]);
+				}
+			}
+		}
+		return (10 * myScore) - opponentScore;
+		// int score for ai
+		// int score for enemy
+		// go through all points in the board (exclude empty)
+		// if my point, evaluate and add to my array
+		// else evaluate and add to enemy array
+		// return my score - enemy score
+	}
+
+	private boolean isValidPoint(int x, int y, int boardSize) {
+		return x >= 0 && x < boardSize && y >= 0 && y < boardSize;
+	}
+
+	private int evaluateSinglePoint(Stone[][] board, int x, int y, Stone color, int weight) {
+//		System.out.println(color + ": " + x + ", " + y);
+		int[][] DIRECTION = { { 0, -1, 0, 1 }, { -1, 0, 1, 0 }, { -1, -1, 1, 1 }, { -1, 1, 1, -1 } };
+		int score = 0;
+		ArrayList<ChessType> typesInDirections = new ArrayList<ChessType>();
+		for (int dir = 0; dir < 4; dir++) {
+			String line = "";
+			int rStart = Math.max(x + DIRECTION[dir][0] * 4, 0);
+			int cStart = Math.max(y + DIRECTION[dir][1] * 4, 0);
+			int rDir = DIRECTION[dir][2];
+			int cDir = DIRECTION[dir][3];
+			int rEnd = Math.min(x + (rDir * 4), board.length - 1);
+			int cEnd = Math.min(y + (cDir * 4), board.length - 1);
+			int r = rStart;
+			int c = cStart;
+			while ((r < rEnd + rDir || c < cEnd + cDir) && isValidPoint(r, c, board.length)) {
+				// if point == color, gives 1
+				// if point == empty, gives 0
+				// else gives 2
+				if (board[r][c] == color)
+					line += 1;
+				else if (board[r][c] == Stone.EMPTY)
+					line += 0;
+				else
+					line += 2;
+				r += rDir;
+				c += cDir;
+			}
+
+			String[] lineTypes = { Line.WIN5, Line.LIVE4, Line.SLEEP4_1_1, Line.SLEEP4_1_2, Line.SLEEP4_2_1,
+					Line.SLEEP4_2_2, Line.SLEEP4_3, Line.LIVE3, Line.JUMPLIVE3_1_1, Line.JUMPLIVE3_1_2, Line.SLEEP3_1_1,
+					Line.SLEEP3_1_2, Line.SLEEP3_2_1, Line.SLEEP3_2_2, Line.SLEEP3_3_1, Line.SLEEP3_3_2,
+					Line.SLEEP3_4_1, Line.SLEEP3_4_2, Line.SLEEP3_5, Line.SLEEP3_6, Line.LIVE2_1, Line.LIVE2_2,
+					Line.LIVE2_3, Line.SLEEP2_1_1, Line.SLEEP2_1_2, Line.SLEEP2_2_1, Line.SLEEP2_2_2, Line.SLEEP2_3_1,
+					Line.SLEEP2_3_2, Line.SLEEP2_4 };
+			for (String type : lineTypes) {
+				if (line.contains(type)) {
+					typesInDirections.add(checkType(type));
+				}
+			}
+		}
+		// Sum all type scores
+		for (ChessType type : typesInDirections) {
+			score += getScore(type);
+		}
+		return score * weight;
 	}
 
 	/**
@@ -171,12 +347,11 @@ public class ComputerPlayer extends Player {
 	 * center of the board. The array size is the same size as the board of the
 	 * game.
 	 * 
-	 * @param board     current board of the game.
 	 * @param boardSize the size of the board.
 	 * @return a score table with initial score based on each coord's position with
 	 *         respective to the board border.
 	 */
-	private int[][] initScoreTable(Stone[][] board, int boardSize) {
+	private int[][] initScoreTable(int boardSize) {
 		int[][] scoreTable = new int[boardSize][boardSize];
 		for (int i = 0; i < boardSize; i++) {
 			for (int j = 0; j < boardSize; j++) {
@@ -198,267 +373,127 @@ public class ComputerPlayer extends Player {
 		return scoreTable;
 	}
 
-	/**
-	 * Helper method to count stones in left to right direction and update score
-	 * table accordingly.
-	 * 
-	 * @param i     counter for outer loop.
-	 * @param j     counter for inner loop.
-	 * @param score current score table.
-	 * @param board current board of the game.
-	 */
-	private void countLeftRightStones(int i, int j, int[][] score, Stone[][] board) {
-		int numOfBlack = 0; // number of black in a tuple
-		int numOfWhite = 0; // number of white in a tuple
-		int tempScore = 0; // temp score for a tuple
-		int k = j;
-		while (k < j + 5) {
-			if (board[i][k] == Stone.BLACK) numOfBlack++;
-			else if (board[i][k] == Stone.WHITE) numOfWhite++;
-			k++;
-		}
-		tempScore = tupleScore(numOfBlack, numOfWhite);
-		// Add the score to each of the five coordinates in the tuple
-		for (k = j; k < j + 5; k++) {
-			score[i][k] += tempScore;
-		}
+	interface Line {
+		String WIN5 = "11111";
+		String LIVE4 = "011110";
+		String SLEEP4_1_1 = "011112";
+		String SLEEP4_1_2 = "211110";
+		String SLEEP4_2_1 = "10111";
+		String SLEEP4_2_2 = "11101";
+		String SLEEP4_3 = "11011";
+		String LIVE3 = "01110";
+		String JUMPLIVE3_1_1 = "1011";
+		String JUMPLIVE3_1_2 = "1101";
+		String SLEEP3_1_1 = "001112";
+		String SLEEP3_1_2 = "211100";
+		String SLEEP3_2_1 = "010112";
+		String SLEEP3_2_2 = "211010";
+		String SLEEP3_3_1 = "011012";
+		String SLEEP3_3_2 = "210110";
+		String SLEEP3_4_1 = "10011";
+		String SLEEP3_4_2 = "11001";
+		String SLEEP3_5 = "10101";
+		String SLEEP3_6 = "2011102";
+		String LIVE2_1 = "001100";
+		String LIVE2_2 = "01010";
+		String LIVE2_3 = "1001";
+		String SLEEP2_1_1 = "000112";
+		String SLEEP2_1_2 = "211000";
+		String SLEEP2_2_1 = "001012";
+		String SLEEP2_2_2 = "210100";
+		String SLEEP2_3_1 = "010012";
+		String SLEEP2_3_2 = "210010";
+		String SLEEP2_4 = "10001";
 	}
 
-	/**
-	 * Helper method to count stones in top to bottom direction and update score
-	 * table accordingly.
-	 * 
-	 * @param i     counter for outer loop.
-	 * @param j     counter for inner loop.
-	 * @param score current score table.
-	 * @param board current board of the game.
-	 */
-	private void countTopBottomStones(int i, int j, int[][] score, Stone[][] board) {
-		int numOfBlack = 0; // number of black in a tuple
-		int numOfWhite = 0; // number of white in a tuple
-		int tempScore = 0; // temp score for a tuple
-		int k = j;
-		while (k < j + 5) {
-			if (board[k][i] == Stone.BLACK) numOfBlack++;
-			else if (board[k][i] == Stone.WHITE) numOfWhite++;
-			k++;
-		}
-		tempScore = tupleScore(numOfBlack, numOfWhite);
-		for (k = j; k < j + 5; k++) {
-			score[k][i] += tempScore;
-		}
+	enum ChessType {
+		WIN5, LIVE4, SLEEP4, LIVE3, JUMPLIVE3, SLEEP3, LIVE2, SLEEP2, NONE
 	}
 
-	/**
-	 * Helper method to count stones in top left to bottom right direction to cover
-	 * bottom left triangle of the board and update score table accordingly.
-	 * 
-	 * @param k     counter for outer loop.
-	 * @param j     counter for inner loop.
-	 * @param score current score table.
-	 * @param board current board of the game.
-	 */
-	private void countTLBRStones(int k, int j, int[][] score, Stone[][] board) {
-		int numOfBlack = 0; // number of black in a tuple
-		int numOfWhite = 0; // number of white in a tuple
-		int tempScore = 0; // temp score for a tuple
-		int m = k;
-		int n = j;
-		while (m < k + 5) {
-			if (board[m][n] == Stone.BLACK) numOfBlack++;
-			else if (board[m][n] == Stone.WHITE) numOfWhite++;
-			m++;
-			n++;
+	private ChessType checkType(String target) {
+		ChessType type = ChessType.NONE;
+		switch (target) {
+		case Line.WIN5:
+			type = ChessType.WIN5;
+			break;
+		case Line.LIVE4:
+			type = ChessType.LIVE4;
+			break;
+		case Line.SLEEP4_1_1:
+		case Line.SLEEP4_1_2:
+		case Line.SLEEP4_2_1:
+		case Line.SLEEP4_2_2:
+		case Line.SLEEP4_3:
+			type = ChessType.SLEEP4;
+			break;
+		case Line.LIVE3:
+			type = ChessType.LIVE3;
+			break;
+		case Line.JUMPLIVE3_1_1:
+		case Line.JUMPLIVE3_1_2:
+			type = ChessType.JUMPLIVE3;
+			break;
+		case Line.SLEEP3_1_1:
+		case Line.SLEEP3_1_2:
+		case Line.SLEEP3_2_1:
+		case Line.SLEEP3_2_2:
+		case Line.SLEEP3_3_1:
+		case Line.SLEEP3_3_2:
+		case Line.SLEEP3_4_1:
+		case Line.SLEEP3_4_2:
+		case Line.SLEEP3_5:
+		case Line.SLEEP3_6:
+			type = ChessType.SLEEP3;
+			break;
+		case Line.LIVE2_1:
+		case Line.LIVE2_2:
+		case Line.LIVE2_3:
+			type = ChessType.LIVE2;
+			break;
+		case Line.SLEEP2_1_1:
+		case Line.SLEEP2_1_2:
+		case Line.SLEEP2_2_1:
+		case Line.SLEEP2_2_2:
+		case Line.SLEEP2_3_1:
+		case Line.SLEEP2_3_2:
+		case Line.SLEEP2_4:
+			type = ChessType.SLEEP2;
+			break;
 		}
-		if (m == k + 5) {
-			tempScore = tupleScore(numOfBlack, numOfWhite);
-			for (m = k, n = j; m < k + 5; m++, n++) {
-				score[m][n] += tempScore;
-			}
-		}
+		return type;
 	}
 
-	/**
-	 * Helper method to count stones in bottom right to top left direction to cover
-	 * top right triangle of the board and update score table accordingly.
-	 * 
-	 * @param k     counter for outer loop.
-	 * @param j     counter for inner loop.
-	 * @param score current score table.
-	 * @param board current board of the game.
-	 */
-	private void countTLBRStonesReversed(int k, int j, int[][] score, Stone[][] board) {
-		int numOfBlack = 0; // number of black in a tuple
-		int numOfWhite = 0; // number of white in a tuple
-		int tempScore = 0; // temp score for a tuple
-		int m = k;
-		int n = j;
-		while (m > k - 5) {
-			if (board[m][n] == Stone.BLACK) numOfBlack++;
-			else if (board[m][n] == Stone.WHITE) numOfWhite++;
-			m--;
-			n--;
-		}
-		if (m == k - 5) {
-			tempScore = tupleScore(numOfBlack, numOfWhite);
-			for (m = k, n = j; m > k - 5; m--, n--) {
-				score[m][n] += tempScore;
-			}
-		}
-	}
-
-	/**
-	 * Helper method to count stones in bottom left to top right direction to cover
-	 * top left triangle of the board and update score table accordingly.
-	 * 
-	 * @param k     counter for outer loop.
-	 * @param j     counter for inner loop.
-	 * @param score current score table.
-	 * @param board current board of the game.
-	 */
-	private void countBLTRStones(int k, int j, int[][] score, Stone[][] board) {
-		int numOfBlack = 0; // number of black in a tuple
-		int numOfWhite = 0; // number of white in a tuple
-		int tempScore = 0; // temp score for a tuple
-		int m = k;
-		int n = j;
-		while (m > k - 5) {
-			if (board[m][n] == Stone.BLACK) numOfBlack++;
-			else if (board[m][n] == Stone.WHITE) numOfWhite++;
-			m--;
-			n++;
-		}
-		if (m == k - 5) {
-			tempScore = tupleScore(numOfBlack, numOfWhite);
-			for (m = k, n = j; m > k - 5; m--, n++) {
-				score[m][n] += tempScore;
-			}
-		}
-	}
-
-	/**
-	 * Helper method to count stones in Top right to bottom left direction to cover
-	 * bottom right triangle of the board and update score table accordingly.
-	 * 
-	 * @param k     counter for outer loop.
-	 * @param j     counter for inner loop.
-	 * @param score current score table.
-	 * @param board current board of the game.
-	 */
-	private void countBLTRStonesReversed(int k, int j, int[][] score, Stone[][] board) {
-		int numOfBlack = 0; // number of black in a tuple
-		int numOfWhite = 0; // number of white in a tuple
-		int tempScore = 0; // temp score for a tuple
-		int m = k;
-		int n = j;
-		while (m < k + 5) {
-			if (board[m][n] == Stone.BLACK) numOfBlack++;
-			else if (board[m][n] == Stone.WHITE) numOfWhite++;
-			m++;
-			n--;
-		}
-		if (m == k + 5) {
-			tempScore = tupleScore(numOfBlack, numOfWhite);
-			for (m = k, n = j; m < k + 5; m++, n--) {
-				score[m][n] += tempScore;
-			}
-		}
-	}
-
-	/**
-	 * The computer move algorithm was adapted from Chess class line 93 to 337 in a
-	 * post by ccnuacmhdu on 2018-10-20 in a CSDN blog here:
-	 * https://blog.csdn.net/ccnuacmhdu/article/details/83152946 Because the google
-	 * translated link will automatically redirect to CSDN home page, a translated
-	 * page url will not be provided here, but readers are welcome to use
-	 * translation tools to refer to the original algorithm. Below is a brief
-	 * description of the algorithm: The winning condition of the gomuku game is to
-	 * form a line of five same color stones. Therefore, for each five connected
-	 * coordinates (so-called a five-tuple) in the board, we will first determine
-	 * its number of black stones and number of white stones, and use the helper
-	 * method tupleScore to give this tuple a score. This score will be added to
-	 * each of these five coordinates. Repeat this process until all tuples in the
-	 * board populate a score and add to the coordinates, hence the score of each
-	 * coordinate is the sum of the scores of all five-tuples that contain this
-	 * coordinate. The coordinate with the highest score is the best next move of
-	 * the current game.
-	 * 
-	 * @param board     current board of the game.
-	 * @param boardSize the size of the board.
-	 * @return a 2D array that contains a score for each coordinate in the board.
-	 */
-	public int[][] calculateScores(Stone[][] board, int boardSize) {
-		// Initialize a 2D array with more scores towards center.
-		int[][] score = initScoreTable(board, boardSize);
-
-		// Left to right (covers all horizontal tuples)
-		for (int i = 0; i < boardSize; i++) {
-			for (int j = 0; j < boardSize - 4; j++) {
-				countLeftRightStones(i, j, score, board);
-			}
-		}
-		// Top to bottom (covers all vertical tuples)
-		for (int i = 0; i < boardSize; i++) {
-			for (int j = 0; j < boardSize - 4; j++) {
-				countTopBottomStones(i, j, score, board);
-			}
-		}
-		// Top left to bottom right (covers all diagonal tuples in bottom left triangle)
-		for (int i = 0; i < boardSize - 4; i++) {
-			for (int j = 0, k = i; j < boardSize - 4 && k < boardSize - 4; j++, k++) {
-				countTLBRStones(k, j, score, board);
-			}
-		}
-		// Bottom right to top left (covers all diagonal tuples in top right triangle)
-		for (int i = boardSize - 2; i >= 4; i--) {
-			for (int j = boardSize - 1, k = i; j >= 4 && k >= 4; j--, k--) {
-				countTLBRStonesReversed(k, j, score, board);
-			}
-		}
-		// Bottom left to top right (covers all diagonal tuples in top left triangle)
-		for (int i = boardSize - 1; i >= 4; i--) {
-			for (int j = 0, k = i; j < boardSize - 4 && k >= 4; j++, k--) {
-				countBLTRStones(k, j, score, board);
-			}
-		}
-		// Top right to bottom left (covers all diagonal tuples in bottom right triangle)
-		for (int i = 1; i < boardSize - 4; i++) {
-			for (int j = boardSize - 1, k = i; j >= 4 && k < boardSize - 4; j--, k++) {
-				countBLTRStonesReversed(k, j, score, board);
-			}
+	private int getScore(ChessType type) {
+		int score = 0;
+		switch (type) {
+		case WIN5:
+			score = 5000000;
+			break;
+		case LIVE4:
+			score = 100000;
+			break;
+		case SLEEP4:
+			score = 10000;
+			break;
+		case LIVE3:
+			score = 8000;
+			break;
+		case JUMPLIVE3:
+			score = 7000;
+			break;
+		case SLEEP3:
+			score = 500;
+			break;
+		case LIVE2:
+			score = 50;
+			break;
+		case SLEEP2:
+			score = 10;
+			break;
+		case NONE:
+		default:
+			break;
 		}
 		return score;
-	}
-
-	/**
-	 * A helper method that will evaluate a tuple and give it a score.
-	 * 
-	 * @param numOfBlack number of black stones in a tuple.
-	 * @param numOfWhite number of white stones in a tuple.
-	 * @return a score based on number of black and white stones.
-	 */
-	private int tupleScore(int numOfBlack, int numOfWhite) {
-		// The worst case: a tuple contains at least one black and at least one white
-		if (numOfBlack > 0 && numOfWhite > 0) return 0;
-		// The tuple is empty
-		if (numOfBlack == 0 && numOfWhite == 0) return 7;
-		// The tuple only contains one black
-		if (numOfBlack == 1) return 15;
-		// The tuple contains two black and no white.
-		if (numOfBlack == 2) return 400;
-		// The tuple contains three black and no white.
-		if (numOfBlack == 3) return 1800;
-		// The tuple contains four black and no white.
-		if (numOfBlack == 4) return 100000;
-		// The tuple only contains one white.
-		if (numOfWhite == 1) return 35;
-		// The tuple contains two white and no black.
-		if (numOfWhite == 2) return 800;
-		// The tuple contains three white and no black.
-		if (numOfWhite == 3) return 15000;
-		// The tuple contains four white and no black.
-		if (numOfWhite == 4) return 800000;
-		// The none of above cases, this indicates something went wrong in the program.
-		return -1;
 	}
 }
